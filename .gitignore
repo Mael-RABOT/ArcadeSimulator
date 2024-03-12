@@ -6,3 +6,5 @@ arcade
 *.gcov
 *.info
 *.log
+/.idea
+cmake-build-debug
