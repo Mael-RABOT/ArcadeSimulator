@@ -1,4 +1,6 @@
-namespace Core {
+#pragma once
+
+namespace CoreModule {
     class CoreError : public std::exception {
         private:
             std::string message;

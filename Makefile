@@ -1,21 +1,22 @@
-all: core games graphicals
+all: core graphicals games
 
 core:
 	make -C Core
-	mv Core/arcade .
 
 games:
-	make -C Games
+	make -C lib game
 
 graphicals:
-	make -C Graphicals
+	make -C lib graphical
 
 clean:
 	make -C Core clean
-	make -C Games clean
-	make -C Graphicals clean
+	make -C lib clean
 
 fclean:
 	make -C Core fclean
-	make -C Games fclean
-	make -C Graphicals fclean
+	make -C lib fclean
+
+re:
+	make -C Core re
+	make -C lib re

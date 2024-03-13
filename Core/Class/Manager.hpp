@@ -1,13 +1,17 @@
+#pragma once
+
 #include <string>
 #include <dlfcn.h>
 
-#include "Error/Error.hpp"
+#include "Core.hpp"
+#include "DLLoader.hpp"
 
-namespace Core {
+namespace CoreModule {
     class Manager {
         private:
             void *graphicalLibrary;
             void *gameLibrary;
+            Core *core;
 
         public:
             Manager();

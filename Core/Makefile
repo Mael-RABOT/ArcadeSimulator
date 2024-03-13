@@ -5,17 +5,16 @@ OBJ		 = $(SRC:.cpp=.o)
 CXX		 = g++
 CFLAGS	 = -std=c++20 -Wall -Wextra
 V_FLAG   = --leak-check=full --show-leak-kinds=all --track-origins=yes
-EXE		 = arcade
+EXE		 = ../arcade
 SAN		 = -g3
-COV		 = --coverage
 
 all:	$(EXE)
 
 %.o:	%.cpp
-	$(CXX) -o $@ -c $< $(CFLAGS) $(SAN) $(COV)
+	$(CXX) -o $@ -c $< $(CFLAGS) $(SAN)
 
 $(EXE): $(OBJ)
-	$(CXX) -o $(EXE) $^ $(COV)
+	$(CXX) -o $(EXE) $^
 
 clean:
 	@rm -rf $(OBJ)
