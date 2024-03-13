@@ -4,7 +4,6 @@ namespace CoreModule {
     Manager::Manager() {
         this->graphicalLibrary = nullptr;
         this->gameLibrary = nullptr;
-        this->core = new Core();
     }
 
     Manager::~Manager() {
@@ -14,7 +13,6 @@ namespace CoreModule {
         if (this->gameLibrary != nullptr) {
             dlclose(this->gameLibrary);
         }
-        delete this->core;
     }
 
     void Manager::loadGraphicalLibrary(std::string const &path) {

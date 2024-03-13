@@ -7,7 +7,6 @@
 
 #include "Type.hpp"
 
-#include "Core.hpp"
 #include "DLLoader.hpp"
 
 namespace CoreModule {
@@ -15,7 +14,6 @@ namespace CoreModule {
         private:
             void *graphicalLibrary;
             void *gameLibrary;
-            Core *core;
             std::vector<std::string> gamesList;
             std::vector<std::string> graphicalList;
 
