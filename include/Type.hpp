@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <functional>
 
 /*-----Core-----*/
 
@@ -20,7 +21,7 @@ struct Menu {
     int score;
     std::string name;
     LibSelector graphical;
-    LibSelector games;
+    LibSelector game;
 };
 
 struct SelectedLib {

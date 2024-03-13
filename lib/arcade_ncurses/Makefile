@@ -1,10 +1,3 @@
-##
-## EPITECH PROJECT, 2024
-## B-OOP-400-LYN-4-1-tekspice-yohann.mangenot
-## File description:
-## Makefile
-##
-
 FILE_SRC    :=    $(shell find . -type f -name '*.cpp')
 
 FILE_OBJ    =   $(FILE_SRC:.cpp=.o)

@@ -1,18 +1,21 @@
-all:
+all:	game graphical
 
 game:
-	echo "nothing to do"
+	make -C arcade_snake
 
 graphical:
-	make -C ncurses
+	make -C arcade_ncurses
 
 clean:
-	make -C ncurses clean
+	make -C arcade_ncurses clean
+	make -C arcade_snake clean
 
 fclean:
-	make -C ncurses fclean
+	make -C arcade_ncurses fclean
+	make -C arcade_snake fclean
 
 re:
-	make -C ncurses re
+	make -C arcade_ncurses re
+	make -C arcade_snake re
 
 .PHONY: all game graphical clean fclean re
