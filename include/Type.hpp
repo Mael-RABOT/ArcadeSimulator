@@ -4,38 +4,65 @@
 #include <map>
 #include <string>
 
-typedef struct LibSelector_s {
+/*-----Core-----*/
+
+enum KiwiBool {
+    NotKiwi = false,
+    Kiwi = true
+};
+
+struct LibSelector {
     std::vector<std::string>::iterator selected;
     std::vector<std::string> list;
-} LibSelector;
+};
 
-typedef struct Menu_s {
+struct Menu {
     int score;
     std::string name;
     LibSelector graphical;
     LibSelector games;
-} Menu;
+};
 
-typedef struct SelectedLib_s {
+struct SelectedLib {
     std::string graphical;
     std::string game;
-} SelectedLib;
+};
 
-typedef struct Vector2D_s {
-    std::size_t x;
-    std::size_t y;
-} Vector2D;
+struct Vector2D {
+    int x;
+    int y;
 
-typedef enum EntityType_e {
+    Vector2D operator+(Vector2D other) const {
+        return {x + other.x, y + other.y};
+    }
+
+    Vector2D operator-(Vector2D other) const {
+        return {x - other.x, y - other.y};
+    }
+
+    Vector2D& operator+=(Vector2D other) {
+        x += other.x;
+        y += other.y;
+        return *this;
+    }
+
+    Vector2D& operator-=(Vector2D other) {
+        x -= other.x;
+        y -= other.y;
+        return *this;
+    }
+};
+
+enum EntityType {
     WALL = 0,
     PLAYER = 1
-} EntityType;
+};
 
-typedef struct Map_s {
+struct Map {
     std::vector<std::vector<EntityType>> grid;
-} Map;
+};
 
-typedef enum Input_e {
+enum Input {
     UP,
     DOWN,
     LEFT,
@@ -43,31 +70,31 @@ typedef enum Input_e {
     QUIT,
     MENU,
     ACTION
-} Input;
+};
 
-typedef enum Signature_e {
+enum Signature {
     GAME = 404,
     GRAPHICAL = 808,
-} Signature;
+};
 
 class IEntity {
-private:
-    EntityType entityType;
-    Vector2D position;
+    private:
+        EntityType entityType;
+        Vector2D position;
 
-public:
-    virtual ~IEntity() = 0;
-    virtual EntityType getEntityType() = 0;
-    virtual void setEntityType(EntityType) = 0;
-    virtual Vector2D getPosition() = 0;
-    virtual void setPosition(Vector2D position) = 0;
+    public:
+        virtual ~IEntity() = 0;
+        virtual EntityType getEntityType() = 0;
+        virtual void setEntityType(EntityType) = 0;
+        virtual Vector2D getPosition() = 0;
+        virtual void setPosition(Vector2D position) = 0;
 };
 
 /*-----Game-----*/
 
-typedef enum GameState_e {
+enum GameState {
     RUNNING,
     WIN,
     GAMEOVER,
     SLAPSH
-} GameState;
+};

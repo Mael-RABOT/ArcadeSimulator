@@ -19,3 +19,5 @@ and
 - [**mathieu.borel@epitech.eu**](mathieu.borel@epitech.eu)
 - [yohann.mangenot@epitech.eu](yohann.mangenot@epitech.eu)
 - [mathis.morel@epitech.eu](mathis.morel@epitech.eu)
+
+The shared files describe the IDisplayModule, IGameModule and Type.hpp files.

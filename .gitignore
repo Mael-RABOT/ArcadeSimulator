@@ -8,3 +8,4 @@ arcade
 *.log
 /.idea
 cmake-build-debug
+*.so

@@ -2,6 +2,10 @@
 
 #include <string>
 #include <dlfcn.h>
+#include <iostream>
+#include <dirent.h>
+
+#include "Type.hpp"
 
 #include "Core.hpp"
 #include "DLLoader.hpp"
@@ -12,6 +16,8 @@ namespace CoreModule {
             void *graphicalLibrary;
             void *gameLibrary;
             Core *core;
+            std::vector<std::string> gamesList;
+            std::vector<std::string> graphicalList;
 
         public:
             Manager();
@@ -20,5 +26,9 @@ namespace CoreModule {
             void loadGameLibrary(std::string const &path);
 
             void Parser(int argc, char *argv[]);
+            KiwiBool checkSignature(std::string const &path, Signature const expectedSignature);
+            Signature getLibSignature(std::string const &path);
+
+            void initLibSelectors();
     };
 }

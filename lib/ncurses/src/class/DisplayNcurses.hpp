@@ -3,7 +3,6 @@
 #include "IDisplayModule.hpp"
 
 class DisplayNcurses : public IDisplayModule {
-    private:
     public:
         DisplayNcurses();
         ~DisplayNcurses();
