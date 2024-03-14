@@ -21,8 +21,26 @@ They are used to create the dynamic libraries that will be loaded at runtime by 
 
 ## 2. How to create a display
 
-...
+In `./lib/`, create a new directory with the name of your display module.<br>
+In this directory, create a `.cpp` file and implement the following functions:
 
+```c++
+extern "C" {
+    IDisplayModule *entryPoint();
+    Signature getSignature();
+}
+```
+
+`entryPoint` is a function that will be called by the core of the program to create an instance of your display module.<br>
+It should return a pointer to a new instance of your display module.
+
+`getSignature` is a function that will be called by the core of the program to get the signature of your display module.<br>
+It should return a `Signature` type that checks if the display module is compatible with the core of the program. See [Type](Type.md) for more details.
+
+Alongside those functions, you should implement the `IDisplayModule` interface. See [IDisplayModule](IDisplayModule.md) for more details.
+Create a `Makefile` to compile your display module. See [Makefile](LibMakefile.md) for a template.
+
+Finally, add your display module to the `./lib/Makefile` to compile it.
 
 ## 3. How to create a game
 
