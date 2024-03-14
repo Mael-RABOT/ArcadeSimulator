@@ -1,0 +1,3 @@
+[submodule "ArcadeInterfaces"]
+	path = ArcadeInterfaces
+	url = git@github.com:ASM-Studios/ArcadeInterfaces.git
