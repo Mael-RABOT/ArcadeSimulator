@@ -4,8 +4,9 @@ FILE_OBJ    =   $(FILE_SRC:.cpp=.o)
 
 CXX    		=   g++
 
-NO_UNUSED   =   -Wno-unused-parameter -Wno-unused-function
-CXXFLAGS    =	-Wall -Wextra $(NO_UNUSED) -std=c++20 -fpic -I../../include
+UNUSED   	=   -Wno-unused-parameter -Wno-unused-function
+CXXFLAGS    =	-Wall -Wextra $(UNUSED) -std=c++20 -fpic -I../../include
+LDFLAGS 	= 	-lncurses
 SAN			=	-g3
 
 EXE    		=	../arcade_ncurses.so
@@ -17,7 +18,7 @@ all:    	$(EXE)
 
 $(EXE):    $(FILE_OBJ)
 			echo $^
-			$(CXX) --shared -o $(EXE) $^
+			$(CXX) --shared -o $(EXE) $^ $(LDFLAGS)
 
 clean:
 			rm -rf $(FILE_OBJ)
