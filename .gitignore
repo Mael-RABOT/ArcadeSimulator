@@ -29,7 +29,7 @@ vgcore*
 ## Unused folder
 cmake-build-debug
 /.idea
-ArcadeInterfaces
+ArcadeInterfaces/.git
 
 ## .gitignore
 !.gitignore
