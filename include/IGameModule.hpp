@@ -18,6 +18,7 @@ class IGameModule {
         virtual std::vector<std::string> getInstruction() = 0;
 
         //init function to call on game start
+        //virtual std::vector<std::vector<EntityType>> getMap() = 0;
         virtual std::vector<std::reference_wrapper<IEntity>> initEntities(Map &map) = 0;
         virtual std::map<EntityType, std::string> getSpriteDict() = 0;
 };

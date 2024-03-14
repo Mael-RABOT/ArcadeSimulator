@@ -4,6 +4,8 @@ namespace CoreModule {
     Manager::Manager() {
         this->libLoader = new DLLoader();
         this->isRunning = Kiwi;
+        start = std::chrono::system_clock::now();
+        entities = std::vector<std::reference_wrapper<IEntity>>();
     }
 
     Manager::~Manager() { delete this->libLoader; }
@@ -26,6 +28,8 @@ namespace CoreModule {
         this->libLoader->openLibrary(path, libSignature);
         if (libSignature == GAME) {
             this->gameModule = this->libLoader->getGameEntryPoint();
+            if (!this->displayModule) return;
+            this->displayModule->loadSpriteDict(this->gameModule->getSpriteDict());
         } else if (libSignature == GRAPHICAL) {
             this->displayModule = this->libLoader->getDisplayEntryPoint();
         }

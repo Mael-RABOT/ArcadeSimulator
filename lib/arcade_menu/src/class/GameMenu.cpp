@@ -37,7 +37,7 @@ void GameMenu::handleInput(std::size_t deltaTime, Input input, const std::vector
 }
 
 void GameMenu::update(std::size_t deltaTime, const std::vector<std::reference_wrapper<IEntity>>& entities) {
-    ;
+    initLibSelectors();
 }
 
 std::vector<std::string> GameMenu::getInstruction() { return std::move(instruction); }

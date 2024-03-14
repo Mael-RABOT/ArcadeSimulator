@@ -4,6 +4,8 @@
 #include <dlfcn.h>
 #include <iostream>
 #include <dirent.h>
+#include <chrono>
+#include <sstream>
 
 #include "Type.hpp"
 
@@ -20,6 +22,8 @@ namespace CoreModule {
             IDisplayModule *displayModule;
             std::vector<std::string> gamesList;
             std::vector<std::string> graphicalList;
+            std::chrono::time_point<std::chrono::system_clock> start;
+            std::vector<std::reference_wrapper<IEntity>> entities;
 
         public:
             Manager();
@@ -32,6 +36,10 @@ namespace CoreModule {
             void initLibSelectors();
 
             void mainLoop();
-            KiwiBool handleEvent();
+            KiwiBool handleEvent(auto elapsed_seconds);
+            void handleInstruction();
+
+            void handleText(std::string instruction);
+            void handleLibrary(std::string instruction);
     };
 }
