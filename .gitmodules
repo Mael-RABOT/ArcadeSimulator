@@ -1,0 +1,3 @@
+[submodule "ArcadeInterfaces"]
+	path = ArcadeInterfaces
+	url = https://github.com/ASM-Studios/ArcadeInterfaces
