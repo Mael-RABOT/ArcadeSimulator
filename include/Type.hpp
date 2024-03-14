@@ -56,7 +56,12 @@ struct Vector2D {
 
 enum EntityType {
     WALL = 0,
-    PLAYER = 1
+    PLAYER = 1,
+    ENEMY = 2,
+    ITEM1 = 3,
+    ITEM2 = 4,
+    ITEM3 = 5,
+    ITEM4 = 6,
 };
 
 struct Map {
@@ -82,6 +87,7 @@ class IEntity {
     private:
         EntityType entityType;
         Vector2D position;
+        bool visibility;
 
     public:
         virtual ~IEntity() = 0;
@@ -89,9 +95,9 @@ class IEntity {
         virtual void setEntityType(EntityType) = 0;
         virtual Vector2D getPosition() = 0;
         virtual void setPosition(Vector2D position) = 0;
+        virtual bool getVisibility() = 0;
+        virtual void setVisibility(bool visibility) = 0;
 };
-
-/*-----Game-----*/
 
 enum GameState {
     RUNNING,
