@@ -1,11 +1,34 @@
-*.o
-*.out
+##
+## .gitignore for Arcade
+##
+
+## main
 arcade
+
+## Binary
+*.out
 *.gcno
 *.gcda
+
+## Unused files
+*.slo
+*.lo
+*.o
+*.a
+*.obj
+*.log
+*.gch
+*.old
+vgcore*
+.editorconfig
+.vscode
 *.gcov
 *.info
-*.log
-/.idea
-cmake-build-debug
 *.so
+
+## Unused folder
+cmake-build-debug
+/.idea
+
+## .gitignore
+!.gitignore
