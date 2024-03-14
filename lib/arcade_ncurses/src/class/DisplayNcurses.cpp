@@ -66,8 +66,8 @@ void DisplayNcurses::updateEntity(IEntity &entity) {
 }
 
 void DisplayNcurses::updateMap(Map &map) {
-    for (std::size_t y = 0; y < map.grid.size(); y++) {
-        for (std::size_t x = 0; x < map.grid[y].size(); x++) {
+    for (std::size_t y = 0; y < map.size(); y++) {
+        for (std::size_t x = 0; x < map[y].size(); x++) {
             mvprintw(y, x, "%s", this->spriteDict[WALL].c_str());
         }
     }

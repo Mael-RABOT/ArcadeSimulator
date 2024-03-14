@@ -55,6 +55,7 @@ struct Vector2D {
 };
 
 enum EntityType {
+    UNDEFINED = -1,
     WALL = 0,
     PLAYER = 1,
     ENEMY = 2,
@@ -64,9 +65,7 @@ enum EntityType {
     ITEM4 = 6,
 };
 
-struct Map {
-    std::vector<std::vector<EntityType>> grid;
-};
+using Map = std::vector<std::vector<EntityType>>;
 
 enum Input {
     UP,
