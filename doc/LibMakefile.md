@@ -20,7 +20,6 @@ all:    	$(EXE)
 			$(CXX) $(CXXFLAGS)   -c -o $@ $<
 
 $(EXE):    $(FILE_OBJ)
-			echo $^
 			$(CXX) --shared -o $(EXE) $^ $(LDFLAGS)
 
 clean:
