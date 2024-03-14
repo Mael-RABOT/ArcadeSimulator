@@ -12,8 +12,7 @@
 namespace CoreModule {
     class Manager {
         private:
-            void *graphicalLibrary;
-            void *gameLibrary;
+            DLLoader *libLoader;
             std::vector<std::string> gamesList;
             std::vector<std::string> graphicalList;
 
@@ -24,7 +23,6 @@ namespace CoreModule {
             void loadGameLibrary(std::string const &path);
 
             void Parser(int argc, char *argv[]);
-            KiwiBool checkSignature(std::string const &path, Signature const expectedSignature);
             Signature getLibSignature(std::string const &path);
 
             void initLibSelectors();

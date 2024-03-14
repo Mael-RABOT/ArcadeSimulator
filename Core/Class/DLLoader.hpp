@@ -6,15 +6,33 @@
 #include <typeinfo>
 
 #include "../Class/Error/Error.hpp"
+#include "Type.hpp"
+#include "IGameModule.hpp"
+#include "IDisplayModule.hpp"
 
 namespace CoreModule {
     class DLLoader {
-        public:
-            DLLoader() = delete;
-            ~DLLoader() = delete;
+        private:
+            void *gameLibrary;
+            void *graphicalLibrary;
 
-            static void *openLibrary(const std::string &path);
-            static void *getSymbol(const std::string &symbol);
-            static void closeLibrary(void *handle);
+            IGameModule* (*gameEntryPoint)();
+            Signature (*gameGetSignature)();
+
+            IDisplayModule* (*displayEntryPoint)();
+            Signature (*displayGetSignature)();
+
+        public:
+            DLLoader() = default;
+            ~DLLoader();
+
+            void openLibrary(const std::string &path, Signature libSignature);
+            void closeLibrary();
+
+            IGameModule* getGameEntryPoint();
+            Signature getGameSignature();
+
+            IDisplayModule* getDisplayEntryPoint();
+            Signature getDisplaySignature();
     };
 }
