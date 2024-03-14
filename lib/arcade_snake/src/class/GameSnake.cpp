@@ -24,10 +24,14 @@ void GameSnake::handleInput(std::size_t deltaTime, Input input, const std::vecto
 
 void GameSnake::update(std::size_t deltaTime, const std::vector<std::reference_wrapper<IEntity>>& entities) {}
 
-std::vector<std::pair<std::string, Vector2D>> GameSnake::getTexts() {
-    return std::vector<std::pair<std::string, Vector2D>>();
+std::vector <std::string> GameSnake::getInstruction() {
+    return std::vector<std::string>();
 }
 
 std::vector<std::reference_wrapper<IEntity>> GameSnake::initEntities(Map &map) {
     return std::vector<std::reference_wrapper<IEntity>>();
+}
+
+std::map <EntityType, std::string> GameSnake::getSpriteDict() {
+    return std::map<EntityType, std::string>();
 }
