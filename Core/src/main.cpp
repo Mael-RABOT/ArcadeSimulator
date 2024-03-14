@@ -7,6 +7,7 @@ int main(int argc, char *argv[]) {
     try {
         manager.initLibSelectors();
         manager.Parser(argc, argv);
+        manager.mainLoop();
     } catch (CoreModule::CoreError const &error) {
         std::cerr << error.what() << std::endl;
         return 84;

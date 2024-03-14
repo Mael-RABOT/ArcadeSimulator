@@ -73,7 +73,7 @@ void DisplayNcurses::updateMap(Map &map) {
     }
 }
 
-void DisplayNcurses::staticScreen(std::size_t id) {
+void DisplayNcurses::staticScreen(StaticScreen screen) {
     ::clear();
 }
 

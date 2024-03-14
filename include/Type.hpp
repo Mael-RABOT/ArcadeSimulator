@@ -105,3 +105,8 @@ enum GameState {
     GAMEOVER,
     SLAPSH
 };
+
+enum StaticScreen {
+    SCREEN_SPLASH,
+    SCREEN_GAMEOVER
+};

@@ -21,6 +21,6 @@ class DisplayNcurses : public IDisplayModule {
         void updateEntity(IEntity &entity) override;
         void updateMap(Map &map) override;
 
-        void staticScreen(std::size_t id) override;
+        void staticScreen(StaticScreen screen);
         void loadSpriteDict(const std::map<EntityType, std::string>& spriteDict) override;
 };

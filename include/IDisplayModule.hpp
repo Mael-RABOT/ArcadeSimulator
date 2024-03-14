@@ -4,6 +4,8 @@
 
 class IDisplayModule {
     public:
+        virtual ~IDisplayModule() = default;
+
         virtual void display() = 0;
         virtual void clear() = 0;
 
@@ -14,6 +16,6 @@ class IDisplayModule {
         virtual void updateMap(Map &map) = 0;
 
         //Display a specific non gameplay screen (splash, game over...)
-        virtual void staticScreen(std::size_t id) = 0;
+        virtual void staticScreen(StaticScreen screen) = 0;
         virtual void loadSpriteDict(const std::map<EntityType, std::string>& spriteDict) = 0;
 };

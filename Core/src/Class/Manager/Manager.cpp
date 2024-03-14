@@ -1,7 +1,10 @@
 #include "../../../Class/Manager.hpp"
 
 namespace CoreModule {
-    Manager::Manager() { this->libLoader = new DLLoader(); }
+    Manager::Manager() {
+        this->libLoader = new DLLoader();
+        this->isRunning = Kiwi;
+    }
 
     Manager::~Manager() { delete this->libLoader; }
 
@@ -17,6 +20,15 @@ namespace CoreModule {
         Signature signature = getSignature();
         dlclose(lib);
         return signature;
+    }
+
+    void Manager::loadLibraries(const std::string &path, Signature libSignature) {
+        this->libLoader->openLibrary(path, libSignature);
+        if (libSignature == GAME) {
+            this->gameModule = this->libLoader->getGameEntryPoint();
+        } else if (libSignature == GRAPHICAL) {
+            this->displayModule = this->libLoader->getDisplayEntryPoint();
+        }
     }
 
     void Manager::initLibSelectors() {
