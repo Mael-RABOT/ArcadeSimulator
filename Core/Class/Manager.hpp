@@ -6,9 +6,9 @@
 #include <dirent.h>
 #include <chrono>
 #include <sstream>
+#include <cstdlib>
 
 #include "Type.hpp"
-
 #include "DLLoader.hpp"
 #include "IGameModule.hpp"
 #include "IDisplayModule.hpp"
@@ -30,12 +30,16 @@ namespace CoreModule {
             ~Manager();
             void loadLibraries(std::string const &path, Signature libSignature);
 
+            IGameModule *getGameModule() { return this->gameModule; }
+            IDisplayModule *getDisplayModule() { return this->displayModule; }
+
             void Parser(int argc, char *argv[]);
             Signature getLibSignature(std::string const &path);
 
             void initLibSelectors();
 
             void mainLoop();
+
             KiwiBool handleEvent(auto elapsed_seconds);
             void handleInstruction();
 

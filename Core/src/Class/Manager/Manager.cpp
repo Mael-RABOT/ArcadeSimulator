@@ -29,7 +29,7 @@ namespace CoreModule {
         if (libSignature == GAME) {
             this->gameModule = this->libLoader->getGameEntryPoint();
             if (!this->displayModule) return;
-            this->displayModule->loadSpriteDict(this->gameModule->getSpriteDict());
+            this->displayModule->loadDicts(this->gameModule->getSpriteDict(), this->gameModule->getStaticScreen());
         } else if (libSignature == GRAPHICAL) {
             this->displayModule = this->libLoader->getDisplayEntryPoint();
         }

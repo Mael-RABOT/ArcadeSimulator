@@ -4,7 +4,8 @@ namespace CoreModule {
     KiwiBool Manager::handleEvent(auto elapsed_seconds) {
         for (auto &input : this->displayModule->event()) {
             if (input == Input::QUIT) {
-                delete this->displayModule;
+                if (this->displayModule) delete this->displayModule;
+                if (this->gameModule) delete this->gameModule;
                 return NotKiwi;
             }
             this->gameModule->handleInput(elapsed_seconds.count(), input, this->entities);
@@ -13,19 +14,22 @@ namespace CoreModule {
     }
 
     void Manager::mainLoop() {
+        auto start_time = std::chrono::high_resolution_clock::now();
+        auto last_update_time = start_time;
+
         while (this->isRunning) {
-            std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
-            std::chrono::duration<double> elapsed_seconds = end - this->start;
-            if (elapsed_seconds.count() > 1.0 / 60.0) {
+            auto elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now() - start_time);
+            auto current_time = std::chrono::high_resolution_clock::now();
+            auto elapsed_time = current_time - start_time;
+            auto time_since_last_update = current_time - last_update_time;
+
+            if (!this->handleEvent(elapsed_seconds)) return;
+            if (time_since_last_update.count() >= 1.0/60.0) {
                 this->displayModule->clear();
-
-                if (!this->handleEvent(elapsed_seconds)) return;
-                this->gameModule->update(elapsed_seconds.count(), this->entities);
-
+                this->gameModule->update(elapsed_time.count(), this->entities);
+                last_update_time = current_time;
                 this->handleInstruction();
-
                 this->displayModule->display();
-                this->start = std::chrono::system_clock::now();
             }
         }
     }
@@ -55,13 +59,14 @@ namespace CoreModule {
     }
 
     void Manager::handleInstruction() {
-        std::map<std::string, std::function<void(std::string)>> instructions = {
-                {"displayText", [this](std::string instruction){ this->handleText(instruction); }},
-                {"loadLibrary", [this](std::string instruction){ this->handleLibrary(instruction); }},
-        };
-
         if (!this->gameModule) return;
-        for (auto &instruction : this->gameModule->getInstruction())
-            if (instructions.find(instruction) != instructions.end()) instructions[instruction](instruction);
+        for (auto &instruction : this->gameModule->getInstruction()) {
+            if (instruction.find("displayText") != std::string::npos) {
+                this->handleText(instruction);
+            }
+            if (instruction.find("loadLibrary") != std::string::npos) {
+                this->handleLibrary(instruction);
+            }
+        }
     }
 }
