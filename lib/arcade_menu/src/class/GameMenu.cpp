@@ -1,66 +1,8 @@
 #include "GameMenu.hpp"
 
-GameMenu::GameMenu() {}
+GameMenu::GameMenu() { this->loader(); }
 
-GameMenu::~GameMenu() {}
-
-std::size_t GameMenu::getScore() { return 0; }
-
-GameState GameMenu::getState() { return GameState::RUNNING; }
-
-std::size_t GameMenu::getLive() { return 0; }
-
-void GameMenu::handleInput(std::size_t deltaTime, Input input, const std::vector<std::reference_wrapper<IEntity>>& entities) {
-    switch (input) {
-        case Input::UP:
-            if (gameSelector != gamesList.begin()) gameSelector--;
-            break;
-        case Input::DOWN:
-            if (gameSelector != gamesList.end() - 1) gameSelector++;
-            break;
-        case Input::LEFT:
-            if (graphicalSelector != graphicalList.begin()) graphicalSelector--;
-            break;
-        case Input::RIGHT:
-            if (graphicalSelector != graphicalList.end() - 1) graphicalSelector++;
-            break;
-        case Input::ACTION:
-            formatTextInstruction();
-            formatLoadInstruction();
-        case Input::MENU:
-            break;
-        case Input::QUIT:
-            break;
-        default:
-            break;
-    }
-}
-
-void GameMenu::update(std::size_t deltaTime, const std::vector<std::reference_wrapper<IEntity>>& entities) {
-    ;
-}
-
-std::vector<std::string> GameMenu::getInstruction() { return std::move(instruction); }
-
-std::vector<std::reference_wrapper<IEntity>> GameMenu::initEntities(Map &map) {
-    return std::vector<std::reference_wrapper<IEntity>>();
-}
-
-std::map <EntityType, std::string> GameMenu::getSpriteDict() {
-    return std::map<EntityType, std::string>();
-}
-
-Signature GameMenu::getLibSignature(const std::string &path) {
-    void *lib = dlopen(path.c_str(), RTLD_LAZY);
-    if (lib == nullptr) return static_cast<Signature>(-1);
-    Signature (*getSignature)() = (Signature (*)())dlsym(lib, "getSignature");
-    if (getSignature == nullptr) return static_cast<Signature>(-1);
-    Signature signature = getSignature();
-    dlclose(lib);
-    return signature;
-}
-
-void GameMenu::initLibSelectors() {
+void GameMenu::loader() {
     DIR *dir;
     struct dirent *ent;
     if ((dir = opendir ("./lib")) != NULL) {
@@ -78,28 +20,98 @@ void GameMenu::initLibSelectors() {
         }
         closedir (dir);
     }
+    gameIterator = gamesList.begin();
+    graphicalIterator = graphicalList.begin();
+    this->formatTextInstruction();
+}
+
+GameMenu::~GameMenu() {}
+
+void GameMenu::handleInput(std::size_t deltaTime, Input input, const std::vector<std::reference_wrapper<IEntity>>& entities) {
+    switch (input) {
+        case Input::UP:
+            if (gameIterator != gamesList.begin())
+                gameIterator--;
+            else
+                gameIterator = gamesList.end();
+            break;
+        case Input::DOWN:
+            if (gameIterator != gamesList.end())
+                gameIterator++;
+            else
+                gameIterator = gamesList.begin();
+            break;
+        case Input::LEFT:
+            if (graphicalIterator != graphicalList.begin()) graphicalIterator--;
+            break;
+        case Input::RIGHT:
+            if (graphicalIterator != graphicalList.end()) graphicalIterator++;
+            break;
+        case Input::ACTION:
+            formatTextInstruction();
+            formatLoadInstruction();
+        default:
+            break;
+    }
+}
+
+void GameMenu::update(std::size_t deltaTime, const std::vector<std::reference_wrapper<IEntity>>& entities) {}
+
+std::vector<std::string> GameMenu::getInstruction() {
+    auto instructions = instruction;
+    this->formatTextInstruction();
+
+    for (auto &i : instruction) {
+        if (i.find("loadLibrary") != std::string::npos) {
+            instructions.erase(instructions.begin());
+        }
+    }
+
+    return instructions;
+}
+
+std::vector<std::reference_wrapper<IEntity>> GameMenu::initEntities() {
+    return std::vector<std::reference_wrapper<IEntity>>();
+}
+
+std::map <EntityType, std::string> GameMenu::getSpriteDict() {
+    return std::map<EntityType, std::string>();
+}
+
+std::map <StaticScreen, std::string> GameMenu::getStaticScreen() {
+    return std::map<StaticScreen, std::string>();
+}
+
+Signature GameMenu::getLibSignature(const std::string &path) {
+    void *lib = dlopen(path.c_str(), RTLD_LAZY);
+    if (lib == nullptr) return static_cast<Signature>(-1);
+    Signature (*getSignature)() = (Signature (*)())dlsym(lib, "getSignature");
+    if (getSignature == nullptr) return static_cast<Signature>(-1);
+    Signature signature = getSignature();
+    dlclose(lib);
+    return signature;
 }
 
 void GameMenu::formatLoadInstruction() {
-    std::string game = "loadLibrary" + *gameSelector + std::to_string(Signature::GAME);
-    std::string graphical = "loadLibrary" + *graphicalSelector + std::to_string(Signature::GRAPHICAL);
+    std::string game = "loadLibrary " + *gameIterator + " " + std::to_string(Signature::GAME);
+    std::string graphical = "loadLibrary " + *graphicalIterator + " " + std::to_string(Signature::GRAPHICAL);
     instruction.push_back(game);
     instruction.push_back(graphical);
 }
 
 void GameMenu::formatTextInstruction() {
-    int rdi = 0;
-    instruction.push_back("displayText Graphicals 0 0 false");
-    for (auto &graphical : graphicalList) {
-        std::string graphicalStr = "displayText" + graphical + std::to_string(rdi) + "0" + (graphical == *graphicalSelector ? "true" : "false");
-        instruction.push_back(graphicalStr);
-        rdi++;
-    }
-    instruction.push_back("displayText Games " + std::to_string(rdi) + " 0 false");
+    int rdi = 1;
+    instruction.push_back("displayText Game 0 0 false");
     for (auto &game : gamesList) {
-        std::string gameStr = "displayText" + game + std::to_string(rdi) + "0" + (game == *gameSelector ? "true" : "false");
-        instruction.push_back(gameStr);
-        rdi++;
+        instruction.push_back("displayText " + game + " 0 " + std::to_string(rdi++) + (game == *gameIterator ? " true" : " false"));
     }
+    instruction.push_back("displayText Graphical 0 " + std::to_string(rdi++) + " false");
+    for (auto &graphical : graphicalList) {
+        instruction.push_back("displayText " + graphical + " 0 " + std::to_string(rdi++) + (graphical == *graphicalIterator ? " true" : " false"));
+    }
+}
 
+Map GameMenu::getMap() {
+    Map map;
+    return map;
 }

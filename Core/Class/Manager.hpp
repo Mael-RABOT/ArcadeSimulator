@@ -4,9 +4,11 @@
 #include <dlfcn.h>
 #include <iostream>
 #include <dirent.h>
+#include <chrono>
+#include <sstream>
+#include <cstdlib>
 
 #include "Type.hpp"
-
 #include "DLLoader.hpp"
 #include "IGameModule.hpp"
 #include "IDisplayModule.hpp"
@@ -20,11 +22,16 @@ namespace CoreModule {
             IDisplayModule *displayModule;
             std::vector<std::string> gamesList;
             std::vector<std::string> graphicalList;
+            std::chrono::time_point<std::chrono::system_clock> start;
+            std::vector<std::reference_wrapper<IEntity>> entities;
 
         public:
             Manager();
             ~Manager();
             void loadLibraries(std::string const &path, Signature libSignature);
+
+            IGameModule *getGameModule() { return this->gameModule; }
+            IDisplayModule *getDisplayModule() { return this->displayModule; }
 
             void Parser(int argc, char *argv[]);
             Signature getLibSignature(std::string const &path);
@@ -32,6 +39,11 @@ namespace CoreModule {
             void initLibSelectors();
 
             void mainLoop();
-            KiwiBool handleEvent();
+
+            KiwiBool handleEvent(auto elapsed_seconds);
+            void handleInstruction();
+
+            void handleText(std::string instruction);
+            void handleLibrary(std::string instruction);
     };
 }
