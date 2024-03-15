@@ -8,6 +8,10 @@ namespace CoreModule {
                 if (this->gameModule) delete this->gameModule;
                 return NotKiwi;
             }
+            if (input == Input::MENU) {
+                if (this->gameModule) delete this->gameModule;
+                this->loadLibraries("./lib/arcade_menu.so", Signature::GAME);
+            }
             this->gameModule->handleInput(elapsed_seconds.count(), input, this->entities);
         }
         return Kiwi;
