@@ -7,6 +7,7 @@
 class DisplayNcurses : public IDisplayModule {
     private:
         std::map<EntityType, std::string> spriteDict;
+        std::map<StaticScreen, std::string> splashDict;
 
     public:
         DisplayNcurses();
@@ -21,6 +22,8 @@ class DisplayNcurses : public IDisplayModule {
         void updateEntity(IEntity &entity) override;
         void updateMap(Map &map) override;
 
-        void staticScreen(StaticScreen screen);
-        void loadSpriteDict(const std::map<EntityType, std::string>& spriteDict) override;
+        void staticScreen(StaticScreen screen) override;
+        void loadDicts(
+            const std::map<EntityType, std::string>& spriteDict,
+            const std::map<StaticScreen, std::string>& splashDict) override;
 };

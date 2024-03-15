@@ -77,7 +77,9 @@ void DisplayNcurses::staticScreen(StaticScreen screen) {
     ::clear();
 }
 
-void DisplayNcurses::loadSpriteDict(const std::map<EntityType, std::string>&) {
+void DisplayNcurses::loadDicts(
+        const std::map<EntityType, std::string>&,
+        const std::map<StaticScreen, std::string>&) {
     this->spriteDict = {
             {WALL, "#"},
             {PLAYER, "P"},
@@ -86,5 +88,9 @@ void DisplayNcurses::loadSpriteDict(const std::map<EntityType, std::string>&) {
             {ITEM2, "2"},
             {ITEM3, "3"},
             {ITEM4, "4"},
+    };
+    this->splashDict = {
+            {SCREEN_SPLASH, "Splash"},
+            {SCREEN_GAMEOVER, "Game Over"}
     };
 }
