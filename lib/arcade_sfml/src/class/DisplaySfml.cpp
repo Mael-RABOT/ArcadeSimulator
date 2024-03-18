@@ -18,7 +18,47 @@ void DisplaySfml::clear() {
 }
 
 std::vector<Input> DisplaySfml::event() {
+    sf::Event event;
     std::vector<Input> inputs;
+    while (window->pollEvent(event)) {
+        switch (event.type) {
+            case sf::Event::Closed:
+                inputs.push_back(Input::QUIT);
+                break;
+            case sf::Event::KeyPressed:
+                switch (event.key.code) {
+                    case sf::Keyboard::Up:
+                        inputs.push_back(Input::UP);
+                        break;
+                    case sf::Keyboard::Down:
+                        inputs.push_back(Input::DOWN);
+                        break;
+                    case sf::Keyboard::Left:
+                        inputs.push_back(Input::LEFT);
+                        break;
+                    case sf::Keyboard::Right:
+                        inputs.push_back(Input::RIGHT);
+                        break;
+                    case sf::Keyboard::Escape:
+                        inputs.push_back(Input::QUIT);
+                        break;
+                    case sf::Keyboard::Q:
+                        inputs.push_back(Input::QUIT);
+                        break;
+                    case sf::Keyboard::Space:
+                        inputs.push_back(Input::ACTION);
+                        break;
+                    case sf::Keyboard::M:
+                        inputs.push_back(Input::MENU);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
     return inputs;
 }
 
