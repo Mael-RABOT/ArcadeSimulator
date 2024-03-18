@@ -42,10 +42,16 @@ void GameMenu::handleInput(std::size_t deltaTime, Input input, const std::vector
                 gameIterator = gamesList.begin();
             break;
         case Input::LEFT:
-            if (graphicalIterator != graphicalList.begin()) graphicalIterator--;
+            if (graphicalIterator != graphicalList.begin())
+                graphicalIterator--;
+            else
+                graphicalIterator = graphicalList.end();
             break;
         case Input::RIGHT:
-            if (graphicalIterator != graphicalList.end()) graphicalIterator++;
+            if (graphicalIterator != graphicalList.end())
+                graphicalIterator++;
+            else
+                graphicalIterator = graphicalList.begin();
             break;
         case Input::ACTION:
             formatTextInstruction();
