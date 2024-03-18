@@ -4,6 +4,8 @@
 
 #include "IDisplayModule.hpp"
 
+#define UNIT_PIXEL_SIZE 24
+
 class DisplaySfml : public IDisplayModule {
     private:
         std::map<EntityType, std::string> spriteDict;

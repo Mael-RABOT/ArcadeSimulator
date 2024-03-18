@@ -2,7 +2,7 @@
 
 DisplaySfml::DisplaySfml() {
     window = new sf::RenderWindow(sf::VideoMode(800, 600), "Arcade");
-    font.loadFromFile("./lib/assets/NotoSansCJK-Regular.ttf");
+    font.loadFromFile("./lib/assets/NotoSansCJK-Regular.ttc");
 }
 
 DisplaySfml::~DisplaySfml() {
@@ -63,12 +63,21 @@ std::vector<Input> DisplaySfml::event() {
 }
 
 void DisplaySfml::updateText(const std::string& text, Vector2D pos, bool highlight) {
+    sf::RectangleShape background(sf::Vector2f(UNIT_PIXEL_SIZE * 20, UNIT_PIXEL_SIZE + 4));
+    background.setPosition(pos.x * (UNIT_PIXEL_SIZE), pos.y * (UNIT_PIXEL_SIZE + 4) + 2);
     sf::Text sfText;
     sfText.setFont(font);
     sfText.setString(text);
-    sfText.setCharacterSize(24);
-    sfText.setFillColor(sf::Color::White);
-    sfText.setPosition(pos.x, pos.y);
+    sfText.setCharacterSize(UNIT_PIXEL_SIZE);
+    sfText.setPosition(pos.x * (UNIT_PIXEL_SIZE), pos.y * (UNIT_PIXEL_SIZE + 4));
+    if (highlight) {
+        background.setFillColor(sf::Color::White);
+        sfText.setFillColor(sf::Color::Black);
+    } else {
+        background.setFillColor(sf::Color::Black);
+        sfText.setFillColor(sf::Color::White);
+    }
+    window->draw(background);
     window->draw(sfText);
 }
 
@@ -77,7 +86,7 @@ void DisplaySfml::updateEntity(IEntity &entity) {
     texture.loadFromFile(spriteDict[entity.getEntityType()]);
     sf::Sprite sprite;
     sprite.setTexture(texture);
-    sprite.setPosition(entity.getPosition().x, entity.getPosition().y);
+    sprite.setPosition(entity.getPosition().x * UNIT_PIXEL_SIZE, entity.getPosition().y * UNIT_PIXEL_SIZE);
     window->draw(sprite);
 }
 
