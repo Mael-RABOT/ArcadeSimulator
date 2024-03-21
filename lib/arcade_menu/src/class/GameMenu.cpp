@@ -27,7 +27,7 @@ void GameMenu::loader() {
 
 GameMenu::~GameMenu() {}
 
-void GameMenu::handleInput(std::size_t deltaTime, Input input, const std::vector<std::reference_wrapper<IEntity>>& entities) {
+void GameMenu::handleInput(std::size_t deltaTime, Input input) {
     switch (input) {
         case Input::UP:
             if (gameIterator != gamesList.begin())
@@ -61,7 +61,7 @@ void GameMenu::handleInput(std::size_t deltaTime, Input input, const std::vector
     }
 }
 
-void GameMenu::update(std::size_t deltaTime, const std::vector<std::reference_wrapper<IEntity>>& entities) {}
+void GameMenu::update(std::size_t deltaTime) {}
 
 std::vector<std::string> GameMenu::getInstruction() {
     auto instructions = instruction;
@@ -76,8 +76,9 @@ std::vector<std::string> GameMenu::getInstruction() {
     return instructions;
 }
 
-std::vector<std::reference_wrapper<IEntity>> GameMenu::initEntities() {
-    return std::vector<std::reference_wrapper<IEntity>>();
+EntityDescription GameMenu::getEntities() {
+    EntityDescription entities;
+    return entities;
 }
 
 std::map <EntityType, std::string> GameMenu::getSpriteDict() {

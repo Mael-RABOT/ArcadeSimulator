@@ -9,12 +9,16 @@ namespace CoreModule {
                 return NotKiwi;
             }
             if (input == Input::MENU) {
-                if (this->gameModule) delete this->gameModule;
                 this->loadLibraries("./lib/arcade_menu.so", Signature::GAME);
+                return Kiwi;
             }
-            this->gameModule->handleInput(elapsed_seconds.count(), input, this->entities);
+            this->gameModule->handleInput(elapsed_seconds.count(), input);
         }
         return Kiwi;
+    }
+
+    void Manager::handleEntities() {
+        this->displayModule->updateEntity(this->gameModule->getEntities());
     }
 
     void Manager::mainLoop() {
@@ -22,18 +26,28 @@ namespace CoreModule {
         auto last_update_time = start_time;
 
         while (this->isRunning) {
-            auto elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now() - start_time);
-            auto current_time = std::chrono::high_resolution_clock::now();
-            auto elapsed_time = current_time - start_time;
-            auto time_since_last_update = current_time - last_update_time;
+            try {
+                auto elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>(
+                        std::chrono::high_resolution_clock::now() - start_time);
+                auto current_time = std::chrono::high_resolution_clock::now();
+                auto elapsed_time = current_time - start_time;
+                auto time_since_last_update = current_time - last_update_time;
 
-            if (!this->handleEvent(elapsed_seconds)) return;
-            if (time_since_last_update.count() >= 1.0/60.0) {
-                this->displayModule->clear();
-                this->gameModule->update(elapsed_time.count(), this->entities);
-                last_update_time = current_time;
-                this->handleInstruction();
-                this->displayModule->display();
+                if (!this->handleEvent(elapsed_seconds)) return;
+                if (time_since_last_update.count() >= 1.0 / 60.0) {
+                    this->displayModule->clear();
+                    this->gameModule->update(elapsed_time.count());
+                    last_update_time = current_time;
+                    this->handleInstruction();
+                    this->handleEntities();
+                    this->displayModule->display();
+                }
+            } catch (ArcadeException const &error) {
+                std::cerr << error.what() << std::endl;
+                delete this->displayModule;
+                this->libLoader->openLibrary(initialGraphicalLib, Signature::GRAPHICAL);
+                this->displayModule = this->libLoader->getDisplayEntryPoint();
+                this->loadLibraries("./lib/arcade_menu.so", Signature::GAME);
             }
         }
     }

@@ -33,7 +33,6 @@ class IGameModule {
         virtual std::map<EntityType, std::string> getSpriteDict() = 0;
 };
 
-
 extern "C" {
     IGameModule *entryPoint();
     Signature getSignature();

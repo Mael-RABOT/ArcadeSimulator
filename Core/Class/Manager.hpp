@@ -12,18 +12,22 @@
 #include "DLLoader.hpp"
 #include "IGameModule.hpp"
 #include "IDisplayModule.hpp"
+#include "ArcadeException.hpp"
 
 namespace CoreModule {
     class Manager {
         private:
             KiwiBool isRunning;
+            std::chrono::time_point<std::chrono::system_clock> start;
+
             DLLoader *libLoader;
             IGameModule *gameModule;
             IDisplayModule *displayModule;
+
             std::vector<std::string> gamesList;
             std::vector<std::string> graphicalList;
-            std::chrono::time_point<std::chrono::system_clock> start;
-            std::vector<std::reference_wrapper<IEntity>> entities;
+
+            std::string initialGraphicalLib;
 
         public:
             Manager();
@@ -42,6 +46,7 @@ namespace CoreModule {
 
             KiwiBool handleEvent(auto elapsed_seconds);
             void handleInstruction();
+            void handleEntities();
 
             void handleText(std::string instruction);
             void handleLibrary(std::string instruction);

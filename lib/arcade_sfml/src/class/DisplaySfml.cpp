@@ -81,13 +81,15 @@ void DisplaySfml::updateText(const std::string& text, Vector2D pos, bool highlig
     window->draw(sfText);
 }
 
-void DisplaySfml::updateEntity(IEntity &entity) {
-    sf::Texture texture;
-    texture.loadFromFile(spriteDict[entity.getEntityType()]);
-    sf::Sprite sprite;
-    sprite.setTexture(texture);
-    sprite.setPosition(entity.getPosition().x * UNIT_PIXEL_SIZE, entity.getPosition().y * UNIT_PIXEL_SIZE);
-    window->draw(sprite);
+void DisplaySfml::updateEntity(EntityDescription entities) {
+    for (auto entity : entities) {
+        sf::Texture texture;
+        texture.loadFromFile(spriteDict[entity.first]);
+        sf::Sprite sprite;
+        sprite.setTexture(texture);
+        sprite.setPosition(entity.second.x * UNIT_PIXEL_SIZE, entity.second.y * UNIT_PIXEL_SIZE);
+        window->draw(sprite);
+    }
 }
 
 void DisplaySfml::updateMap(Map &map) {

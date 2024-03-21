@@ -5,7 +5,8 @@ namespace CoreModule {
         this->libLoader = new DLLoader();
         this->isRunning = Kiwi;
         start = std::chrono::system_clock::now();
-        entities = std::vector<std::reference_wrapper<IEntity>>();
+        gameModule = nullptr;
+        displayModule = nullptr;
     }
 
     Manager::~Manager() { delete this->libLoader; }
@@ -25,12 +26,15 @@ namespace CoreModule {
     }
 
     void Manager::loadLibraries(const std::string &path, Signature libSignature) {
-        this->libLoader->openLibrary(path, libSignature);
         if (libSignature == GAME) {
+            if (this->gameModule) delete this->gameModule;
+            this->libLoader->openLibrary(path, libSignature);
             this->gameModule = this->libLoader->getGameEntryPoint();
             if (!this->displayModule) return;
             this->displayModule->loadDicts(this->gameModule->getSpriteDict(), this->gameModule->getStaticScreen());
         } else if (libSignature == GRAPHICAL) {
+            if (this->displayModule != nullptr) delete this->displayModule;
+            this->libLoader->openLibrary(path, libSignature);
             this->displayModule = this->libLoader->getDisplayEntryPoint();
         }
     }

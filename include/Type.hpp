@@ -63,9 +63,12 @@ enum EntityType {
     ITEM2 = 4,
     ITEM3 = 5,
     ITEM4 = 6,
+    ENTITY_SEC, // Special entity type wich is link to another entity. e.g. a bullet // the snake corpse
 };
 
 using Map = std::vector<std::vector<EntityType>>;
+
+using EntityDescription = std::vector<std::pair<EntityType, Vector2D>>;
 
 enum Input {
     UP,
@@ -83,7 +86,7 @@ enum Signature {
 };
 
 class IEntity {
-    private:
+    protected:
         EntityType entityType;
         Vector2D position;
         bool visibility;
@@ -102,7 +105,7 @@ enum GameState {
     RUNNING,
     WIN,
     GAMEOVER,
-    SLAPSH
+    SPLASH
 };
 
 enum StaticScreen {

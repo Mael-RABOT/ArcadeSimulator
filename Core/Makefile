@@ -3,7 +3,7 @@ SRC		 :=	$(shell find ./src -type f -name '*.cpp')
 OBJ		 = $(SRC:.cpp=.o)
 
 CXX		 = g++
-CFLAGS	 = -std=c++20 -Wall -Wextra -I../include
+CFLAGS	 = -std=c++20 -Wall -Wextra -I../include -I../ExceptionClass
 V_FLAG   = --leak-check=full --show-leak-kinds=all --track-origins=yes
 EXE		 = ../arcade
 SAN		 = -g3

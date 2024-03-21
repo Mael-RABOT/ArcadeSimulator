@@ -1,7 +1,11 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
+#include <string>
+
+#include "ArcadeException.hpp"
 #include "IDisplayModule.hpp"
 
 class DisplaySdl : public IDisplayModule {
@@ -10,6 +14,7 @@ class DisplaySdl : public IDisplayModule {
         std::map<StaticScreen, std::string> splashDict;
         SDL_Window *window;
         SDL_Renderer *renderer;
+        TTF_Font *font;
 
     public:
         DisplaySdl();
@@ -21,11 +26,16 @@ class DisplaySdl : public IDisplayModule {
         std::vector<Input> event() override;
 
         void updateText(const std::string& text, Vector2D pos, bool highlight) override;
-        void updateEntity(IEntity &entity) override;
+        void updateEntity(EntityDescription entities) override;
         void updateMap(Map &map) override;
 
         void staticScreen(StaticScreen screen) override;
         void loadDicts(
             const std::map<EntityType, std::string>& spriteDict,
             const std::map<StaticScreen, std::string>& splashDict) override;
+};
+
+class DisplaySdlError : public ArcadeException {
+    public:
+        DisplaySdlError(const std::string &message) : ArcadeException(message) {}
 };

@@ -8,16 +8,17 @@ GameSnake::GameSnake() {
 
 GameSnake::~GameSnake() {}
 
-void GameSnake::handleInput(std::size_t deltaTime, Input input, const std::vector<std::reference_wrapper<IEntity>>& entities) {}
+void GameSnake::handleInput(std::size_t deltaTime, Input input) {}
 
-void GameSnake::update(std::size_t deltaTime, const std::vector<std::reference_wrapper<IEntity>>& entities) {}
+void GameSnake::update(std::size_t deltaTime) {}
 
 std::vector <std::string> GameSnake::getInstruction() {
     return std::vector<std::string>();
 }
 
-std::vector<std::reference_wrapper<IEntity>> GameSnake::initEntities() {
-    return std::vector<std::reference_wrapper<IEntity>>();
+EntityDescription GameSnake::getEntities() {
+    EntityDescription entities;
+    return entities;
 }
 
 std::map <EntityType, std::string> GameSnake::getSpriteDict() {

@@ -61,8 +61,10 @@ void DisplayNcurses::updateText(const std::string& text, Vector2D pos, bool high
         attroff(A_REVERSE);
 }
 
-void DisplayNcurses::updateEntity(IEntity &entity) {
-    mvprintw(entity.getPosition().y, entity.getPosition().x, "%s", this->spriteDict[entity.getEntityType()].c_str());
+void DisplayNcurses::updateEntity(EntityDescription entities) {
+    for (auto &entity : entities) {
+        mvprintw(entity.second.y, entity.second.x, "%s", this->spriteDict[entity.first].c_str());
+    }
 }
 
 void DisplayNcurses::updateMap(Map &map) {

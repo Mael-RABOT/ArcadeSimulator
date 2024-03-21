@@ -5,7 +5,11 @@ DisplaySdl::DisplaySdl() {
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
                               800, 600, 0);
+    if (window == nullptr) throw DisplaySdlError("Error: SDL_CreateWindow");
     renderer = SDL_CreateRenderer(window, -1, 0);
+    if (renderer == nullptr) throw DisplaySdlError("Error: SDL_CreateRenderer");
+    font = TTF_OpenFont("./lib/assets/NotoSansCJK-Regular.ttc", 24);
+    if (font == nullptr) throw DisplaySdlError("Error: TTF_OpenFont");
 }
 
 DisplaySdl::~DisplaySdl() {
@@ -63,16 +67,33 @@ std::vector<Input> DisplaySdl::event() {
 }
 
 void DisplaySdl::updateText(const std::string& text, Vector2D pos, bool highlight) {
+    SDL_Color color = highlight ? SDL_Color{255, 255, 255, 255} : SDL_Color{127, 127, 127, 255}; // white if highlighted, gray otherwise
+    SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
+    if (surface == nullptr) {
+        throw DisplaySdlError("Error: TTF_RenderText_Solid");
+    }
 
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    if (texture == nullptr) {
+        SDL_FreeSurface(surface);
+        throw DisplaySdlError("Error: SDL_CreateTextureFromSurface");
+    }
+
+    SDL_Rect rect;
+    rect.x = pos.x;
+    rect.y = pos.y;
+    SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h); // get the width and height of the texture
+
+    SDL_RenderCopy(renderer, texture, NULL, &rect);
+
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(surface);
 }
 
-void DisplaySdl::updateEntity(IEntity &entity) {
-    SDL_Rect rect;
-    rect.x = entity.getPosition().x;
-    rect.y = entity.getPosition().y;
-    rect.w = 10;
-    rect.h = 10;
-    SDL_RenderCopy(renderer, nullptr, nullptr, &rect);
+void DisplaySdl::updateEntity(EntityDescription entities) {
+    for (auto &entity : entities) {
+        (void)entity;
+    }
 }
 
 void DisplaySdl::updateMap(Map &map) {
