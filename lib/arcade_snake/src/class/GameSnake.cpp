@@ -10,7 +10,7 @@ GameSnake::GameSnake() {
 
 GameSnake::~GameSnake() {}
 
-void GameSnake::handleInput(std::size_t deltaTime, Input input, const std::vector<std::reference_wrapper<IEntity>>& entities) {
+void GameSnake::handleInput(std::size_t deltaTime, Input input) {
     if (input == UP) {
         direction.x = 0;
         direction.y = -1;
@@ -32,7 +32,7 @@ void GameSnake::handleInput(std::size_t deltaTime, Input input, const std::vecto
     }
 }
 
-void GameSnake::update(std::size_t deltaTime, const std::vector<std::reference_wrapper<IEntity>>& entities) {
+void GameSnake::update(std::size_t deltaTime) {
     for (std::size_t entityI; std::reference_wrapper<IEntity> entity : entities) {
         IEntity& current = entity.get();
         if (current.getEntityType() == PLAYER) {
