@@ -10,9 +10,36 @@ GameSnake::GameSnake() {
 
 GameSnake::~GameSnake() {}
 
-void GameSnake::handleInput(std::size_t deltaTime, Input input, const std::vector<std::reference_wrapper<IEntity>>& entities) {}
+void GameSnake::handleInput(std::size_t deltaTime, Input input, const std::vector<std::reference_wrapper<IEntity>>& entities) {
+    if (input == UP) {
+        direction.x = 0;
+        direction.y = -1;
+        return;
+    }
+    if (input == DOWN) {
+        direction.x = 0;
+        direction.y = 1;
+        return;
+    }
+    if (input == LEFT) {
+        direction.x = -1;
+        direction.y = 0;
+        return;
+    }
+    if (input == RIGHT) {
+        direction.x = 1;
+        direction.y = 0;
+    }
+}
 
-void GameSnake::update(std::size_t deltaTime, const std::vector<std::reference_wrapper<IEntity>>& entities) {}
+void GameSnake::update(std::size_t deltaTime, const std::vector<std::reference_wrapper<IEntity>>& entities) {
+    for (std::size_t entityI; std::reference_wrapper<IEntity> entity : entities) {
+        IEntity& current = entity.get();
+        if (current.getEntityType() == PLAYER) {
+            current.setPosition(current.getPosition() += direction);
+        }
+    }
+}
 
 std::vector <std::string> GameSnake::getInstruction() {
     return std::vector<std::string>();
