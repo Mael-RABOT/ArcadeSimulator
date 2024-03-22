@@ -33,6 +33,7 @@ namespace CoreModule {
             Manager();
             ~Manager();
             void loadLibraries(std::string const &path, Signature libSignature);
+            void defaultLoad();
 
             IGameModule *getGameModule() { return this->gameModule; }
             IDisplayModule *getDisplayModule() { return this->displayModule; }

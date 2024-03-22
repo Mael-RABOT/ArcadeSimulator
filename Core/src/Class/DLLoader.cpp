@@ -10,19 +10,25 @@ namespace CoreModule {
         if (lib == nullptr) {
             throw CoreError(std::string(dlerror()));
         }
-        if (libSignature == GAME)
+        if (libSignature == GAME) {
+            closeLibrary(Kiwi, NotKiwi);
+            std::cout << "DLLoader: Opening game library: " << path << std::endl; //TODO: Remove
             this->gameLibrary = lib;
-        else if (libSignature == GRAPHICAL)
+        } else if (libSignature == GRAPHICAL) {
+            closeLibrary(NotKiwi, Kiwi);
+            std::cout << "DLLoader: Opening graphical library: " << path << std::endl; //TODO: Remove
             this->graphicalLibrary = lib;
-        else
+        } else
             throw CoreError("Invalid library signature");
     }
 
-    void DLLoader::closeLibrary() {
-        if (this->gameLibrary != nullptr) {
+    void DLLoader::closeLibrary(KiwiBool game, KiwiBool graphical) {
+        if (game && this->gameLibrary != nullptr) {
+            std::cout << "DLLoader: Closing game library" << std::endl; //TODO: Remove
             dlclose(this->gameLibrary);
         }
-        if (this->graphicalLibrary != nullptr) {
+        if (graphical && this->graphicalLibrary != nullptr) {
+            std::cout << "DLLoader: Closing graphical library" << std::endl; //TODO: Remove
             dlclose(this->graphicalLibrary);
         }
     }

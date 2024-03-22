@@ -27,10 +27,10 @@ namespace CoreModule {
 
     void Manager::loadLibraries(const std::string &path, Signature libSignature) {
         if (libSignature == GAME) {
-            if (this->gameModule) delete this->gameModule;
+            if (this->gameModule) { delete this->gameModule; }
             this->libLoader->openLibrary(path, libSignature);
             this->gameModule = this->libLoader->getGameEntryPoint();
-            if (!this->displayModule) return;
+            if (!this->displayModule || !this->gameModule) { return; }
             this->displayModule->loadDicts(this->gameModule->getSpriteDict(), this->gameModule->getStaticScreen());
         } else if (libSignature == GRAPHICAL) {
             if (this->displayModule != nullptr) delete this->displayModule;

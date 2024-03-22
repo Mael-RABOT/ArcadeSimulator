@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <dlfcn.h>
 #include <typeinfo>
+#include <iostream>
 
 #include "../Class/Error/Error.hpp"
 #include "Type.hpp"
@@ -27,7 +28,7 @@ namespace CoreModule {
             ~DLLoader();
 
             void openLibrary(const std::string &path, Signature libSignature);
-            void closeLibrary();
+            void closeLibrary(KiwiBool game = Kiwi, KiwiBool graphical = Kiwi);
 
             IGameModule* getGameEntryPoint();
             Signature getGameSignature();

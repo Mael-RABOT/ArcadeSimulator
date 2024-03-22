@@ -18,37 +18,56 @@ namespace CoreModule {
     }
 
     void Manager::handleEntities() {
-        this->displayModule->updateEntity(this->gameModule->getEntities());
+        if (!this->gameModule) {
+            std::cerr << "Error: game module not loaded" << std::endl;
+            return;
+        }
+        if (!this->displayModule) {
+            std::cerr << "Error: display module not loaded" << std::endl;
+            return;
+        }
+        auto entities = this->gameModule->getEntities();
+        this->displayModule->updateEntity(entities);
+    }
+
+    void Manager::defaultLoad() {
+        this->gameModule = nullptr;
+        this->displayModule = nullptr;
+
+        this->loadLibraries(initialGraphicalLib, Signature::GRAPHICAL);
+        this->loadLibraries("./lib/arcade_menu.so", Signature::GAME);
+        mainLoop();
     }
 
     void Manager::mainLoop() {
         auto start_time = std::chrono::high_resolution_clock::now();
         auto last_update_time = start_time;
 
-        while (this->isRunning) {
-            try {
-                auto elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>(
-                        std::chrono::high_resolution_clock::now() - start_time);
-                auto current_time = std::chrono::high_resolution_clock::now();
-                auto elapsed_time = current_time - start_time;
-                auto time_since_last_update = current_time - last_update_time;
+        try {
+            while (this->isRunning) {
+                    auto elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>(
+                            std::chrono::high_resolution_clock::now() - start_time);
+                    auto current_time = std::chrono::high_resolution_clock::now();
+                    auto elapsed_time = current_time - start_time;
+                    auto time_since_last_update = current_time - last_update_time;
 
-                if (!this->handleEvent(elapsed_seconds)) return;
-                if (time_since_last_update.count() >= 1.0 / 60.0) {
-                    this->displayModule->clear();
-                    this->gameModule->update(elapsed_time.count());
-                    last_update_time = current_time;
-                    this->handleInstruction();
-                    this->handleEntities();
-                    this->displayModule->display();
-                }
-            } catch (ArcadeException const &error) {
-                std::cerr << error.what() << std::endl;
-                delete this->displayModule;
-                this->libLoader->openLibrary(initialGraphicalLib, Signature::GRAPHICAL);
-                this->displayModule = this->libLoader->getDisplayEntryPoint();
-                this->loadLibraries("./lib/arcade_menu.so", Signature::GAME);
+                    if (!this->gameModule || !this->displayModule) {
+                        throw CoreError("Missing library in main loop");
+                    }
+
+                    if (!this->handleEvent(elapsed_seconds)) return;
+                    if (time_since_last_update.count() >= 1.0 / 60.0) {
+                        this->displayModule->clear();
+                        this->gameModule->update(elapsed_time.count());
+                        last_update_time = current_time;
+                        this->handleInstruction();
+                        this->handleEntities();
+                        this->displayModule->display();
+                    }
             }
+        } catch (ArcadeException const &error) {
+            std::cerr << "Error on Library" << std::endl;
+            this->defaultLoad();
         }
     }
 
@@ -73,6 +92,7 @@ namespace CoreModule {
         iss >> command
             >> lib
             >> signature;
+        if (lib.empty()) return;
         this->loadLibraries(lib, static_cast<Signature>(signature));
     }
 
@@ -83,6 +103,7 @@ namespace CoreModule {
                 this->handleText(instruction);
             }
             if (instruction.find("loadLibrary") != std::string::npos) {
+                std::cout << "-----\nLOAD instruction: " << instruction << std::endl;
                 this->handleLibrary(instruction);
             }
         }
