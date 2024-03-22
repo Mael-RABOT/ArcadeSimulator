@@ -2,62 +2,24 @@
 
 namespace CoreModule {
     Manager::Manager() {
-        this->libLoader = new DLLoader();
-        this->isRunning = Kiwi;
+        this->loader = new DLLoader();
         start = std::chrono::system_clock::now();
-        gameModule = nullptr;
-        displayModule = nullptr;
     }
 
-    Manager::~Manager() { delete this->libLoader; }
+    Manager::~Manager() { delete this->loader; }
 
-    Signature Manager::getLibSignature(const std::string &path) {
-        void *lib = dlopen(path.c_str(), RTLD_LAZY);
-        if (lib == nullptr) {
-            throw CoreError(std::string(dlerror()));
+    std::string Manager::Parser(int argc, char **argv) {
+        if (argc != 2) {
+            throw CoreError("Error: invalid number of arguments");
         }
-        Signature (*getSignature)() = (Signature (*)())dlsym(lib, "getSignature");
-        if (getSignature == nullptr) {
-            throw CoreError(std::string(dlerror()));
+        std::string path = argv[1];
+        if (path.size() < 3 || path.substr(path.size() - 3) != ".so") {
+            throw CoreError("Error: invalid library path");
         }
-        Signature signature = getSignature();
-        dlclose(lib);
-        return signature;
-    }
-
-    void Manager::loadLibraries(const std::string &path, Signature libSignature) {
-        if (libSignature == GAME) {
-            if (this->gameModule) { delete this->gameModule; }
-            this->libLoader->openLibrary(path, libSignature);
-            this->gameModule = this->libLoader->getGameEntryPoint();
-            if (!this->displayModule || !this->gameModule) { return; }
-            this->displayModule->loadDicts(this->gameModule->getSpriteDict(), this->gameModule->getStaticScreen());
-        } else if (libSignature == GRAPHICAL) {
-            if (this->displayModule != nullptr) delete this->displayModule;
-            this->libLoader->openLibrary(path, libSignature);
-            this->displayModule = this->libLoader->getDisplayEntryPoint();
-        }
-    }
-
-    void Manager::initLibSelectors() {
-        DIR *dir;
-        struct dirent *ent;
-        if ((dir = opendir ("./lib")) != NULL) {
-            while ((ent = readdir (dir)) != NULL) {
-                std::string filename = ent->d_name;
-                if (filename.substr(filename.find_last_of(".") + 1) == "so") {
-                    std::string path = "./lib/" + filename;
-                    Signature signature = getLibSignature(path);
-                    if (signature == GAME) {
-                        gamesList.push_back(path);
-                    } else if (signature == GRAPHICAL) {
-                        graphicalList.push_back(path);
-                    }
-                }
-            }
-            closedir (dir);
-        } else {
-            throw CoreError("Could not open directory ./lib");
-        }
+        Signature signature = this->loader->getSignature(path);
+        if (signature != Signature::GRAPHICAL)
+            throw CoreError("Error: invalid library signature");
+        this->initialGraphicalLib = path;
+        return path;
     }
 }

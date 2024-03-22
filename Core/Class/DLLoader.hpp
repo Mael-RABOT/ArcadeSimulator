@@ -5,6 +5,7 @@
 #include <dlfcn.h>
 #include <typeinfo>
 #include <iostream>
+#include <unistd.h>
 
 #include "../Class/Error/Error.hpp"
 #include "Type.hpp"
@@ -15,7 +16,7 @@ namespace CoreModule {
     class DLLoader {
         private:
             void *gameLibrary;
-            void *graphicalLibrary;
+            void *displayLibrary;
 
             IGameModule* (*gameEntryPoint)();
             Signature (*gameGetSignature)();
@@ -24,16 +25,18 @@ namespace CoreModule {
             Signature (*displayGetSignature)();
 
         public:
-            DLLoader() = default;
+            IGameModule *gameModule;
+            IDisplayModule *displayModule;
+
+            DLLoader();
             ~DLLoader();
 
-            void openLibrary(const std::string &path, Signature libSignature);
-            void closeLibrary(KiwiBool game = Kiwi, KiwiBool graphical = Kiwi);
+            void open(const std::string &path, Signature libSignature);
+            void close(Signature libSignature);
 
-            IGameModule* getGameEntryPoint();
-            Signature getGameSignature();
+            Signature getSignature(const std::string &path);
+            KiwiBool checkStatus();
 
-            IDisplayModule* getDisplayEntryPoint();
-            Signature getDisplaySignature();
+            void loadDefault(std::string defaultGraphical);
     };
 }

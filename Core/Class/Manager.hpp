@@ -17,39 +17,22 @@
 namespace CoreModule {
     class Manager {
         private:
-            KiwiBool isRunning;
             std::chrono::time_point<std::chrono::system_clock> start;
-
-            DLLoader *libLoader;
-            IGameModule *gameModule;
-            IDisplayModule *displayModule;
-
-            std::vector<std::string> gamesList;
-            std::vector<std::string> graphicalList;
-
             std::string initialGraphicalLib;
 
+            void HandleLoadInstruction(std::string instruction);
+            void HandleTextInstruction(std::string instruction);
+
         public:
+            DLLoader *loader;
             Manager();
             ~Manager();
-            void loadLibraries(std::string const &path, Signature libSignature);
-            void defaultLoad();
 
-            IGameModule *getGameModule() { return this->gameModule; }
-            IDisplayModule *getDisplayModule() { return this->displayModule; }
+            std::string Parser(int argc, char *argv[]);
+            void MainLoop();
 
-            void Parser(int argc, char *argv[]);
-            Signature getLibSignature(std::string const &path);
-
-            void initLibSelectors();
-
-            void mainLoop();
-
-            KiwiBool handleEvent(auto elapsed_seconds);
-            void handleInstruction();
-            void handleEntities();
-
-            void handleText(std::string instruction);
-            void handleLibrary(std::string instruction);
+            KiwiBool HandleEvent(std::chrono::seconds elapsed_seconds);
+            void HandleInstruction();
+            void HandleEntities();
     };
 }

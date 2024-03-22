@@ -1,67 +1,106 @@
 #include "../../Class/DLLoader.hpp"
 
 namespace CoreModule {
+    DLLoader::DLLoader() {
+        gameLibrary = nullptr;
+        displayLibrary = nullptr;
+        gameModule = nullptr;
+        displayModule = nullptr;
+    }
+
     DLLoader::~DLLoader() {
-        this->closeLibrary();
+        this->close(Signature::GAME);
+        this->close(Signature::GRAPHICAL);
     }
 
-    void DLLoader::openLibrary(const std::string &path, Signature libSignature) {
+    void DLLoader::open(const std::string &path, Signature libSignature) {
+        if (access(path.c_str(), F_OK) == -1) {
+            throw CoreError("Error: file does not exist");
+        }
+
         void *lib = dlopen(path.c_str(), RTLD_LAZY);
-        if (lib == nullptr) {
-            throw CoreError(std::string(dlerror()));
+        if (!lib) {
+            throw CoreError(std::string("Error: ") + dlerror());
         }
+
+        Signature (*getSignature)() = (Signature (*)())dlsym(lib, "getSignature");
+        if (!getSignature) {
+            dlclose(lib);
+            throw CoreError(std::string("Error: ") + dlerror());
+        }
+
+        if (getSignature() != libSignature) {
+            dlclose(lib);
+            throw CoreError("Error: invalid library signature");
+        }
+
         if (libSignature == GAME) {
-            closeLibrary(Kiwi, NotKiwi);
-            std::cout << "DLLoader: Opening game library: " << path << std::endl; //TODO: Remove
-            this->gameLibrary = lib;
-        } else if (libSignature == GRAPHICAL) {
-            closeLibrary(NotKiwi, Kiwi);
-            std::cout << "DLLoader: Opening graphical library: " << path << std::endl; //TODO: Remove
-            this->graphicalLibrary = lib;
-        } else
-            throw CoreError("Invalid library signature");
-    }
-
-    void DLLoader::closeLibrary(KiwiBool game, KiwiBool graphical) {
-        if (game && this->gameLibrary != nullptr) {
-            std::cout << "DLLoader: Closing game library" << std::endl; //TODO: Remove
-            dlclose(this->gameLibrary);
-        }
-        if (graphical && this->graphicalLibrary != nullptr) {
-            std::cout << "DLLoader: Closing graphical library" << std::endl; //TODO: Remove
-            dlclose(this->graphicalLibrary);
+            gameEntryPoint = (IGameModule *(*)())dlsym(lib, "entryPoint");
+            if (!gameEntryPoint) {
+                dlclose(lib);
+                throw CoreError(std::string("Error: ") + dlerror());
+            }
+            gameLibrary = lib;
+            gameModule = gameEntryPoint();
+        } else {
+            displayEntryPoint = (IDisplayModule *(*)())dlsym(lib, "entryPoint");
+            if (!displayEntryPoint) {
+                dlclose(lib);
+                throw CoreError(std::string("Error: ") + dlerror());
+            }
+            displayLibrary = lib;
+            displayModule = displayEntryPoint();
         }
     }
 
-    IGameModule* DLLoader::getGameEntryPoint() {
-        IGameModule* (*gameEntryPoint)() = (IGameModule* (*)())dlsym(this->gameLibrary, "entryPoint");
-        if (gameEntryPoint == nullptr) {
-            throw CoreError(std::string(dlerror()));
+    void DLLoader::close(Signature libSignature) {
+        if (libSignature == GAME) {
+            if (gameLibrary) {
+                delete gameModule;
+                gameModule = nullptr;
+
+                dlclose(gameLibrary);
+                gameLibrary = nullptr;
+            }
+        } else {
+            if (displayLibrary) {
+                delete displayModule;
+                displayModule = nullptr;
+
+                dlclose(displayLibrary);
+                displayLibrary = nullptr;
+            }
         }
-        return gameEntryPoint();
     }
 
-    Signature DLLoader::getGameSignature() {
-        Signature (*gameGetSignature)() = (Signature (*)())dlsym(this->gameLibrary, "getSignature");
-        if (gameGetSignature == nullptr) {
-            throw CoreError(std::string(dlerror()));
+    Signature DLLoader::getSignature(const std::string &path) {
+        if (access(path.c_str(), F_OK) == -1) {
+            throw CoreError("Error: file does not exist");
         }
-        return gameGetSignature();
+
+        void *lib = dlopen(path.c_str(), RTLD_LAZY);
+        if (!lib) {
+            throw CoreError(std::string("Error: ") + dlerror());
+        }
+
+        Signature (*getSignature)() = (Signature (*)())dlsym(lib, "getSignature");
+        if (!getSignature) {
+            dlclose(lib);
+            throw CoreError(std::string("Error: ") + dlerror());
+        }
+        Signature signature = getSignature();
+        dlclose(lib);
+        return signature;
     }
 
-    IDisplayModule* DLLoader::getDisplayEntryPoint() {
-        IDisplayModule* (*displayEntryPoint)() = (IDisplayModule* (*)())dlsym(this->graphicalLibrary, "entryPoint");
-        if (displayEntryPoint == nullptr) {
-            throw CoreError(std::string(dlerror()));
-        }
-        return displayEntryPoint();
+    KiwiBool DLLoader::checkStatus() {
+        return  static_cast<KiwiBool>(gameLibrary && displayLibrary);
     }
 
-    Signature DLLoader::getDisplaySignature() {
-        Signature (*displayGetSignature)() = (Signature (*)())dlsym(this->graphicalLibrary, "getSignature");
-        if (displayGetSignature == nullptr) {
-            throw CoreError(std::string(dlerror()));
-        }
-        return displayGetSignature();
+    void DLLoader::loadDefault(std::string defaultGraphical) {
+        this->close(Signature::GAME);
+        this->close(Signature::GRAPHICAL);
+        this->open("./lib/arcade_menu.so", Signature::GAME);
+        this->open(defaultGraphical, Signature::GRAPHICAL);
     }
 }
