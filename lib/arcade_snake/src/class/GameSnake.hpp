@@ -11,7 +11,7 @@ class GameSnake : public IGameModule {
     protected:
         Map map;
         std::vector<std::reference_wrapper<IEntity>> entities;
-        EntityDescription entityDescriptor;
+        EntitiesDescription entityDescriptor;
 
     public:
         GameSnake();
@@ -22,7 +22,7 @@ class GameSnake : public IGameModule {
 
         std::vector<std::string> getInstruction() override;
 
-        EntityDescription getEntities() override;
+        EntitiesDescription getEntities() override;
 
         Map& getMap() override;
         std::map<EntityType, std::pair<std::string, std::size_t>> getSpriteDict() override;
