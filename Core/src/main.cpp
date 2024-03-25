@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
     try {
         std::string displayModule = manager.Parser(argc, argv);
         manager.loader->open(displayModule, Signature::GRAPHICAL);
-        manager.loader->open("./lib/arcade_menu.so", Signature::GAME);
+        manager.loader->open("./lib/arcade_name_selector.so", Signature::GAME);
         if (!manager.loader->checkStatus()) {
             throw CoreModule::CoreError("Error: invalid library status");
         }

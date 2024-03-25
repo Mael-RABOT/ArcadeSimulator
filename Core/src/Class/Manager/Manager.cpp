@@ -4,6 +4,8 @@ namespace CoreModule {
     Manager::Manager() {
         this->loader = new DLLoader();
         start = std::chrono::system_clock::now();
+        username = "";
+        isMenu = NotKiwi;
     }
 
     Manager::~Manager() { delete this->loader; }

@@ -107,8 +107,8 @@ void GameMenu::formatLoadInstruction() {
 }
 
 void GameMenu::formatTextInstruction() {
-    int rdi = 1;
-    instruction.push_back("displayText Game 0 0 false");
+    int rdi = 2;
+    instruction.push_back("displayText Game 1 0 false");
     for (auto &game : gamesList) {
         instruction.push_back("displayText " + game + " 0 " + std::to_string(rdi++) + (game == *gameIterator ? " true" : " false"));
     }

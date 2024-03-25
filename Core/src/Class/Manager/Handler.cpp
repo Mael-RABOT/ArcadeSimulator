@@ -42,10 +42,18 @@ namespace CoreModule {
         if (lib.empty()) return;
         this->loader->close(static_cast<Signature>(signature));
         this->loader->open(lib, static_cast<Signature>(signature));
+        if (lib.find("arcade_menu") != std::string::npos) {
+            this->isMenu = Kiwi;
+        } else {
+            this->isMenu = NotKiwi;
+        }
     }
 
     void Manager::HandleInstruction() {
         std::vector<std::string> instructions = this->loader->gameModule->getInstruction();
+        if (isMenu) {
+            instructions.push_back("displayText " + this->username + " 0 0 true");
+        }
         if (instructions.empty()) return;
         for (std::string &instruction : instructions) {
             if (instruction.find("displayText") != std::string::npos) {
@@ -54,6 +62,17 @@ namespace CoreModule {
             }
             if (instruction.find("loadLibrary") != std::string::npos) {
                 this->HandleLoadInstruction(instruction);
+                continue;
+            }
+            if (instruction.find("username") != std::string::npos) {
+                std::istringstream iss(instruction);
+                std::string command, username;
+                iss >> command
+                    >> username;
+                this->username = username;
+                this->loader->close(Signature::GAME);
+                this->loader->open("./lib/arcade_menu.so", Signature::GAME);
+                this->isMenu = Kiwi;
                 continue;
             }
         }
