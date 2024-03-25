@@ -97,7 +97,7 @@ void DisplaySdl::updateText(const std::string& text, Vector2D pos, bool highligh
     SDL_FreeSurface(surface);
 }
 
-void DisplaySdl::updateEntity(EntityDescription entities) {
+void DisplaySdl::updateEntities(const EntitiesDescription& entities) {
     for (auto &entity : entities) {
         (void)entity;
     }

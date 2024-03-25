@@ -76,8 +76,8 @@ std::vector<std::string> GameMenu::getInstruction() {
     return instructions;
 }
 
-EntityDescription GameMenu::getEntities() {
-    EntityDescription entities;
+EntitiesDescription GameMenu::getEntities() {
+    EntitiesDescription entities;
     return entities;
 }
 

@@ -68,7 +68,7 @@ enum EntityType {
 
 using Map = std::vector<std::vector<EntityType>>;
 
-using EntityDescription = std::vector<std::pair<EntityType, Vector2D>>;
+using EntitiesDescription = std::vector<std::pair<EntityType, Vector2D>>;
 
 enum Input {
     UP,
@@ -86,19 +86,19 @@ enum Signature {
 };
 
 class IEntity {
-    protected:
-        EntityType entityType;
-        Vector2D position;
-        bool visibility;
+protected:
+    EntityType entityType;
+    Vector2D position;
+    bool visibility;
 
-    public:
-        virtual ~IEntity() = 0;
-        virtual EntityType getEntityType() = 0;
-        virtual void setEntityType(EntityType) = 0;
-        virtual Vector2D getPosition() = 0;
-        virtual void setPosition(Vector2D position) = 0;
-        virtual bool getVisibility() = 0;
-        virtual void setVisibility(bool visibility) = 0;
+public:
+    virtual ~IEntity() = 0;
+    virtual EntityType getEntityType() const = 0;
+    virtual void setEntityType(EntityType) = 0;
+    virtual Vector2D getPosition() const = 0;
+    virtual void setPosition(Vector2D position) = 0;
+    virtual bool getVisibility() const = 0;
+    virtual void setVisibility(bool visibility) = 0;
 };
 
 enum GameState {

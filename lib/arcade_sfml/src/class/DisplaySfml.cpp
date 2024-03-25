@@ -81,7 +81,7 @@ void DisplaySfml::updateText(const std::string& text, Vector2D pos, bool highlig
     window->draw(sfText);
 }
 
-void DisplaySfml::updateEntity(EntityDescription entities) {
+void DisplaySfml::updateEntities(const EntitiesDescription& entities) {
     for (auto entity : entities) {
         sf::Texture texture;
         texture.loadFromFile(spriteDict[entity.first]);

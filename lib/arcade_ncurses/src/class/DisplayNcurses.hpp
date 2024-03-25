@@ -19,7 +19,7 @@ class DisplayNcurses : public IDisplayModule {
         std::vector<Input> event() override;
 
         void updateText(const std::string& text, Vector2D pos, bool highlight) override;
-        void updateEntity(EntityDescription entities) override;
+        void updateEntities(const EntitiesDescription& entities) override;
         void updateMap(Map &map) override;
 
         void staticScreen(StaticScreen screen) override;

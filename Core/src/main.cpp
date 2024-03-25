@@ -19,6 +19,6 @@ int main(int argc, char *argv[]) {
         std::cerr << error.what() << std::endl;
         return 84;
     }
-//    kiwi();
+    kiwi();
     return 0;
 }

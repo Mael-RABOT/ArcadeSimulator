@@ -23,7 +23,7 @@ class GameMenu : public IGameModule {
         void update(std::size_t deltaTime) override;
 
         std::vector<std::string> getInstruction() override;
-        EntityDescription getEntities() override;
+        EntitiesDescription getEntities() override;
 
         Map getMap() override;
         std::map<EntityType, std::string> getSpriteDict() override;
