@@ -84,7 +84,7 @@ void DisplaySfml::updateText(const std::string& text, Vector2D pos, bool highlig
 void DisplaySfml::updateEntity(EntityDescription entities) {
     for (auto entity : entities) {
         sf::Texture texture;
-        texture.loadFromFile(spriteDict[entity.first]);
+        texture.loadFromFile(spriteDict[entity.first].first);
         sf::Sprite sprite;
         sprite.setTexture(texture);
         sprite.setPosition(entity.second.x * UNIT_PIXEL_SIZE, entity.second.y * UNIT_PIXEL_SIZE);
@@ -96,7 +96,7 @@ void DisplaySfml::updateMap(Map &map) {
     for (std::size_t y = 0; y < map.size(); y++) {
         for (std::size_t x = 0; x < map[y].size(); x++) {
             sf::Texture texture;
-            texture.loadFromFile(spriteDict[EntityType::WALL]);
+            texture.loadFromFile(spriteDict[EntityType::WALL].first);
             sf::Sprite sprite;
             sprite.setTexture(texture);
             sprite.setPosition(x, y);
@@ -110,7 +110,7 @@ void DisplaySfml::staticScreen(StaticScreen screen) {
 }
 
 void DisplaySfml::loadDicts(
-        const std::map<EntityType, std::string>& spriteDict,
+        const std::map<EntityType, std::pair<std::string, std::size_t>>& spriteDict,
         const std::map<StaticScreen, std::string>& splashDict) {
     this->spriteDict = spriteDict;
     this->splashDict = splashDict;

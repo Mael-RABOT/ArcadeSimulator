@@ -19,6 +19,6 @@ class GameSnake : public IGameModule {
         EntityDescription getEntities() override;
 
         Map getMap() override;
-        std::map<EntityType, std::string> getSpriteDict() override;
+        std::map<EntityType, std::pair<std::string, std::size_t>> getSpriteDict() override;
         std::map<StaticScreen, std::string> getStaticScreen() override;
 };

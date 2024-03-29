@@ -81,8 +81,8 @@ EntityDescription GameMenu::getEntities() {
     return entities;
 }
 
-std::map <EntityType, std::string> GameMenu::getSpriteDict() {
-    return std::map<EntityType, std::string>();
+std::map<EntityType, std::pair<std::string, std::size_t>> GameMenu::getSpriteDict() {
+    return std::map<EntityType, std::pair<std::string, std::size_t>>();
 }
 
 std::map <StaticScreen, std::string> GameMenu::getStaticScreen() {

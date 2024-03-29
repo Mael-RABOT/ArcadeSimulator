@@ -63,14 +63,14 @@ void DisplayNcurses::updateText(const std::string& text, Vector2D pos, bool high
 
 void DisplayNcurses::updateEntity(EntityDescription entities) {
     for (auto &entity : entities) {
-        mvprintw(entity.second.y, entity.second.x, "%s", this->spriteDict[entity.first].c_str());
+        mvprintw(entity.second.y, entity.second.x, "%s", this->spriteDict[entity.first].first.c_str());
     }
 }
 
 void DisplayNcurses::updateMap(Map &map) {
     for (std::size_t y = 0; y < map.size(); y++) {
         for (std::size_t x = 0; x < map[y].size(); x++) {
-            mvprintw(y, x, "%s", this->spriteDict[WALL].c_str());
+            mvprintw(y, x, "%s", this->spriteDict[WALL].first.c_str());
         }
     }
 }
@@ -80,16 +80,16 @@ void DisplayNcurses::staticScreen(StaticScreen screen) {
 }
 
 void DisplayNcurses::loadDicts(
-        const std::map<EntityType, std::string>&,
+        const std::map<EntityType, std::pair<std::string, std::size_t>>&,
         const std::map<StaticScreen, std::string>&) {
     this->spriteDict = {
-            {WALL, "#"},
-            {PLAYER, "P"},
-            {ENEMY, "E"},
-            {ITEM1, "1"},
-            {ITEM2, "2"},
-            {ITEM3, "3"},
-            {ITEM4, "4"},
+            {WALL, {"#", 1}},
+            {PLAYER, {"P", 1}},
+            {ENEMY, {"E", 1}},
+            {ITEM1, {"1", 1}},
+            {ITEM2, {"2", 1}},
+            {ITEM3, {"3", 1}},
+            {ITEM4, {"4", 1}},
     };
     this->splashDict = {
             {SCREEN_SPLASH, "Splash"},
