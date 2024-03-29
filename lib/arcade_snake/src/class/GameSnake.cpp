@@ -29,7 +29,6 @@ std::map <StaticScreen, std::string> GameSnake::getStaticScreen() {
     return std::map<StaticScreen, std::string>();
 }
 
-Map GameSnake::getMap() {
-    Map map;
-    return map;
+Map& GameSnake::getMap() {
+    return this->map;
 }

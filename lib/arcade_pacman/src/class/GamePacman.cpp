@@ -1,4 +1,5 @@
 #include "GamePacman.hpp"
+#include <iostream>////////////////////////////////////////////////////////////
 
 void GamePacman::handleInput(std::size_t deltaTime, Input input) {
     if (this->map.empty())
@@ -19,17 +20,18 @@ EntitiesDescription GamePacman::getEntities() {
     return this->entitiesDescriptor;
 }
 
-Map GamePacman::getMap() {
+Map& GamePacman::getMap() {
     if (!this->map.empty())
         return this->map;
     std::ifstream mapFile;
-    mapFile.open ("assets/pacman_map.txt");
+    mapFile.open ("lib/assets/pacman_map.txt");
     if (!mapFile.is_open()) {
         throw pacman::quickError(pacman::Error::MAP_NOT_FOUND);
     }
     std::string line;
+    int i = 0;
     while(std::getline(mapFile, line)) {
-        if (!this->map.empty() && this->map.end()->size() != line.length() - 1) {
+        if (!this->map.empty() && this->map[i - 1].size() != line.length()) {
             throw pacman::quickError(pacman::Error::MAP_CORRUPTED);
         }
         std::vector<EntityType> mapLine;
@@ -39,10 +41,12 @@ Map GamePacman::getMap() {
             } else if (*c == ' ') {
                 mapLine.push_back(UNDEFINED);
             } else if (*c != '\n') {
+                std::cerr << "B" << std::endl;
                 throw pacman::quickError(pacman::Error::MAP_CORRUPTED);
             }
         }
         this->map.push_back(mapLine);
+        i++;
     }
     mapFile.close();
     return this->map;

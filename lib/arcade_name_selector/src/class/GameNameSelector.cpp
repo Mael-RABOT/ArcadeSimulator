@@ -50,8 +50,8 @@ EntitiesDescription GameNameSelector::getEntities() {
     return entities;
 }
 
-std::map <EntityType, std::string> GameNameSelector::getSpriteDict() {
-    return std::map<EntityType, std::string>();
+std::map<EntityType, std::pair<std::string, std::size_t>> GameNameSelector::getSpriteDict() {
+    return std::map<EntityType, std::pair<std::string, std::size_t>>();
 }
 
 std::map <StaticScreen, std::string> GameNameSelector::getStaticScreen() {
@@ -69,7 +69,6 @@ void GameNameSelector::formatUsernameInstruction() {
     instruction.push_back("username " + username);
 }
 
-Map GameNameSelector::getMap() {
-    Map map;
-    return map;
+Map& GameNameSelector::getMap() {
+    return this->map;
 }

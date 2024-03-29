@@ -25,8 +25,8 @@ class GameNameSelector : public IGameModule {
         std::vector<std::string> getInstruction() override;
         EntitiesDescription getEntities() override;
 
-        Map getMap() override;
-        std::map<EntityType, std::string> getSpriteDict() override;
+        Map& getMap() override;
+        std::map<EntityType, std::pair<std::string, std::size_t>> getSpriteDict() override;
         std::map<StaticScreen, std::string> getStaticScreen() override;
 
         void formatTextInstruction();

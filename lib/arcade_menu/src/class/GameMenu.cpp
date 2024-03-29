@@ -118,7 +118,6 @@ void GameMenu::formatTextInstruction() {
     }
 }
 
-Map GameMenu::getMap() {
-    Map map;
-    return map;
+Map& GameMenu::getMap() {
+    return this->map;
 }
