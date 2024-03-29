@@ -6,7 +6,7 @@ CXX    		=   g++
 
 UNUSED   	=   -Wno-unused-parameter -Wno-unused-function
 CXXFLAGS    =	-Wall -Wextra $(UNUSED) -std=c++20 -fpic -I../../include -I../../ExceptionClass
-LDFLAGS 	= 	-lSDL2 -lSDL2_ttf
+LDFLAGS 	= 	-lSDL2 ##-lSDL2_ttf
 SAN			=	-g3
 
 EXE    		=	../arcade_sdl.so

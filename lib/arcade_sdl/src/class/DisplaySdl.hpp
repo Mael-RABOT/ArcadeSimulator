@@ -14,7 +14,7 @@ class DisplaySdl : public IDisplayModule {
         std::map<StaticScreen, std::string> splashDict;
         SDL_Window *window;
         SDL_Renderer *renderer;
-        TTF_Font *font;
+//        TTF_Font *font;
 
     public:
         DisplaySdl();
