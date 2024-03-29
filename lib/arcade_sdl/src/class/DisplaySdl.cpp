@@ -9,8 +9,8 @@ DisplaySdl::DisplaySdl() {
         if (window == nullptr) throw DisplaySdlError("Error: SDL_CreateWindow");
         renderer = SDL_CreateRenderer(window, -1, 0);
         if (renderer == nullptr) throw DisplaySdlError("Error: SDL_CreateRenderer");
-        font = TTF_OpenFont("./lib/assets/NotoSansCJK-Regular.ttc", 24);
-        if (font == nullptr) throw DisplaySdlError("Error: TTF_OpenFont");
+        //font = TTF_OpenFont("./lib/assets/NotoSansCJK-Regular.ttc", 24);
+        //if (font == nullptr) throw DisplaySdlError("Error: TTF_OpenFont");
     } catch (...) {
         SDL_DestroyWindow(window);
         throw;
@@ -72,7 +72,7 @@ std::vector<Input> DisplaySdl::event() {
 }
 
 void DisplaySdl::updateText(const std::string& text, Vector2D pos, bool highlight) {
-    SDL_Color color = highlight ? SDL_Color{255, 255, 255, 255} : SDL_Color{127, 127, 127, 255}; // white if highlighted, gray otherwise
+/*    SDL_Color color = highlight ? SDL_Color{255, 255, 255, 255} : SDL_Color{127, 127, 127, 255}; // white if highlighted, gray otherwise
     SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
     if (surface == nullptr) {
         this->~DisplaySdl();
@@ -94,7 +94,7 @@ void DisplaySdl::updateText(const std::string& text, Vector2D pos, bool highligh
     SDL_RenderCopy(renderer, texture, NULL, &rect);
 
     SDL_DestroyTexture(texture);
-    SDL_FreeSurface(surface);
+    SDL_FreeSurface(surface);*/
 }
 
 void DisplaySdl::updateEntities(const EntitiesDescription& entities) {
