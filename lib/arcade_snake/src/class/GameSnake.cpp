@@ -21,8 +21,8 @@ EntitiesDescription GameSnake::getEntities() {
     return entities;
 }
 
-std::map <EntityType, std::string> GameSnake::getSpriteDict() {
-    return std::map<EntityType, std::string>();
+std::map<EntityType, std::pair<std::string, std::size_t>> GameSnake::getSpriteDict() {
+    return std::map<EntityType, std::pair<std::string, std::size_t>>();
 }
 
 std::map <StaticScreen, std::string> GameSnake::getStaticScreen() {

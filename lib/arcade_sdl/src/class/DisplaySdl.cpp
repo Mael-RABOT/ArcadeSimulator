@@ -111,7 +111,7 @@ void DisplaySdl::staticScreen(StaticScreen screen) {
 }
 
 void DisplaySdl::loadDicts(
-        const std::map<EntityType, std::string>& spriteDict,
+        const std::map<EntityType, std::pair<std::string, std::size_t>>& spriteDict,
         const std::map<StaticScreen, std::string>& splashDict) {
     this->spriteDict = spriteDict;
     this->splashDict = splashDict;
