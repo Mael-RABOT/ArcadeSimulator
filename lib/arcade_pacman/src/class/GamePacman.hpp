@@ -1,25 +1,18 @@
-#pragma once
+#ifndef PACMAN_GAME_LIB
+    #define PACMAN_GAME_LIB
 
-#include <dlfcn.h>
-#include <dirent.h>
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
+    #include <exception>
+    #include <functional>
+    #include <fstream>
 
-#include "IGameModule.hpp"
+    #include "IGameModule.hpp"
 
 class GamePacman : public IGameModule {
     private:
-        std::vector<std::string> gamesList;
-        std::vector<std::string> graphicalList;
-        std::vector<std::string>::iterator gameIterator;
-        std::vector<std::string>::iterator graphicalIterator;
-        std::vector<std::string> instruction;
-        std::vector<std::reference_wrapper<IEntity>> entities;
-
+        int score = 0;
     public:
-        GamePacman();
-        ~GamePacman();
+        GamePacman() = default;
+        ~GamePacman() = default;
 
         void handleInput(std::size_t deltaTime, Input input) override;
         void update(std::size_t deltaTime) override;
@@ -30,6 +23,24 @@ class GamePacman : public IGameModule {
         Map getMap() override;
         std::map<EntityType, std::string> getSpriteDict() override;
         std::map<StaticScreen, std::string> getStaticScreen() override;
-
-        void formatTextInstruction();
 };
+
+namespace pacman {
+    class Error : public std::exception {
+        public:
+            typedef enum ErrorType {
+                UNKNOWN,
+                MAP_NOT_FOUND,
+                MAP_CORRUPTED
+                MAP_UNINITIALIZED
+            } ErrorType_t;
+
+            const char *what(void) const noexcept override;
+            void setErrorType(const Error::ErrorType_t type);
+        private:
+            ErrorType_t _type;
+    };
+
+    Error createError(const Error::ErrorType_t type);
+}
+#endif
