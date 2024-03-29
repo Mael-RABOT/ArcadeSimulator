@@ -16,8 +16,8 @@ std::vector <std::string> GameSnake::getInstruction() {
     return std::vector<std::string>();
 }
 
-EntityDescription GameSnake::getEntities() {
-    EntityDescription entities;
+EntitiesDescription GameSnake::getEntities() {
+    EntitiesDescription entities;
     return entities;
 }
 

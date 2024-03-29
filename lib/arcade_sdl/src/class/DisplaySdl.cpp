@@ -9,7 +9,7 @@ DisplaySdl::DisplaySdl() {
     renderer = SDL_CreateRenderer(window, -1, 0);
     //if (renderer == nullptr) throw DisplaySdlError("Error: SDL_CreateRenderer");
     //font = TTF_OpenFont("./lib/assets/NotoSansCJK-Regular.ttc", 24);
-    if (font == nullptr) throw DisplaySdlError("Error: TTF_OpenFont");
+    //if (font == nullptr) throw DisplaySdlError("Error: TTF_OpenFont");
 }
 
 DisplaySdl::~DisplaySdl() {
@@ -90,7 +90,7 @@ void DisplaySdl::updateText(const std::string& text, Vector2D pos, bool highligh
     SDL_FreeSurface(surface);*/
 }
 
-void DisplaySdl::updateEntity(EntityDescription entities) {
+void DisplaySdl::updateEntities(const EntitiesDescription& entities) {
     for (auto &entity : entities) {
         (void)entity;
     }

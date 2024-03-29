@@ -18,7 +18,7 @@ namespace CoreModule {
     }
 
     void Manager::handleEntities() {
-        this->displayModule->updateEntity(this->gameModule->getEntities());
+        this->displayModule->updateEntities(this->gameModule->getEntities());
     }
 
     void Manager::mainLoop() {

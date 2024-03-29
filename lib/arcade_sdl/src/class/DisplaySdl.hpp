@@ -14,7 +14,7 @@ class DisplaySdl : public IDisplayModule {
         std::map<StaticScreen, std::string> splashDict;
         SDL_Window *window;
         SDL_Renderer *renderer;
-        TTF_Font *font;
+//        TTF_Font *font;
 
     public:
         DisplaySdl();
@@ -26,7 +26,7 @@ class DisplaySdl : public IDisplayModule {
         std::vector<Input> event() override;
 
         void updateText(const std::string& text, Vector2D pos, bool highlight) override;
-        void updateEntity(EntityDescription entities) override;
+        void updateEntities(const EntitiesDescription& entities) override;
         void updateMap(Map &map) override;
 
         void staticScreen(StaticScreen screen) override;
