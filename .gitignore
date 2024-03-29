@@ -30,6 +30,7 @@ valgrind.log.*
 ## Unused folder
 cmake-build-debug
 /.idea
+tmp_include/
 ArcadeInterfaces/.git
 
 ## .git
