@@ -1,5 +1,4 @@
 #include "GamePacman.hpp"
-#include <iostream>////////////////////////////////////////////////////////////
 
 void GamePacman::handleInput(std::size_t deltaTime, Input input) {
     if (this->map.empty())
@@ -41,7 +40,6 @@ Map& GamePacman::getMap() {
             } else if (*c == ' ') {
                 mapLine.push_back(UNDEFINED);
             } else if (*c != '\n') {
-                std::cerr << "B" << std::endl;
                 throw pacman::quickError(pacman::Error::MAP_CORRUPTED);
             }
         }
