@@ -1,5 +1,4 @@
 #include "GamePacman.hpp"
-#include <iostream>////////////////////////////////////////////////////////////
 
 void GamePacman::handleInput(std::size_t deltaTime, Input input) {
     if (this->map.empty())
@@ -53,7 +52,8 @@ Map& GamePacman::getMap() {
 
 std::map<EntityType, std::pair<std::string, std::size_t>> GamePacman::getSpriteDict() {
     std::map<EntityType, std::pair<std::string, std::size_t>> dict = {
-        {EntityType::WALL, {std::string("lib/assets/pacman_wall.png"), 0}}
+        {EntityType::WALL, {std::string("lib/assets/pacman_wall.png"), 0}},
+        {EntityType::PLAYER, {std::string("lib/assets/pacman_player.png"), 0}}
     };
     return dict;
 }
