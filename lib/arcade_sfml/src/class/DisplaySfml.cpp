@@ -1,4 +1,5 @@
 #include "DisplaySfml.hpp"
+#include <iostream>//////////////////////////////////////////////////////////
 
 DisplaySfml::DisplaySfml() {
     window = new sf::RenderWindow(sf::VideoMode(800, 600), "Arcade");
@@ -95,12 +96,15 @@ void DisplaySfml::updateEntities(const EntitiesDescription& entities) {
 void DisplaySfml::updateMap(Map &map) {
     for (std::size_t y = 0; y < map.size(); y++) {
         for (std::size_t x = 0; x < map[y].size(); x++) {
-            sf::Texture texture;
-            texture.loadFromFile(spriteDict[EntityType::WALL].first);
-            sf::Sprite sprite;
-            sprite.setTexture(texture);
-            sprite.setPosition(x, y);
-            window->draw(sprite);
+            if (map[y][x] == EntityType::WALL) {
+                sf::Texture texture;
+                texture.loadFromFile(spriteDict[EntityType::WALL].first);
+                sf::Sprite sprite;
+                sprite.setTexture(texture);
+                sprite.setScale(UNIT_PIXEL_SIZE / sprite.getGlobalBounds().width, UNIT_PIXEL_SIZE / sprite.getGlobalBounds().height);
+                sprite.setPosition(x * UNIT_PIXEL_SIZE, y * UNIT_PIXEL_SIZE);
+                window->draw(sprite);
+            }
         }
     }
 }
@@ -110,8 +114,8 @@ void DisplaySfml::staticScreen(StaticScreen screen) {
 }
 
 void DisplaySfml::loadDicts(
-        const std::map<EntityType, std::pair<std::string, std::size_t>>& spriteDict,
+        const std::map<EntityType, std::pair<std::string, std::size_t>>& _spriteDict,
         const std::map<StaticScreen, std::string>& splashDict) {
-    this->spriteDict = spriteDict;
+    this->spriteDict = _spriteDict;
     this->splashDict = splashDict;
 }

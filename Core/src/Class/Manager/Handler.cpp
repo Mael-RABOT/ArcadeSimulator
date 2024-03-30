@@ -46,9 +46,7 @@ namespace CoreModule {
             this->isMenu = Kiwi;
         } else {
             this->isMenu = NotKiwi;
-            if (static_cast<Signature>(signature) == GAME) {
-                this->loader->displayModule->loadDicts(this->loader->gameModule->getSpriteDict(), this->loader->gameModule->getStaticScreen());
-            }
+            this->loader->displayModule->loadDicts(this->loader->gameModule->getSpriteDict(), this->loader->gameModule->getStaticScreen());
         }
     }
 
