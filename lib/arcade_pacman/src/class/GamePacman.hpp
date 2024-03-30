@@ -3,14 +3,16 @@
 
     #include <fstream>
 
-    #include "ArcadeException.hpp"
+    #include "PacmanError.hpp"
     #include "IGameModule.hpp"
+    #include "PacmanEntities.hpp"
 
 class GamePacman : public IGameModule {
     private:
         int score = 0;
+        pacman::Player player;
     public:
-        GamePacman() = default;
+        GamePacman();
         ~GamePacman() = default;
 
         void handleInput(std::size_t deltaTime, Input input) override;
@@ -24,19 +26,4 @@ class GamePacman : public IGameModule {
         std::map<StaticScreen, std::string> getStaticScreen() override;
 };
 
-namespace pacman {
-    class Error : public ArcadeException {
-        public:
-            typedef enum ErrorType {
-                UNKNOWN,
-                MAP_NOT_FOUND,
-                MAP_CORRUPTED,
-                MAP_UNINITIALIZED
-            } ErrorType_t;
-
-            Error(const std::string &message) : ArcadeException(message) {};
-    };
-
-    Error quickError(const Error::ErrorType_t type);
-}
 #endif

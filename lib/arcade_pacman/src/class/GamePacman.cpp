@@ -1,13 +1,37 @@
 #include "GamePacman.hpp"
+#include <iostream>///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+GamePacman::GamePacman()
+    : player(pacman::Player())
+{}
 
 void GamePacman::handleInput(std::size_t deltaTime, Input input) {
     if (this->map.empty())
         throw pacman::quickError(pacman::Error::MAP_UNINITIALIZED);
+    if (this->entities.empty())
+        throw pacman::quickError(pacman::Error::ENTITIES_UNINITIALIZED);
+    switch (input) {
+        case UP:
+        case DOWN:
+        case LEFT:
+        case RIGHT:
+            this->player.move(input, this->map);
+            std::cout << "Player x=" << this->player.getPosition().x << " y=" << this->player.getPosition().y << std::endl;////////////////////////////
+        break;
+        case QUIT:
+        break;
+        case MENU:
+        break;
+        case ACTION:
+        break;
+    }
 }
 
 void GamePacman::update(std::size_t deltaTime) {
     if (this->map.empty())
         throw pacman::quickError(pacman::Error::MAP_UNINITIALIZED);
+    if (this->entities.empty())
+        throw pacman::quickError(pacman::Error::ENTITIES_UNINITIALIZED);
 }
 
 std::vector<std::string> GamePacman::getInstruction() {
@@ -16,7 +40,16 @@ std::vector<std::string> GamePacman::getInstruction() {
 }
 
 EntitiesDescription GamePacman::getEntities() {
-    return this->entitiesDescriptor;
+    if (!this->entitiesDescriptor.empty())
+        return this->entitiesDescriptor;
+    if (!this->entities.empty()) {
+        for (std::vector<std::reference_wrapper<IEntity>>::iterator i = this->entities.begin(); i != this->entities.end(); i++) {
+            this->entitiesDescriptor.push_back(std::pair(i->get().getEntityType(), i->get().getPosition()));
+        }
+    }
+    std::reference_wrapper<IEntity> e1 = this->player;
+    this->entities.push_back(e1);
+    return this->getEntities();
 }
 
 Map& GamePacman::getMap() {
@@ -62,23 +95,4 @@ std::map<StaticScreen, std::string> GamePacman::getStaticScreen() {
     std::map<StaticScreen, std::string> dict = {
     };
     return dict;
-}
-
-pacman::Error pacman::quickError(const Error::ErrorType_t type) {
-    std::string message;
-    switch (type) {
-        case pacman::Error::MAP_NOT_FOUND:
-            message = std::string("PACMAN : ERROR : assets/pacman_map.txt file not found.");
-        break;
-        case pacman::Error::MAP_CORRUPTED:
-            message = std::string("PACMAN : ERROR : assets/pacman_map.txt file is corrupted.");
-        break;
-        case pacman::Error::MAP_UNINITIALIZED:
-            message = std::string("PACMAN : ERROR : the map has not been initialized.");
-        break;
-        default:
-            message = std::string("PACMAN : ERROR : Undifined error");
-    }
-    pacman::Error err(message);
-    return err;
 }
