@@ -80,10 +80,10 @@ namespace CoreModule {
     }
 
     void Manager::HandleEntities() {
-        auto entities = this->loader->gameModule->getEntities();
-        this->loader->displayModule->updateEntities(entities);
-
         auto map = this->loader->gameModule->getMap();
         this->loader->displayModule->updateMap(map);
+
+        auto entities = this->loader->gameModule->getEntities();
+        this->loader->displayModule->updateEntities(entities);
     }
 }

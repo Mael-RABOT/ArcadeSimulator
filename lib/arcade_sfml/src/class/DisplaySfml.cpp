@@ -1,5 +1,4 @@
 #include "DisplaySfml.hpp"
-#include <iostream>//////////////////////////////////////////////////////////
 
 DisplaySfml::DisplaySfml() {
     window = new sf::RenderWindow(sf::VideoMode(800, 600), "Arcade");
@@ -88,6 +87,7 @@ void DisplaySfml::updateEntities(const EntitiesDescription& entities) {
         texture.loadFromFile(spriteDict[entity.first].first);
         sf::Sprite sprite;
         sprite.setTexture(texture);
+        sprite.setScale(UNIT_PIXEL_SIZE / sprite.getGlobalBounds().width, UNIT_PIXEL_SIZE / sprite.getGlobalBounds().height);
         sprite.setPosition(entity.second.x * UNIT_PIXEL_SIZE, entity.second.y * UNIT_PIXEL_SIZE);
         window->draw(sprite);
     }

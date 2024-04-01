@@ -21,8 +21,6 @@ namespace CoreModule {
                 last_update_time = current_time;
 
                 this->HandleInstruction();
-                this->loader->displayModule->updateMap(this->loader->gameModule->getMap());
-                this->loader->displayModule->updateEntities(this->loader->gameModule->getEntities());
                 this->HandleEntities();
 
                 this->loader->displayModule->display();
