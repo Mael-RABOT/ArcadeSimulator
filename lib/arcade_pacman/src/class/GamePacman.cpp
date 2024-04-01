@@ -41,15 +41,14 @@ std::vector<std::string> GamePacman::getInstruction() {
 
 EntitiesDescription GamePacman::getEntities() {
     if (!this->entitiesDescriptor.empty())
-        return this->entitiesDescriptor;
-    if (!this->entities.empty()) {
-        for (std::vector<std::reference_wrapper<IEntity>>::iterator i = this->entities.begin(); i != this->entities.end(); i++) {
-            this->entitiesDescriptor.push_back(std::pair(i->get().getEntityType(), i->get().getPosition()));
-        }
+        this->entitiesDescriptor.clear();
+    if (!this->entities.empty())
+        this->entities.clear();
+    this->entities.push_back(std::ref(this->player));
+    for (std::vector<std::reference_wrapper<IEntity>>::iterator i = this->entities.begin(); i != this->entities.end(); i++) {
+        this->entitiesDescriptor.push_back(std::pair(i->get().getEntityType(), i->get().getPosition()));
     }
-    std::reference_wrapper<IEntity> e1 = this->player;
-    this->entities.push_back(e1);
-    return this->getEntities();
+    return this->entitiesDescriptor;
 }
 
 Map& GamePacman::getMap() {
