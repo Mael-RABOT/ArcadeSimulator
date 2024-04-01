@@ -17,10 +17,13 @@ namespace pacman {
     };
 
     class Player : public AEntity {
+    private:
+        std::size_t idle = 0;
     public:
         Player();
         void move(Input direction, Map map);
         void kill();
+        void waiting();
     };
 }
 

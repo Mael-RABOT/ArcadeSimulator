@@ -70,4 +70,16 @@ namespace pacman {
     void Player::kill() {
         this->entityType = PLAYER_DYING;
     }
+
+    void Player::waiting() {
+        if (this->entityType == PLAYER_MOVE) {
+            this->idle++;
+            if (this->idle >= 60) {
+                this->entityType = PLAYER;
+                this->idle = 0;
+            }
+        } else {
+            return;
+        }
+    }
 }

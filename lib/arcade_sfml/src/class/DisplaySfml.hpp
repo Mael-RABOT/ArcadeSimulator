@@ -5,9 +5,11 @@
 #include "IDisplayModule.hpp"
 
 #define UNIT_PIXEL_SIZE 24
+#define FRAME_RATE_FACTOR 10
 
 class DisplaySfml : public IDisplayModule {
     private:
+        std::map<EntityType, std::size_t> animeDict;
         std::map<EntityType, std::pair<std::string, std::size_t>> spriteDict;
         std::map<StaticScreen, std::string> splashDict;
         sf::RenderWindow *window;

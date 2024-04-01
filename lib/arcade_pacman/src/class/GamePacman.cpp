@@ -21,6 +21,7 @@ void GamePacman::handleInput(std::size_t deltaTime, Input input) {
         case MENU:
         break;
         case ACTION:
+            this->player.kill();
         break;
     }
 }
@@ -30,6 +31,7 @@ void GamePacman::update(std::size_t deltaTime) {
         throw pacman::quickError(pacman::Error::MAP_UNINITIALIZED);
     if (this->entities.empty())
         throw pacman::quickError(pacman::Error::ENTITIES_UNINITIALIZED);
+    this->player.waiting();
 }
 
 std::vector<std::string> GamePacman::getInstruction() {

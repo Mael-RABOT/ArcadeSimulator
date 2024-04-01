@@ -82,15 +82,23 @@ void DisplaySfml::updateText(const std::string& text, Vector2D pos, bool highlig
 }
 
 void DisplaySfml::updateEntities(const EntitiesDescription& entities) {
+    if (this->animeDict.empty()) {
+        for (auto sprite : this->spriteDict) {
+            this->animeDict.insert({sprite.first, 0});
+        }
+    }
     for (auto entity : entities) {
         sf::Texture texture;
         texture.loadFromFile(spriteDict[entity.first].first);
         sf::Sprite sprite;
         sprite.setTexture(texture);
-        sprite.setTextureRect(sf::IntRect(0, 0, texture.getSize().y, texture.getSize().y));
+        sprite.setTextureRect(sf::IntRect((this->animeDict[entity.first] / FRAME_RATE_FACTOR) * texture.getSize().y, 0, texture.getSize().y, texture.getSize().y));
         sprite.setScale(UNIT_PIXEL_SIZE / sprite.getGlobalBounds().width, UNIT_PIXEL_SIZE / sprite.getGlobalBounds().height);
         sprite.setPosition(entity.second.x * UNIT_PIXEL_SIZE, entity.second.y * UNIT_PIXEL_SIZE);
         window->draw(sprite);
+        this->animeDict[entity.first]++;
+        if (this->animeDict[entity.first] >= spriteDict[entity.first].second * FRAME_RATE_FACTOR)
+            this->animeDict[entity.first] = 0;
     }
 }
 
