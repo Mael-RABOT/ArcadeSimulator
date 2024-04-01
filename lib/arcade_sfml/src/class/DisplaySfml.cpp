@@ -87,6 +87,7 @@ void DisplaySfml::updateEntities(const EntitiesDescription& entities) {
         texture.loadFromFile(spriteDict[entity.first].first);
         sf::Sprite sprite;
         sprite.setTexture(texture);
+        sprite.setTextureRect(sf::IntRect(0, 0, texture.getSize().y, texture.getSize().y));
         sprite.setScale(UNIT_PIXEL_SIZE / sprite.getGlobalBounds().width, UNIT_PIXEL_SIZE / sprite.getGlobalBounds().height);
         sprite.setPosition(entity.second.x * UNIT_PIXEL_SIZE, entity.second.y * UNIT_PIXEL_SIZE);
         window->draw(sprite);

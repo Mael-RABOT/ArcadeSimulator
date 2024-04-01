@@ -32,7 +32,7 @@ namespace pacman {
     }
 
     Player::Player()
-        : AEntity(PLAYER, Vector2D(12, 10), true)
+        : AEntity(PLAYER, Vector2D(10, 12), true)
     {}
 
     void Player::move(Input direction, Map map) {
@@ -64,5 +64,10 @@ namespace pacman {
             default:
                 throw quickError(Error::FORBIDDEN_ACTION);
         }
+        this->entityType = PLAYER_MOVE;
+    }
+
+    void Player::kill() {
+        this->entityType = PLAYER_DYING;
     }
 }

@@ -20,6 +20,7 @@ namespace pacman {
     public:
         Player();
         void move(Input direction, Map map);
+        void kill();
     };
 }
 

@@ -1,5 +1,4 @@
 #include "GamePacman.hpp"
-#include <iostream>///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 GamePacman::GamePacman()
     : player(pacman::Player())
@@ -16,7 +15,6 @@ void GamePacman::handleInput(std::size_t deltaTime, Input input) {
         case LEFT:
         case RIGHT:
             this->player.move(input, this->map);
-            std::cout << "Player x=" << this->player.getPosition().x << " y=" << this->player.getPosition().y << std::endl;////////////////////////////
         break;
         case QUIT:
         break;
@@ -85,7 +83,9 @@ Map& GamePacman::getMap() {
 std::map<EntityType, std::pair<std::string, std::size_t>> GamePacman::getSpriteDict() {
     std::map<EntityType, std::pair<std::string, std::size_t>> dict = {
         {EntityType::WALL, {std::string("lib/assets/pacman_wall.png"), 0}},
-        {EntityType::PLAYER, {std::string("lib/assets/pacman_player.png"), 0}}
+        {EntityType::PLAYER, {std::string("lib/assets/pacman_player.png"), 0}},
+        {EntityType::PLAYER_MOVE, {std::string("lib/assets/pacman_player_move.png"), 4}},
+        {EntityType::PLAYER_DYING, {std::string("lib/assets/pacman_player_dying.png"), 9}}
     };
     return dict;
 }
