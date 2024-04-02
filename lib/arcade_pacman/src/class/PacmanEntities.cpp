@@ -82,4 +82,40 @@ namespace pacman {
             return;
         }
     }
+
+    Enemy::Enemy(Vector2D position, std::size_t type)
+        : AEntity((EntityType)(ENEMY1 + type), position, true)
+    {}
+
+    /*void Enemy::start() {
+    }
+
+    void Enemy::move(Map map) {
+    }
+
+    void Enemy::kill() {
+    }
+
+    void Enemy::waiting() {
+    }*/
+
+    AItem::AItem(EntityType type, Vector2D position, std::size_t value)
+        : AEntity(type, position, true), value(value)
+    {}
+
+    std::size_t AItem::getPoints() const {
+        return this->value;
+    }
+
+    Pacdot::Pacdot(Vector2D position)
+        : AItem(ITEM1, position, 10)
+    {}
+
+    Pacgum::Pacgum(Vector2D position)
+        : AItem(ITEM2, position, 10)
+    {}
+
+    Bonus::Bonus(Vector2D position, std::size_t rarity)
+        : AItem((EntityType)(ITEM3 + rarity), position, 100 * (rarity + 1))
+    {}
 }

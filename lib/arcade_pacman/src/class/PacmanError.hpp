@@ -13,7 +13,8 @@ namespace pacman {
                 MAP_CORRUPTED,
                 MAP_UNINITIALIZED,
                 ENTITIES_UNINITIALIZED,
-                FORBIDDEN_ACTION
+                FORBIDDEN_ACTION,
+                ENTITY_CORRUPTED
             } ErrorType_t;
 
             Error(const std::string &message) : ArcadeException(message) {};

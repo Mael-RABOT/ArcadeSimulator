@@ -2,6 +2,8 @@
     #define PACMAN_GAME_LIB
 
     #include <fstream>
+    #include <cstdlib>
+    #include <ctime>
 
     #include "PacmanError.hpp"
     #include "IGameModule.hpp"
@@ -11,6 +13,8 @@ class GamePacman : public IGameModule {
     private:
         int score = 0;
         pacman::Player player;
+        std::vector<pacman::Enemy> listEnemies;
+        std::vector<pacman::AItem> listItems;
     public:
         GamePacman();
         ~GamePacman() = default;
