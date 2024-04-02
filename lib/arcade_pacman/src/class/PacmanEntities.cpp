@@ -84,20 +84,27 @@ namespace pacman {
     }
 
     Enemy::Enemy(Vector2D position, std::size_t type)
-        : AEntity((EntityType)(ENEMY1 + type), position, true)
+        : AEntity((EntityType)(ENEMY1 + type), position, true), type(type)
     {}
-
-    /*void Enemy::start() {
-    }
 
     void Enemy::move(Map map) {
     }
 
     void Enemy::kill() {
+        this->entityType = ENEMY5;
     }
 
     void Enemy::waiting() {
-    }*/
+        if (this->entityType == ENEMY5) {
+            this->idle++;
+            if (this->idle >= 60) {
+                this->entityType = (EntityType)(ENEMY1 + this->type);
+                this->idle = 0;
+            }
+        } else {
+            return;
+        }
+    }
 
     AItem::AItem(EntityType type, Vector2D position, std::size_t value)
         : AEntity(type, position, true), value(value)

@@ -31,14 +31,14 @@ namespace pacman {
     class Enemy : public AEntity {
     private:
         std::size_t idle = 0;
+        std::size_t type;
         Input currentDirection = QUIT;
     public:
         Enemy(Vector2D position, std::size_t type);
         ~Enemy() = default;
-        /*void start();
         void move(Map map);
         void kill();
-        void waiting();*/
+        void waiting();
     };
 
     class AItem : public AEntity {
