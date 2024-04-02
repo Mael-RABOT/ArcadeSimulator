@@ -1,4 +1,4 @@
-all: core graphicals games
+all: submodule core graphicals games
 
 core:
 	make -C Core
@@ -20,3 +20,8 @@ fclean:
 re:
 	make -C Core re
 	make -C lib re
+
+submodule:
+	git submodule sync --recursive
+	git submodule init include/
+	git submodule update --recursive
