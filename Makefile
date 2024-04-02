@@ -1,12 +1,12 @@
-all: submodule core graphicals games
+all: core graphicals games
 
-core:
+core: submodule
 	make -C Core
 
-games:
+games: submodule
 	make -C lib game
 
-graphicals:
+graphicals: submodule
 	make -C lib graphical
 
 clean:
