@@ -33,10 +33,12 @@ namespace pacman {
         std::size_t idle = 0;
         std::size_t type;
         Input currentDirection = QUIT;
+        Input lastDirection = QUIT;
     public:
         Enemy(Vector2D position, std::size_t type);
         ~Enemy() = default;
-        void move(Map map);
+        virtual Input chooseDirection(Player player, Map map); 
+        void move(Input direction, Map map);
         void kill();
         void waiting();
     };

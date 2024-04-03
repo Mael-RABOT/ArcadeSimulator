@@ -1,12 +1,12 @@
-all: core graphicals games
+all: submodule core graphicals games
 
-core: submodule
+core:
 	make -C Core
 
-games: submodule
+games:
 	make -C lib game
 
-graphicals: submodule
+graphicals:
 	make -C lib graphical
 
 clean:
@@ -23,5 +23,8 @@ re:
 
 submodule:
 	git submodule sync --recursive
-	git submodule init include/
+	git submodule init ArcadeInterfaces/
 	git submodule update --recursive
+	cp --remove-destination ArcadeInterfaces/IDisplayModule.hpp include/IDisplayModule.hpp
+	cp --remove-destination ArcadeInterfaces/IGameModule.hpp include/IGameModule.hpp
+	cp --remove-destination ArcadeInterfaces/Type.hpp include/Type.hpp

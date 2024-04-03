@@ -1,7 +1,7 @@
 #include "GamePacman.hpp"
 
 GamePacman::GamePacman()
-    : player(pacman::Player())
+    : player(pacman::Player())//, listEnemies({})
 {}
 
 void GamePacman::handleInput(std::size_t deltaTime, Input input) {

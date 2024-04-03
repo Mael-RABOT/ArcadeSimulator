@@ -90,7 +90,35 @@ namespace pacman {
         : AEntity((EntityType)(ENEMY1 + type), position, true), type(type)
     {}
 
-    void Enemy::move(Map map) {
+    void Enemy::move(Input direction, Map map) {
+        if (map.empty())
+            throw quickError(Error::MAP_UNINITIALIZED);
+        const int x = this->position.x;
+        const int y = this->position.y;
+        switch (direction) {
+            case UP:
+                if (map[y - 1][x] == WALL)
+                    return;
+                this->position.y--;
+            break;
+            case DOWN:
+                if (map[y + 1][x] == WALL)
+                    return;
+                this->position.y++;
+            break;
+            case LEFT:
+                if (map[y][x - 1] == WALL)
+                    return;
+                this->position.x--;
+            break;
+            case RIGHT:
+                if (map[y][x + 1] == WALL)
+                    return;
+                this->position.x++;
+            break;
+            default:
+                throw quickError(Error::FORBIDDEN_ACTION);
+        }
     }
 
     void Enemy::kill() {
