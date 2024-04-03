@@ -95,6 +95,12 @@ void DisplaySfml::updateEntities(const EntitiesDescription& entities) {
         sprite.setTextureRect(sf::IntRect((this->animeDict[entity.first] / FRAME_RATE_FACTOR) * texture.getSize().y, 0, texture.getSize().y, texture.getSize().y));
         sprite.setScale(UNIT_PIXEL_SIZE / sprite.getGlobalBounds().width, UNIT_PIXEL_SIZE / sprite.getGlobalBounds().height);
         sprite.setPosition(entity.second.x * UNIT_PIXEL_SIZE, entity.second.y * UNIT_PIXEL_SIZE);
+        switch (entity.second.rotation) {
+            case UP: sprite.setRotation(270); sprite.move(0, UNIT_PIXEL_SIZE); break;
+            case DOWN: sprite.setRotation(90); sprite.move(UNIT_PIXEL_SIZE, 0); break;
+            case LEFT: sprite.setRotation(180); sprite.move(UNIT_PIXEL_SIZE, UNIT_PIXEL_SIZE); break;
+            default: break;
+        }
         window->draw(sprite);
         this->animeDict[entity.first]++;
         if (this->animeDict[entity.first] >= spriteDict[entity.first].second * FRAME_RATE_FACTOR)

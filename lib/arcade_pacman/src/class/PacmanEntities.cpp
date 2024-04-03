@@ -64,10 +64,12 @@ namespace pacman {
             default:
                 throw quickError(Error::FORBIDDEN_ACTION);
         }
+        this->position.rotation = direction;
         this->entityType = PLAYER_MOVE;
     }
 
     void Player::kill() {
+        this->position.rotation = RIGHT;
         this->entityType = PLAYER_DYING;
     }
 
@@ -76,6 +78,7 @@ namespace pacman {
             this->idle++;
             if (this->idle >= 60) {
                 this->entityType = PLAYER;
+                this->position.rotation = RIGHT;
                 this->idle = 0;
             }
         } else {
