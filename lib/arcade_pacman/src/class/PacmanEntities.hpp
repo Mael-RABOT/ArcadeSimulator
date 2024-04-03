@@ -1,10 +1,15 @@
 #ifndef PACMAN_ENTITIES
     #define PACMAN_ENTITIES
 
+    #include <cmath>
     #include "Type.hpp"
     #include "PacmanError.hpp"
 
 namespace pacman {
+    #define PLAYER_SPEED 0.25
+    #define CHASE_SPEED 0.2
+    #define FLEE_SPEED 0.1
+
     class AEntity : public IEntity {
     public:
         AEntity(EntityType type, Vector2D position, bool visibility);
@@ -37,7 +42,7 @@ namespace pacman {
     public:
         Enemy(Vector2D position, std::size_t type);
         ~Enemy() = default;
-        virtual Input chooseDirection(Player player, Map map); 
+        //virtual Input chooseDirection(Player player, Map map); 
         void move(Input direction, Map map);
         void kill();
         void waiting();

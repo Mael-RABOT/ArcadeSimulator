@@ -38,28 +38,38 @@ namespace pacman {
     void Player::move(Input direction, Map map) {
         if (map.empty())
             throw quickError(Error::MAP_UNINITIALIZED);
-        const int x = this->position.x;
-        const int y = this->position.y;
+        int x = std::round(this->position.x);
+        int y = std::round(this->position.y);
         switch (direction) {
             case UP:
-                if (map[y - 1][x] == WALL)
-                    return;
-                this->position.y--;
+                if (map[y - 1][x] == WALL && this->position.y < ((float)y + PLAYER_SPEED))
+                    this->position.y = std::round(this->position.y);
+                else
+                    this->position.y = this->position.y - PLAYER_SPEED;
             break;
             case DOWN:
+                y = this->position.y;
                 if (map[y + 1][x] == WALL)
-                    return;
-                this->position.y++;
+                    this->position.y = (int)this->position.y;
+                else
+                    this->position.y = this->position.y + PLAYER_SPEED;
             break;
             case LEFT:
-                if (map[y][x - 1] == WALL)
-                    return;
-                this->position.x--;
+                if (map[y][x - 1] == WALL && this->position.x < ((float)x + PLAYER_SPEED))
+                    this->position.x = std::round(this->position.x);
+                else if (x - 1 < 0)
+                    this->position.x = map[y].size() - 1;
+                else
+                    this->position.x = this->position.x - PLAYER_SPEED;
             break;
             case RIGHT:
+                x = this->position.x;
                 if (map[y][x + 1] == WALL)
-                    return;
-                this->position.x++;
+                    this->position.x = (int)this->position.x;
+                else if (x + 1 == map[y].size())
+                    this->position.x = 0;
+                else
+                    this->position.x = this->position.x + PLAYER_SPEED;
             break;
             default:
                 throw quickError(Error::FORBIDDEN_ACTION);

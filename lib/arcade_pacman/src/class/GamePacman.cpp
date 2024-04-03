@@ -34,7 +34,7 @@ void GamePacman::update(std::size_t deltaTime) {
     this->instructions.clear();
     this->player.waiting();
     for (std::vector<pacman::AItem>::iterator i = this->listItems.begin(); i != this->listItems.end(); i++) {
-        if (this->player.getPosition().x == i->getPosition().x && this->player.getPosition().y == i->getPosition().y) {
+        if (std::round(this->player.getPosition().x) == i->getPosition().x && std::round(this->player.getPosition().y) == i->getPosition().y) {
             if (i->getVisibility()) {
                 this->score += i->getPoints();
                 i->setVisibility(false);
