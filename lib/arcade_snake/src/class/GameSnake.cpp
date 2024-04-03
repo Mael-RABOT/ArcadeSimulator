@@ -6,6 +6,7 @@ GameSnake::GameSnake() {
     _live = 3;
     direction.x = 1;
     direction.y = 0;
+    initMap();
 }
 
 GameSnake::~GameSnake() {}
@@ -60,4 +61,13 @@ std::map <StaticScreen, std::string> GameSnake::getStaticScreen() {
 
 Map& GameSnake::getMap() {
     return this->map;
+}
+
+void GameSnake::initMap() {
+    for (int i = 0; i < 16; i++) {
+        map.push_back({});
+        for (int j = 0; j < 16; j++) {
+            map[i].push_back(UNDEFINED);
+        }
+    }
 }

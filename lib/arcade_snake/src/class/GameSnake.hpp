@@ -8,6 +8,7 @@ class GameSnake : public IGameModule {
         std::size_t _score;
         std::size_t _live;
         Vector2D direction;
+        void initMap();
     protected:
         Map map;
         std::vector<std::reference_wrapper<IEntity>> entities;
