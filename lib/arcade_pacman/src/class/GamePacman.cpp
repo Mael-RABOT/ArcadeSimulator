@@ -31,17 +31,22 @@ void GamePacman::update(std::size_t deltaTime) {
         throw pacman::quickError(pacman::Error::MAP_UNINITIALIZED);
     if (this->entities.empty())
         throw pacman::quickError(pacman::Error::ENTITIES_UNINITIALIZED);
+    this->instructions.clear();
     this->player.waiting();
     for (std::vector<pacman::AItem>::iterator i = this->listItems.begin(); i != this->listItems.end(); i++) {
         if (this->player.getPosition().x == i->getPosition().x && this->player.getPosition().y == i->getPosition().y) {
-            i->setVisibility(false);
+            if (i->getVisibility()) {
+                this->score += i->getPoints();
+                i->setVisibility(false);
+            }
         }
     }
+    this->instructions.push_back(std::string("displayText SCORE 22 0 false"));
+    this->instructions.push_back(std::string("displayText ") + std::to_string(this->score) + std::string(" 26 0 false"));
 }
 
 std::vector<std::string> GamePacman::getInstruction() {
-    std::vector<std::string> list = {std::string("")};
-    return list;
+    return this->instructions;
 }
 
 EntitiesDescription GamePacman::getEntities() {

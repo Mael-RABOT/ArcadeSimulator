@@ -15,6 +15,7 @@ class GamePacman : public IGameModule {
         pacman::Player player;
         std::vector<pacman::Enemy> listEnemies;
         std::vector<pacman::AItem> listItems;
+        std::vector<std::string> instructions;
     public:
         GamePacman();
         ~GamePacman() = default;
