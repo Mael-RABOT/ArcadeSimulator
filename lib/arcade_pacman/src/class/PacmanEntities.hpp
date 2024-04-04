@@ -106,10 +106,16 @@ namespace pacman {
         ~Bonus() = default;
     };
 
-    class Life : public AItem {
+    class Life : public AEntity {
     public:
         Life(Vector2D position);
         ~Life() = default;
+    };
+
+    class Door : public AEntity {
+    public:
+        Door();
+        ~Door() = default;
     };
 }
 

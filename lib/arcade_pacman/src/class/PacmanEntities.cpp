@@ -136,6 +136,8 @@ namespace pacman {
                 else
                     this->position.x = this->position.x + this->speed;
             break;
+            case QUIT:
+            break;
             default:
                 throw quickError(Error::FORBIDDEN_ACTION);
         }
@@ -221,6 +223,10 @@ namespace pacman {
     {}
 
     Life::Life(Vector2D position)
-        : AItem(PLAYER, position, 10)
+        : AEntity(PLAYER, position, true)
+    {}
+
+    Door::Door()
+        : AEntity(WALL, Vector2D(10,8), true)
     {}
 }

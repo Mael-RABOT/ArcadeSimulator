@@ -1,14 +1,14 @@
 #include "GamePacman.hpp"
 
 GamePacman::GamePacman()
-    : player(pacman::Player())
+    : player(pacman::Player()), door(pacman::Door())
 {
     this->listEnemies.push_back(pacman::RedGhost());
     this->listEnemies.push_back(pacman::OrangeGhost());
     this->listEnemies.push_back(pacman::BlueGhost());
     this->listEnemies.push_back(pacman::PinkGhost());
     for (int i = 0; i < 3; i++)
-        this->listLives.push_back(pacman::Life(Vector2D(26 + (2 * i), 2.5)));
+        this->listLives.push_back(pacman::Life(Vector2D(27 + (2 * i), 2.5)));
 }
 
 void GamePacman::handleInput(std::size_t deltaTime, Input input) {
@@ -38,18 +38,25 @@ void GamePacman::update(std::size_t deltaTime) {
         throw pacman::quickError(pacman::Error::MAP_UNINITIALIZED);
     if (this->entities.empty())
         throw pacman::quickError(pacman::Error::ENTITIES_UNINITIALIZED);
-    this->instructions.clear();
+    if (!this->instructions.empty())
+        this->instructions.clear();
     this->player.waiting();
     for (std::vector<pacman::AItem>::iterator i = this->listItems.begin(); i != this->listItems.end(); i++) {
         if (std::round(this->player.getPosition().x) == i->getPosition().x && std::round(this->player.getPosition().y) == i->getPosition().y) {
             if (i->getVisibility()) {
                 this->score += i->getPoints();
-                i->setVisibility(false);
+                //i->setVisibility(false);
+                i->setEntityType(UNDEFINED);
             }
         }
     }
     for (std::vector<pacman::Enemy>::iterator i = this->listEnemies.begin(); i != this->listEnemies.end(); i++) {
-        //i->move(i->chooseDirection(this->player, this->map), this->map);
+        Input direction = QUIT;
+        if (deltaTime > 10000) {
+            this->openDoor();
+            direction = i->chooseDirection(this->player, this->map);
+        }
+        i->move(direction, this->map);
         if (std::round(this->player.getPosition().x) == i->getPosition().x && std::round(this->player.getPosition().y) == i->getPosition().y) {
             this->player.kill();
             this->lives--;
@@ -58,7 +65,7 @@ void GamePacman::update(std::size_t deltaTime) {
         }
     }
     this->instructions.push_back(std::string("displayText SCORE 22 0 false"));
-    this->instructions.push_back(std::string("displayText ") + std::to_string(this->score) + std::string(" 26 0 false"));
+    this->instructions.push_back(std::string("displayText ") + std::to_string(this->score) + std::string(" 28 0 false"));
     this->instructions.push_back(std::string("displayText LIVES 22 2 false"));
 }
 
@@ -80,6 +87,7 @@ EntitiesDescription GamePacman::getEntities() {
     for (std::vector<pacman::Life>::iterator i = this->listLives.begin(); i != this->listLives.end(); i++) {
         this->entities.push_back(std::ref(*i));
     }
+    this->entities.push_back(std::ref(this->door));
     this->entities.push_back(std::ref(this->player));
     for (std::vector<std::reference_wrapper<IEntity>>::iterator i = this->entities.begin(); i != this->entities.end(); i++) {
         if (i->get().getVisibility())
@@ -149,4 +157,8 @@ std::map<StaticScreen, std::string> GamePacman::getStaticScreen() {
     std::map<StaticScreen, std::string> dict = {
     };
     return dict;
+}
+
+void GamePacman::openDoor() {
+    this->door.setVisibility(false);
 }

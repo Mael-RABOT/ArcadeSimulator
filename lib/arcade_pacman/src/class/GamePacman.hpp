@@ -9,15 +9,21 @@
     #include "IGameModule.hpp"
     #include "PacmanEntities.hpp"
 
+    #define PACGUM_EFFECT 10
+
 class GamePacman : public IGameModule {
     private:
         int score = 0;
         int lives = 3;
+        std::size_t startEffect;
         pacman::Player player;
+        pacman::Door door;
         std::vector<pacman::Enemy> listEnemies;
         std::vector<pacman::AItem> listItems;
         std::vector<pacman::Life> listLives;
         std::vector<std::string> instructions;
+
+        void openDoor();
     public:
         GamePacman();
         ~GamePacman() = default;
