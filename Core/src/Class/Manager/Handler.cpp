@@ -1,7 +1,7 @@
 #include "../../../Class/Manager.hpp"
 
 namespace CoreModule {
-    KiwiBool Manager::HandleEvent(std::chrono::seconds elapsed_seconds __attribute_maybe_unused__) {
+    KiwiBool Manager::HandleEvent(std::chrono::seconds elapsed_seconds) {
         std::vector<Input> events = this->loader->displayModule->event();
         for (auto &event : events) {
             switch (event) {
