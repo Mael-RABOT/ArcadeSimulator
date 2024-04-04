@@ -41,42 +41,14 @@ namespace pacman {
         Input currentDirection = QUIT;
         Input lastDirection = QUIT;
 
-        Input inputConversion(Input direction) const;
+        Input leaving();
     public:
         Enemy(Vector2D position, EntityType type);
         ~Enemy() = default;
-        virtual Input chooseDirection(Player player, Map map) { return QUIT; }; 
+        Input chooseDirection(Player player, Map map);
         void move(Input direction, Map map);
         void kill();
         void waiting();
-    };
-
-    class RedGhost : public Enemy {
-    public:
-        RedGhost();
-        ~RedGhost() = default;
-        Input chooseDirection(Player player, Map map) override;
-    };
-
-    class OrangeGhost : public Enemy {
-    public:
-        OrangeGhost();
-        ~OrangeGhost() = default;
-        Input chooseDirection(Player player, Map map) override;
-    };
-
-    class BlueGhost : public Enemy {
-    public:
-        BlueGhost();
-        ~BlueGhost() = default;
-        Input chooseDirection(Player player, Map map) override;
-    };
-
-    class PinkGhost : public Enemy {
-    public:
-        PinkGhost();
-        ~PinkGhost() = default;
-        Input chooseDirection(Player player, Map map) override;
     };
 
     class AItem : public AEntity {

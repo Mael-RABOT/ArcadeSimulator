@@ -3,10 +3,10 @@
 GamePacman::GamePacman()
     : player(pacman::Player()), door(pacman::Door())
 {
-    this->listEnemies.push_back(pacman::RedGhost());
-    this->listEnemies.push_back(pacman::OrangeGhost());
-    this->listEnemies.push_back(pacman::BlueGhost());
-    this->listEnemies.push_back(pacman::PinkGhost());
+    this->listEnemies.push_back(pacman::Enemy(Vector2D(9, 9, RIGHT), ENEMY1));
+    this->listEnemies.push_back(pacman::Enemy(Vector2D(9, 10, RIGHT), ENEMY2));
+    this->listEnemies.push_back(pacman::Enemy(Vector2D(11, 9, LEFT), ENEMY3));
+    this->listEnemies.push_back(pacman::Enemy(Vector2D(11, 10, LEFT), ENEMY4));
     for (int i = 0; i < 3; i++)
         this->listLives.push_back(pacman::Life(Vector2D(27 + (2 * i), 2.5)));
 }
@@ -45,17 +45,18 @@ void GamePacman::update(std::size_t deltaTime) {
         if (std::round(this->player.getPosition().x) == i->getPosition().x && std::round(this->player.getPosition().y) == i->getPosition().y) {
             if (i->getVisibility()) {
                 this->score += i->getPoints();
-                //i->setVisibility(false);
+                i->setVisibility(false);
                 i->setEntityType(UNDEFINED);
             }
         }
     }
+    if (deltaTime > 10000)
+        this->openDoor();
+    std::size_t index = 0;
     for (std::vector<pacman::Enemy>::iterator i = this->listEnemies.begin(); i != this->listEnemies.end(); i++) {
         Input direction = QUIT;
-        if (deltaTime > 10000) {
-            this->openDoor();
+        if (deltaTime > 10000 * (index + 1))
             direction = i->chooseDirection(this->player, this->map);
-        }
         i->move(direction, this->map);
         if (std::round(this->player.getPosition().x) == i->getPosition().x && std::round(this->player.getPosition().y) == i->getPosition().y) {
             this->player.kill();
@@ -63,6 +64,7 @@ void GamePacman::update(std::size_t deltaTime) {
             if (this->lives >= 0)
                 this->listLives[this->lives].setVisibility(false);
         }
+        index++;
     }
     this->instructions.push_back(std::string("displayText SCORE 22 0 false"));
     this->instructions.push_back(std::string("displayText ") + std::to_string(this->score) + std::string(" 28 0 false"));

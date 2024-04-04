@@ -100,6 +100,20 @@ namespace pacman {
         : AEntity(type, position, true), type(type)
     {}
 
+    Input Enemy::leaving() {
+        if (9.8 < this->position.x && this->position.x < 10.2)
+            this->position.x = std::round(this->position.x);
+        if (this->position.x < 10)
+            return RIGHT;
+        if (this->position.x > 10)
+            return LEFT;
+        return UP;
+    }
+
+    Input Enemy::chooseDirection(Player player, Map map) {
+        return this->leaving();
+    }
+
     void Enemy::move(Input direction, Map map) {
         if (map.empty())
             throw quickError(Error::MAP_UNINITIALIZED);
@@ -141,7 +155,7 @@ namespace pacman {
             default:
                 throw quickError(Error::FORBIDDEN_ACTION);
         }
-        this->position.rotation = this->inputConversion(direction);
+        this->position.rotation = direction;
     }
 
     void Enemy::kill() {
@@ -158,48 +172,6 @@ namespace pacman {
         } else {
             return;
         }
-    }
-
-    Input Enemy::inputConversion(Input direction) const {
-        switch (direction) {
-            case UP: return RIGHT;
-            case DOWN: return LEFT;
-            case RIGHT: return UP;
-            case LEFT: return DOWN;
-            default: return direction;
-        }
-    }
-
-    RedGhost::RedGhost()
-        : Enemy(Vector2D(9, 9, DOWN), ENEMY1)
-    {}
-
-    Input RedGhost::chooseDirection(Player player, Map map) {
-        return RIGHT;
-    }
-
-    OrangeGhost::OrangeGhost()
-        : Enemy(Vector2D(9, 10, DOWN), ENEMY2)
-    {}
-
-    Input OrangeGhost::chooseDirection(Player player, Map map) {
-        return RIGHT;
-    }
-
-    BlueGhost::BlueGhost()
-        : Enemy(Vector2D(11, 9, UP), ENEMY3)
-    {}
-
-    Input BlueGhost::chooseDirection(Player player, Map map) {
-        return RIGHT;
-    }
-
-    PinkGhost::PinkGhost()
-        : Enemy(Vector2D(11, 10, UP), ENEMY4)
-    {}
-
-    Input PinkGhost::chooseDirection(Player player, Map map) {
-        return RIGHT;
     }
 
     AItem::AItem(EntityType type, Vector2D position, std::size_t value)
