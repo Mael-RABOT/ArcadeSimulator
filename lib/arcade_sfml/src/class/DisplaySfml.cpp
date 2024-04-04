@@ -88,6 +88,8 @@ void DisplaySfml::updateEntities(const EntitiesDescription& entities) {
         }
     }
     for (auto entity : entities) {
+        if (entity.first == UNDEFINED)
+            continue;
         sf::Texture texture;
         texture.loadFromFile(spriteDict[entity.first].first);
         sf::Sprite sprite;
