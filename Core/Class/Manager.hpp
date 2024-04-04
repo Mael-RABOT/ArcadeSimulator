@@ -20,7 +20,6 @@ namespace CoreModule {
             std::chrono::time_point<std::chrono::system_clock> start;
             std::string initialGraphicalLib;
             std::string username;
-            KiwiBool isMenu;
 
             void HandleLoadInstruction(std::string instruction);
             void HandleTextInstruction(std::string instruction);

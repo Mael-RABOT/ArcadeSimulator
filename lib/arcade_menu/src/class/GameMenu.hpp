@@ -10,10 +10,13 @@ class GameMenu : public IGameModule {
     private:
         std::vector<std::string> gamesList;
         std::vector<std::string> graphicalList;
-        std::vector<std::string>::iterator gameIterator;
-        std::vector<std::string>::iterator graphicalIterator;
+        std::size_t gameIndex;
+        std::size_t graphicalIndex;
         std::vector<std::string> instruction;
-        std::vector<std::reference_wrapper<IEntity>> entities;
+        bool isNameSelector;
+
+        std::string username;
+        std::size_t index;
 
     public:
         GameMenu();
@@ -33,6 +36,7 @@ class GameMenu : public IGameModule {
 
         void formatLoadInstruction();
         void formatTextInstruction();
+        void formatUsernameInstruction();
 
         void loader();
 };

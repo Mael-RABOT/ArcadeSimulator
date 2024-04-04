@@ -20,44 +20,69 @@ void GameMenu::loader() {
         }
         closedir (dir);
     }
-    gameIterator = gamesList.begin();
-    graphicalIterator = graphicalList.begin();
+    gameIndex = 0;
+    graphicalIndex = 0;
     this->formatTextInstruction();
+    this->isNameSelector = true;
+    this->index = 0;
+    this->username = "USERNAME";
 }
 
 GameMenu::~GameMenu() {}
 
 void GameMenu::handleInput(std::size_t deltaTime, Input input) {
-    switch (input) {
-        case Input::UP:
-            if (gameIterator != gamesList.begin())
-                gameIterator--;
-            else
-                gameIterator = gamesList.end();
-            break;
-        case Input::DOWN:
-            if (gameIterator != gamesList.end())
-                gameIterator++;
-            else
-                gameIterator = gamesList.begin();
-            break;
-        case Input::LEFT:
-            if (graphicalIterator != graphicalList.begin())
-                graphicalIterator--;
-            else
-                graphicalIterator = graphicalList.end();
-            break;
-        case Input::RIGHT:
-            if (graphicalIterator != graphicalList.end())
-                graphicalIterator++;
-            else
-                graphicalIterator = graphicalList.begin();
-            break;
-        case Input::ACTION:
-            formatTextInstruction();
-            formatLoadInstruction();
-        default:
-            break;
+    if (isNameSelector) {
+        switch (input) {
+            case Input::UP:
+                username[index] = (username[index] == 'Z') ? 'A' : username[index] + 1;
+                break;
+            case Input::DOWN:
+                username[index] = (username[index] == 'A') ? 'Z' : username[index] - 1;
+                break;
+            case Input::LEFT:
+                index = (index == 0) ? username.size() - 1 : index - 1;
+                break;
+            case Input::RIGHT:
+                index = (index == username.size() - 1) ? 0 : index + 1;
+                break;
+            case Input::ACTION:
+                isNameSelector = false;
+            default:
+                break;
+        }
+    } else {
+        switch (input) {
+            case Input::UP:
+                if (gameIndex == 0)
+                    gameIndex = gamesList.size() - 1;
+                else
+                    gameIndex--;
+                break;
+            case Input::DOWN:
+                if (gameIndex == gamesList.size() - 1)
+                    gameIndex = 0;
+                else
+                    gameIndex++;
+                break;
+            case Input::LEFT:
+                if (graphicalIndex == 0)
+                    graphicalIndex = graphicalList.size() - 1;
+                else
+                    graphicalIndex--;
+                break;
+            case Input::RIGHT:
+                if (graphicalIndex == graphicalList.size() - 1)
+                    graphicalIndex = 0;
+                else
+                    graphicalIndex++;
+                break;
+            case Input::ACTION:
+                formatTextInstruction();
+                formatLoadInstruction();
+                formatUsernameInstruction();
+            default:
+                break;
+        }
     }
 }
 
@@ -100,22 +125,32 @@ Signature GameMenu::getLibSignature(const std::string &path) {
 }
 
 void GameMenu::formatLoadInstruction() {
-    std::string game = "loadLibrary " + *gameIterator + " " + std::to_string(Signature::GAME);
-    std::string graphical = "loadLibrary " + *graphicalIterator + " " + std::to_string(Signature::GRAPHICAL);
+    std::string game = "loadLibrary " + gamesList[gameIndex] + " " + std::to_string(Signature::GAME);
+    std::string graphical = "loadLibrary " + graphicalList[graphicalIndex] + " " + std::to_string(Signature::GRAPHICAL);
     instruction.push_back(game);
     instruction.push_back(graphical);
 }
 
 void GameMenu::formatTextInstruction() {
     int rdi = 2;
-    instruction.push_back("displayText Game 1 0 false");
-    for (auto &game : gamesList) {
-        instruction.push_back("displayText " + game + " 0 " + std::to_string(rdi++) + (game == *gameIterator ? " true" : " false"));
+    for (std::size_t i = 0; i < username.size(); i++) {
+        std::string truthValue = (i == index) && isNameSelector? "true" : "false";
+        instruction.push_back("displayText " + std::string(1, username[i]) + " " + std::to_string((i * 2) + 1) + " " + std::to_string(0) + " " + truthValue);
     }
+
+    instruction.push_back("displayText Game 0 " + std::to_string(rdi++) + " false");
+    for (auto &game : gamesList) {
+        instruction.push_back("displayText " + game + " 0 " + std::to_string(rdi++) + (game == gamesList[gameIndex] && !isNameSelector ? " true" : " false"));
+    }
+    rdi++;
     instruction.push_back("displayText Graphical 0 " + std::to_string(rdi++) + " false");
     for (auto &graphical : graphicalList) {
-        instruction.push_back("displayText " + graphical + " 0 " + std::to_string(rdi++) + (graphical == *graphicalIterator ? " true" : " false"));
+        instruction.push_back("displayText " + graphical + " 0 " + std::to_string(rdi++) + (graphical == graphicalList[graphicalIndex] && !isNameSelector ? " true" : " false"));
     }
+}
+
+void GameMenu::formatUsernameInstruction() {
+    instruction.push_back("username " + username);
 }
 
 Map& GameMenu::getMap() {

@@ -29,7 +29,7 @@ namespace CoreModule {
             >> x
             >> y
             >> std::boolalpha >> highlight;
-        this->loader->displayModule->updateText(text, {x, y}, highlight);
+        this->loader->displayModule->updateText(text, {static_cast<float>(x), static_cast<float>(y)}, highlight);
     }
 
     void Manager::HandleLoadInstruction(std::string instruction) {
@@ -42,19 +42,11 @@ namespace CoreModule {
         if (lib.empty()) return;
         this->loader->close(static_cast<Signature>(signature));
         this->loader->open(lib, static_cast<Signature>(signature));
-        if (lib.find("arcade_menu") != std::string::npos) {
-            this->isMenu = Kiwi;
-        } else {
-            this->isMenu = NotKiwi;
-            this->loader->displayModule->loadDicts(this->loader->gameModule->getSpriteDict(), this->loader->gameModule->getStaticScreen());
-        }
+        this->loader->displayModule->loadDicts(this->loader->gameModule->getSpriteDict(), this->loader->gameModule->getStaticScreen());
     }
 
     void Manager::HandleInstruction() {
         std::vector<std::string> instructions = this->loader->gameModule->getInstruction();
-        if (isMenu) {
-            instructions.push_back("displayText " + this->username + " 0 0 true");
-        }
         if (instructions.empty()) return;
         for (std::string &instruction : instructions) {
             if (instruction.find("displayText") != std::string::npos) {
@@ -71,9 +63,6 @@ namespace CoreModule {
                 iss >> command
                     >> username;
                 this->username = username;
-                this->loader->close(Signature::GAME);
-                this->loader->open("./lib/arcade_menu.so", Signature::GAME);
-                this->isMenu = Kiwi;
                 continue;
             }
         }
