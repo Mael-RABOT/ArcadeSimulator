@@ -83,13 +83,17 @@ void DisplayNcurses::loadDicts(
         const std::map<EntityType, std::pair<std::string, std::size_t>>&,
         const std::map<StaticScreen, std::string>&) {
     this->spriteDict = {
+            {UNDEFINED, {" ", 1}},
             {WALL, {"#", 1}},
             {PLAYER, {"P", 1}},
             {ENEMY, {"E", 1}},
-            {ITEM1, {"1", 1}},
-            {ITEM2, {"2", 1}},
-            {ITEM3, {"3", 1}},
-            {ITEM4, {"4", 1}},
+            {ENEMY1, {"E", 1}},
+            {ENEMY2, {"E", 1}},
+            {ENEMY3, {"E", 1}},
+            {ENEMY4, {"E", 1}},
+            {ENEMY5, {"E", 1}},
+            {ITEM1, {".", 1}},
+            {ITEM2, {"x", 1}},
     };
     this->splashDict = {
             {SCREEN_SPLASH, "Splash"},
