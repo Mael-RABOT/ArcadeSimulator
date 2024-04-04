@@ -15,16 +15,6 @@ GameSnake::~GameSnake() {}
 
 void GameSnake::handleInput(std::size_t deltaTime, Input input)
 {
-    if (input == UP) {
-        direction.x = 0;
-        direction.y = -1;
-        return;
-    }
-    if (input == DOWN) {
-        direction.x = 0;
-        direction.y = 1;
-        return;
-    }
     if (input == LEFT) {
         direction.x = -1;
         direction.y = 0;
@@ -72,7 +62,8 @@ Map& GameSnake::getMap()
     return this->map;
 }
 
-void GameSnake::initMap() {
+void GameSnake::initMap()
+{
     for (int i = 0; i < 16; i++) {
         map.push_back({});
         for (int j = 0; j < 16; j++) {
@@ -81,16 +72,60 @@ void GameSnake::initMap() {
     }
 }
 
-void GameSnake::initPlayer() {
+void GameSnake::initPlayer()
+{
     PlayerElement head;
     head.setEntityType(PLAYER);
+    head.setPosition({3, 3});
     std::reference_wrapper current {head};
     player.push_back(current);
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 3; i++) {
         PlayerElement bodyCell;
         bodyCell.setEntityType(PLAYER_SEC);
         current = std::reference_wrapper {bodyCell};
         player.push_back(current);
     }
+}
+
+void GameSnake::movePlayer()
+{
+    int i = player.size() - 1;
+    Vector2D futurePos = player.at(0).get().getPosition();
+    futurePos += direction;
+
+    while (i >= 0) {
+        if (i == 0) {
+            if (collide()) {
+                _state = GAMEOVER;
+                return;
+            }
+            player.at(i).get().setPosition(futurePos);
+            return;
+        }
+        player.at(i).get().setPosition(player.at(i - 1).get().getPosition());
+        i--;
+    }
+}
+
+bool GameSnake::collide()
+{
+    Vector2D futurePos = player.at(0).get().getPosition();
+    futurePos += direction;
+    if (futurePos.x < 0 || futurePos.x > 15) {
+        return true;
+    }
+    if (futurePos.y < 0 || futurePos.y > 15) {
+        return true;
+    }
+
+    int i = player.size() - 1;
+
+    while (i > 0) {
+        if (futurePos == player.at(i).get().getPosition()) {
+            return true;
+        }
+        i--;
+    }
+    return false;
 }

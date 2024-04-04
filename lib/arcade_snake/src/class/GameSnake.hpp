@@ -11,6 +11,8 @@ class GameSnake : public IGameModule {
         std::vector<std::reference_wrapper<IEntity>> player;
         void initMap();
         void initPlayer();
+        void movePlayer();
+        bool collide();
     protected:
         Map map;
         std::vector<std::reference_wrapper<IEntity>> entities;
@@ -50,4 +52,7 @@ class AEntity : public IEntity {
 };
 
 class PlayerElement : public AEntity {
+};
+
+class Food : public AEntity {
 };
