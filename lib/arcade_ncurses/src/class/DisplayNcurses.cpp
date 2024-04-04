@@ -70,7 +70,8 @@ void DisplayNcurses::updateEntities(const EntitiesDescription& entities) {
 void DisplayNcurses::updateMap(Map &map) {
     for (std::size_t y = 0; y < map.size(); y++) {
         for (std::size_t x = 0; x < map[y].size(); x++) {
-            mvprintw(y, x, "%s", this->spriteDict[WALL].first.c_str());
+	    if (map[x][y] == EntityType::WALL)
+                mvprintw(y, x, "%s", this->spriteDict[WALL].first.c_str());
         }
     }
 }

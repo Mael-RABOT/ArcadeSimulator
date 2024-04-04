@@ -4,7 +4,7 @@
 
 #include "IDisplayModule.hpp"
 
-#define UNIT_PIXEL_SIZE 32
+#define UNIT_PIXEL_SIZE 24
 #define FRAME_RATE_FACTOR 10
 
 class DisplaySfml : public IDisplayModule {
