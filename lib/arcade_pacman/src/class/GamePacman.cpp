@@ -46,6 +46,8 @@ void GamePacman::update(std::size_t deltaTime) {
             if (i->getVisibility()) {
                 this->score += i->getPoints();
                 i->setVisibility(false);
+                if (i->getEntityType() == ITEM2)
+                    this->endEffect = deltaTime + 10000;
                 i->setEntityType(UNDEFINED);
             }
         }
@@ -54,6 +56,7 @@ void GamePacman::update(std::size_t deltaTime) {
         this->openDoor();
     std::size_t index = 0;
     for (std::vector<pacman::Enemy>::iterator i = this->listEnemies.begin(); i != this->listEnemies.end(); i++) {
+        i->vulnerable(deltaTime < this->endEffect);
         Input direction = QUIT;
         if (deltaTime > 10000 * (index + 1))
             direction = i->chooseDirection(this->player, this->map);
@@ -108,6 +111,7 @@ Map& GamePacman::getMap() {
     }
     std::srand(std::time(nullptr));
     std::string line;
+    int nGum = 0;
     int y = 0;
     while(std::getline(mapFile, line)) {
         if (!this->map.empty() && this->map[y - 1].size() != line.length()) {
@@ -120,7 +124,7 @@ Map& GamePacman::getMap() {
                 mapLine.push_back(WALL);
             } else if (*c == ' ') {
                 mapLine.push_back(UNDEFINED);
-                this->listItems.push_back((std::rand() % 15 == 0) ? (pacman::AItem)(pacman::Pacgum(Vector2D(x, y))) : (pacman::AItem)(pacman::Pacdot(Vector2D(x, y))));
+                this->listItems.push_back((pacman::AItem)(pacman::Pacdot(Vector2D(x, y))));
             } else if (*c != '\n') {
                 throw pacman::quickError(pacman::Error::MAP_CORRUPTED);
             }
@@ -130,6 +134,16 @@ Map& GamePacman::getMap() {
         y++;
     }
     mapFile.close();
+    while (nGum < 4) {
+        int i = 0;
+        for (auto item : this->listItems) {
+            if (std::rand() % 45 == 0 && nGum < 4 && item.getEntityType() != ITEM2) {
+                this->listItems[i] = (pacman::AItem)(pacman::Pacgum(item.getPosition()));
+                nGum++;
+            }
+            i++;
+        }
+    }
     return this->map;
 }
 

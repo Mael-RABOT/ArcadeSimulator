@@ -158,8 +158,8 @@ namespace pacman {
         this->position.rotation = direction;
     }
 
-    void Enemy::kill() {
-        this->entityType = ENEMY5;
+    void Enemy::vulnerable(bool set) {
+        this->entityType = (set) ? ENEMY5 : this->type;
     }
 
     void Enemy::waiting() {

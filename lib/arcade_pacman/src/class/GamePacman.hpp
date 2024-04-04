@@ -15,7 +15,7 @@ class GamePacman : public IGameModule {
     private:
         int score = 0;
         int lives = 3;
-        std::size_t startEffect;
+        std::size_t endEffect = 0;
         pacman::Player player;
         pacman::Door door;
         std::vector<pacman::Enemy> listEnemies;

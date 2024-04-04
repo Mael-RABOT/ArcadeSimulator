@@ -47,7 +47,7 @@ namespace pacman {
         ~Enemy() = default;
         Input chooseDirection(Player player, Map map);
         void move(Input direction, Map map);
-        void kill();
+        void vulnerable(bool set);
         void waiting();
     };
 
