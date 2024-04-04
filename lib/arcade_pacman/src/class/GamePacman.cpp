@@ -1,8 +1,15 @@
 #include "GamePacman.hpp"
 
 GamePacman::GamePacman()
-    : player(pacman::Player())//, listEnemies({})
-{}
+    : player(pacman::Player())
+{
+    this->listEnemies.push_back(pacman::RedGhost());
+    this->listEnemies.push_back(pacman::OrangeGhost());
+    this->listEnemies.push_back(pacman::BlueGhost());
+    this->listEnemies.push_back(pacman::PinkGhost());
+    for (int i = 0; i < 3; i++)
+        this->listLives.push_back(pacman::Life(Vector2D(26 + (2 * i), 2.5)));
+}
 
 void GamePacman::handleInput(std::size_t deltaTime, Input input) {
     if (this->map.empty())
@@ -41,8 +48,18 @@ void GamePacman::update(std::size_t deltaTime) {
             }
         }
     }
+    for (std::vector<pacman::Enemy>::iterator i = this->listEnemies.begin(); i != this->listEnemies.end(); i++) {
+        //i->move(i->chooseDirection(this->player, this->map), this->map);
+        if (std::round(this->player.getPosition().x) == i->getPosition().x && std::round(this->player.getPosition().y) == i->getPosition().y) {
+            this->player.kill();
+            this->lives--;
+            if (this->lives >= 0)
+                this->listLives[this->lives].setVisibility(false);
+        }
+    }
     this->instructions.push_back(std::string("displayText SCORE 22 0 false"));
     this->instructions.push_back(std::string("displayText ") + std::to_string(this->score) + std::string(" 26 0 false"));
+    this->instructions.push_back(std::string("displayText LIVES 22 2 false"));
 }
 
 std::vector<std::string> GamePacman::getInstruction() {
@@ -55,6 +72,12 @@ EntitiesDescription GamePacman::getEntities() {
     if (!this->entities.empty())
         this->entities.clear();
     for (std::vector<pacman::AItem>::iterator i = this->listItems.begin(); i != this->listItems.end(); i++) {
+        this->entities.push_back(std::ref(*i));
+    }
+    for (std::vector<pacman::Enemy>::iterator i = this->listEnemies.begin(); i != this->listEnemies.end(); i++) {
+        this->entities.push_back(std::ref(*i));
+    }
+    for (std::vector<pacman::Life>::iterator i = this->listLives.begin(); i != this->listLives.end(); i++) {
         this->entities.push_back(std::ref(*i));
     }
     this->entities.push_back(std::ref(this->player));
@@ -112,7 +135,12 @@ std::map<EntityType, std::pair<std::string, std::size_t>> GamePacman::getSpriteD
         {EntityType::ITEM4, {std::string("lib/assets/pacman_item4.png"), 0}},
         {EntityType::ITEM5, {std::string("lib/assets/pacman_item5.png"), 0}},
         {EntityType::ITEM6, {std::string("lib/assets/pacman_item6.png"), 0}},
-        {EntityType::ITEM7, {std::string("lib/assets/pacman_item7.png"), 0}}
+        {EntityType::ITEM7, {std::string("lib/assets/pacman_item7.png"), 0}},
+        {EntityType::ENEMY1, {std::string("lib/assets/pacman_enemy1.png"), 2}},
+        {EntityType::ENEMY2, {std::string("lib/assets/pacman_enemy2.png"), 2}},
+        {EntityType::ENEMY3, {std::string("lib/assets/pacman_enemy3.png"), 2}},
+        {EntityType::ENEMY4, {std::string("lib/assets/pacman_enemy4.png"), 2}},
+        {EntityType::ENEMY5, {std::string("lib/assets/pacman_enemy5.png"), 2}}
     };
     return dict;
 }

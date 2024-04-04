@@ -12,9 +12,11 @@
 class GamePacman : public IGameModule {
     private:
         int score = 0;
+        int lives = 3;
         pacman::Player player;
         std::vector<pacman::Enemy> listEnemies;
         std::vector<pacman::AItem> listItems;
+        std::vector<pacman::Life> listLives;
         std::vector<std::string> instructions;
     public:
         GamePacman();

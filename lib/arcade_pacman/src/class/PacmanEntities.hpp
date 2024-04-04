@@ -35,17 +35,48 @@ namespace pacman {
 
     class Enemy : public AEntity {
     private:
+        float speed = CHASE_SPEED;
         std::size_t idle = 0;
-        std::size_t type;
+        EntityType type;
         Input currentDirection = QUIT;
         Input lastDirection = QUIT;
+
+        Input inputConversion(Input direction) const;
     public:
-        Enemy(Vector2D position, std::size_t type);
+        Enemy(Vector2D position, EntityType type);
         ~Enemy() = default;
-        //virtual Input chooseDirection(Player player, Map map); 
+        virtual Input chooseDirection(Player player, Map map) { return QUIT; }; 
         void move(Input direction, Map map);
         void kill();
         void waiting();
+    };
+
+    class RedGhost : public Enemy {
+    public:
+        RedGhost();
+        ~RedGhost() = default;
+        Input chooseDirection(Player player, Map map) override;
+    };
+
+    class OrangeGhost : public Enemy {
+    public:
+        OrangeGhost();
+        ~OrangeGhost() = default;
+        Input chooseDirection(Player player, Map map) override;
+    };
+
+    class BlueGhost : public Enemy {
+    public:
+        BlueGhost();
+        ~BlueGhost() = default;
+        Input chooseDirection(Player player, Map map) override;
+    };
+
+    class PinkGhost : public Enemy {
+    public:
+        PinkGhost();
+        ~PinkGhost() = default;
+        Input chooseDirection(Player player, Map map) override;
     };
 
     class AItem : public AEntity {
@@ -73,6 +104,12 @@ namespace pacman {
     public:
         Bonus(Vector2D position, std::size_t rarity);
         ~Bonus() = default;
+    };
+
+    class Life : public AItem {
+    public:
+        Life(Vector2D position);
+        ~Life() = default;
     };
 }
 

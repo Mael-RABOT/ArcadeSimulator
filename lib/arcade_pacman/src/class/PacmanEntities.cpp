@@ -66,7 +66,7 @@ namespace pacman {
                 x = this->position.x;
                 if (map[y][x + 1] == WALL)
                     this->position.x = (int)this->position.x;
-                else if (x + 1 == map[y].size())
+                else if (x + 1 == (int)(map[y].size()))
                     this->position.x = 0;
                 else
                     this->position.x = this->position.x + PLAYER_SPEED;
@@ -96,39 +96,50 @@ namespace pacman {
         }
     }
 
-    Enemy::Enemy(Vector2D position, std::size_t type)
-        : AEntity((EntityType)(ENEMY1 + type), position, true), type(type)
+    Enemy::Enemy(Vector2D position, EntityType type)
+        : AEntity(type, position, true), type(type)
     {}
 
     void Enemy::move(Input direction, Map map) {
         if (map.empty())
             throw quickError(Error::MAP_UNINITIALIZED);
-        const int x = this->position.x;
-        const int y = this->position.y;
+        int x = std::round(this->position.x);
+        int y = std::round(this->position.y);
         switch (direction) {
             case UP:
-                if (map[y - 1][x] == WALL)
-                    return;
-                this->position.y--;
+                if (map[y - 1][x] == WALL && this->position.y < ((float)y + this->speed))
+                    this->position.y = std::round(this->position.y);
+                else
+                    this->position.y = this->position.y - this->speed;
             break;
             case DOWN:
+                y = this->position.y;
                 if (map[y + 1][x] == WALL)
-                    return;
-                this->position.y++;
+                    this->position.y = (int)this->position.y;
+                else
+                    this->position.y = this->position.y + this->speed;
             break;
             case LEFT:
-                if (map[y][x - 1] == WALL)
-                    return;
-                this->position.x--;
+                if (map[y][x - 1] == WALL && this->position.x < ((float)x + this->speed))
+                    this->position.x = std::round(this->position.x);
+                else if (x - 1 < 0)
+                    this->position.x = map[y].size() - 1;
+                else
+                    this->position.x = this->position.x - this->speed;
             break;
             case RIGHT:
+                x = this->position.x;
                 if (map[y][x + 1] == WALL)
-                    return;
-                this->position.x++;
+                    this->position.x = (int)this->position.x;
+                else if (x + 1 == (int)(map[y].size()))
+                    this->position.x = 0;
+                else
+                    this->position.x = this->position.x + this->speed;
             break;
             default:
                 throw quickError(Error::FORBIDDEN_ACTION);
         }
+        this->position.rotation = this->inputConversion(direction);
     }
 
     void Enemy::kill() {
@@ -145,6 +156,48 @@ namespace pacman {
         } else {
             return;
         }
+    }
+
+    Input Enemy::inputConversion(Input direction) const {
+        switch (direction) {
+            case UP: return RIGHT;
+            case DOWN: return LEFT;
+            case RIGHT: return UP;
+            case LEFT: return DOWN;
+            default: return direction;
+        }
+    }
+
+    RedGhost::RedGhost()
+        : Enemy(Vector2D(9, 9, DOWN), ENEMY1)
+    {}
+
+    Input RedGhost::chooseDirection(Player player, Map map) {
+        return RIGHT;
+    }
+
+    OrangeGhost::OrangeGhost()
+        : Enemy(Vector2D(9, 10, DOWN), ENEMY2)
+    {}
+
+    Input OrangeGhost::chooseDirection(Player player, Map map) {
+        return RIGHT;
+    }
+
+    BlueGhost::BlueGhost()
+        : Enemy(Vector2D(11, 9, UP), ENEMY3)
+    {}
+
+    Input BlueGhost::chooseDirection(Player player, Map map) {
+        return RIGHT;
+    }
+
+    PinkGhost::PinkGhost()
+        : Enemy(Vector2D(11, 10, UP), ENEMY4)
+    {}
+
+    Input PinkGhost::chooseDirection(Player player, Map map) {
+        return RIGHT;
     }
 
     AItem::AItem(EntityType type, Vector2D position, std::size_t value)
@@ -165,5 +218,9 @@ namespace pacman {
 
     Bonus::Bonus(Vector2D position, std::size_t rarity)
         : AItem((EntityType)(ITEM3 + rarity), position, 100 * (rarity + 1))
+    {}
+
+    Life::Life(Vector2D position)
+        : AItem(PLAYER, position, 10)
     {}
 }
