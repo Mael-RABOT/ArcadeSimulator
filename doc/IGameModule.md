@@ -5,36 +5,30 @@ The game module is the part of the program that will handle the game logic. It w
 ```c++
 /*-----Game-----*/
 
-// std::vector<std::reference_wrapper<Entity>> reference(entity)
-// std::vector<std::pair<std::string, Vector2D>> texts = {{"text", {x, y}}}
+#pragma once
 
-typedef enum GameState_e {
-    RUNNING,
-    WIN,
-    GAMEOVER,
-    SLAPSH
-} GameState;
+#include "Type.hpp"
 
 class IGameModule {
+    protected:
+        Map map;
+        std::vector<std::reference_wrapper<IEntity>> entities;
+        EntitiesDescription entitiesDescriptor;
+
     public:
-        virtual std::size_t getScore() = 0;
-        virtual GameState getState() = 0;
-        virtual std::size_t getLive() = 0;
+        virtual ~IGameModule() = default;
         
-        //delta since the start of the game
-        virtual void handleInput(std::size_t deltaTime, Input input, const std::vector<std::reference_wrapper<IEntity>>& entities) = 0;
-        virtual void update(std::size_t deltaTime, const std::vector<std::reference_wrapper<IEntity>>& entities) = 0;
+        virtual void handleInput(std::size_t deltaTime, Input input) = 0;
+        virtual void update(std::size_t deltaTime) = 0;
         
         //return an instruction sent from the game to the core, see the documentation for more details
         virtual std::vector<std::string> getInstruction() = 0;
+        // return a list of entities to display.
+        virtual EntitiesDescription getEntities() = 0;
         
         //init function to call on game start
-        virtual std::vector<std::reference_wrapper<IEntity>> initEntities(Map &map) = 0;
-        virtual std::map<EntityType, std::string> getSpriteDict() = 0;
+        virtual Map& getMap() = 0;
+        virtual std::map<EntityType, std::pair<std::string, std::size_t>> getSpriteDict() = 0;
+        virtual std::map<StaticScreen, std::string> getStaticScreen() = 0;
 };
-
-extern "C" {
-    IGameModule *entryPoint();
-    Signature getSignature();
-}
 ```
