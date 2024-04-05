@@ -38,10 +38,12 @@ namespace pacman {
         float speed = CHASE_SPEED;
         std::size_t idle = 0;
         EntityType type;
+        bool isOut = false;
         Input currentDirection = QUIT;
         Input lastDirection = QUIT;
 
         Input leaving();
+        Input dummyChoice(Map map);
     public:
         Enemy(Vector2D position, EntityType type);
         ~Enemy() = default;

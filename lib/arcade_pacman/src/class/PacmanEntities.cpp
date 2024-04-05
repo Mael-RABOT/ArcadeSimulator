@@ -42,20 +42,20 @@ namespace pacman {
         int y = std::round(this->position.y);
         switch (direction) {
             case UP:
-                if (map[y - 1][x] == WALL && this->position.y < ((float)y + PLAYER_SPEED))
+                if (map[y - 1][x] == WALL || std::round(this->position.x) != this->position.x)
                     this->position.y = std::round(this->position.y);
                 else
                     this->position.y = this->position.y - PLAYER_SPEED;
             break;
             case DOWN:
                 y = this->position.y;
-                if (map[y + 1][x] == WALL)
+                if (map[y + 1][x] == WALL || std::round(this->position.x) != this->position.x || (x == 10 && y == 7))
                     this->position.y = (int)this->position.y;
                 else
                     this->position.y = this->position.y + PLAYER_SPEED;
             break;
             case LEFT:
-                if (map[y][x - 1] == WALL && this->position.x < ((float)x + PLAYER_SPEED))
+                if (map[y][x - 1] == WALL || std::round(this->position.y) != this->position.y)
                     this->position.x = std::round(this->position.x);
                 else if (x - 1 < 0)
                     this->position.x = map[y].size() - 1;
@@ -64,7 +64,7 @@ namespace pacman {
             break;
             case RIGHT:
                 x = this->position.x;
-                if (map[y][x + 1] == WALL)
+                if (map[y][x + 1] == WALL || std::round(this->position.y) != this->position.y)
                     this->position.x = (int)this->position.x;
                 else if (x + 1 == (int)(map[y].size()))
                     this->position.x = 0;
@@ -110,8 +110,28 @@ namespace pacman {
         return UP;
     }
 
+    Input Enemy::dummyChoice(Map map) {
+        int x = std::round(this->position.x);
+        int y = std::round(this->position.y);
+        while (1) {
+            int var = std::rand();
+            if (map[y - 1][x] != WALL && var % 2 == 0)
+                return UP;
+            if (map[y + 1][x] != WALL && var % 3 == 0)
+                return DOWN;
+            if (map[y][x - 1] != WALL && var % 5 == 0)
+                return LEFT;
+            if (map[y][x + 1] != WALL && var % 7 == 0)
+                return RIGHT;
+        }
+    }
+
     Input Enemy::chooseDirection(Player player, Map map) {
-        return this->leaving();
+        if (std::round(this->position.x) == 10 && this->position.y == 7)
+            this->isOut = true;
+        if (!this->isOut)
+            return this->leaving();
+        return dummyChoice(map);
     }
 
     void Enemy::move(Input direction, Map map) {
@@ -121,20 +141,20 @@ namespace pacman {
         int y = std::round(this->position.y);
         switch (direction) {
             case UP:
-                if (map[y - 1][x] == WALL && this->position.y < ((float)y + this->speed))
+                if (map[y - 1][x] == WALL || std::round(this->position.x) != this->position.x)
                     this->position.y = std::round(this->position.y);
                 else
                     this->position.y = this->position.y - this->speed;
             break;
             case DOWN:
                 y = this->position.y;
-                if (map[y + 1][x] == WALL)
+                if (map[y + 1][x] == WALL || std::round(this->position.x) != this->position.x || (x == 10 && y == 7))
                     this->position.y = (int)this->position.y;
                 else
                     this->position.y = this->position.y + this->speed;
             break;
             case LEFT:
-                if (map[y][x - 1] == WALL && this->position.x < ((float)x + this->speed))
+                if (map[y][x - 1] == WALL || std::round(this->position.y) != this->position.y)
                     this->position.x = std::round(this->position.x);
                 else if (x - 1 < 0)
                     this->position.x = map[y].size() - 1;
@@ -143,7 +163,7 @@ namespace pacman {
             break;
             case RIGHT:
                 x = this->position.x;
-                if (map[y][x + 1] == WALL)
+                if (map[y][x + 1] == WALL || std::round(this->position.y) != this->position.y)
                     this->position.x = (int)this->position.x;
                 else if (x + 1 == (int)(map[y].size()))
                     this->position.x = 0;
