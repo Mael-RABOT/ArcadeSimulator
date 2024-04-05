@@ -40,9 +40,10 @@ namespace pacman {
         EntityType type;
         bool isOut = false;
         Input currentDirection = QUIT;
-        Input lastDirection = QUIT;
 
         Input leaving();
+        Input runAway(Player player, Map map);
+        Input angryChoice(Player player, Map map);
         Input dummyChoice(Map map);
     public:
         Enemy(Vector2D position, EntityType type);

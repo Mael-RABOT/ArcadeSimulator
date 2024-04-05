@@ -92,11 +92,8 @@ void GamePacman::update(std::size_t deltaTime) {
         default:
             throw pacman::quickError(pacman::Error::GAME_CRASH);
     }
-    
-    if (this->gameState != RUNNING) {
-        
+    if (this->gameState != RUNNING)
         return;
-    } 
     this->player.waiting();
     for (std::vector<pacman::AItem>::iterator i = this->listItems.begin(); i != this->listItems.end(); i++) {
         if (std::round(this->player.getPosition().x) == i->getPosition().x && std::round(this->player.getPosition().y) == i->getPosition().y) {

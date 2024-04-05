@@ -110,19 +110,76 @@ namespace pacman {
         return UP;
     }
 
+    Input Enemy::runAway(Player player, Map map) {
+        int x = std::round(this->position.x);
+        int y = std::round(this->position.y);
+        if (!(map[y - 1][x] != WALL && player.getPosition().y > y) &&
+            !(map[y + 1][x] != WALL && player.getPosition().y < y) &&
+            !(map[y][x - 1] != WALL && player.getPosition().x > x) &&
+            !(map[y][x + 1] != WALL && player.getPosition().x < x))
+            return this->currentDirection;
+        while (1) {
+            int var = std::rand();
+            if (map[y - 1][x] != WALL && var % 2 == 0 && player.getPosition().y > y) {
+                this->position.x = std::round(this->position.x);
+                return UP;
+            } if (map[y + 1][x] != WALL && var % 3 == 0 && player.getPosition().y < y) {
+                this->position.x = std::round(this->position.x);
+                return DOWN;
+            } if (map[y][x - 1] != WALL && var % 5 == 0 && player.getPosition().x > x) {
+                this->position.y = std::round(this->position.y);
+                return LEFT;
+            } if (map[y][x + 1] != WALL && var % 7 == 0 && player.getPosition().x < x) {
+                this->position.y = std::round(this->position.y);
+                return RIGHT;
+            }
+        }
+    }
+
+    Input Enemy::angryChoice(Player player, Map map) {
+        int x = std::round(this->position.x);
+        int y = std::round(this->position.y);
+        if (!(map[y - 1][x] != WALL && player.getPosition().y < y) &&
+            !(map[y + 1][x] != WALL && player.getPosition().y > y) &&
+            !(map[y][x - 1] != WALL && player.getPosition().x < x) &&
+            !(map[y][x + 1] != WALL && player.getPosition().x > x))
+            return this->currentDirection;
+        while (1) {
+            int var = std::rand();
+            if (map[y - 1][x] != WALL && var % 2 == 0 && player.getPosition().y < y) {
+                this->position.x = std::round(this->position.x);
+                return UP;
+            } if (map[y + 1][x] != WALL && var % 3 == 0 && player.getPosition().y > y) {
+                this->position.x = std::round(this->position.x);
+                return DOWN;
+            } if (map[y][x - 1] != WALL && var % 5 == 0 && player.getPosition().x < x) {
+                this->position.y = std::round(this->position.y);
+                return LEFT;
+            } if (map[y][x + 1] != WALL && var % 7 == 0 && player.getPosition().x > x) {
+                this->position.y = std::round(this->position.y);
+                return RIGHT;
+            }
+        }
+    }
+
     Input Enemy::dummyChoice(Map map) {
         int x = std::round(this->position.x);
         int y = std::round(this->position.y);
         while (1) {
             int var = std::rand();
-            if (map[y - 1][x] != WALL && var % 2 == 0)
+            if (map[y - 1][x] != WALL && var % 2 == 0) {
+                this->position.x = std::round(this->position.x);
                 return UP;
-            if (map[y + 1][x] != WALL && var % 3 == 0)
+            } if (map[y + 1][x] != WALL && var % 3 == 0) {
+                this->position.x = std::round(this->position.x);
                 return DOWN;
-            if (map[y][x - 1] != WALL && var % 5 == 0)
+            } if (map[y][x - 1] != WALL && var % 5 == 0) {
+                this->position.y = std::round(this->position.y);
                 return LEFT;
-            if (map[y][x + 1] != WALL && var % 7 == 0)
+            } if (map[y][x + 1] != WALL && var % 7 == 0) {
+                this->position.y = std::round(this->position.y);
                 return RIGHT;
+            }
         }
     }
 
@@ -131,7 +188,24 @@ namespace pacman {
             this->isOut = true;
         if (!this->isOut)
             return this->leaving();
-        return dummyChoice(map);
+        if (std::round(this->position.x) == this->position.x && std::round(this->position.y) == this->position.y) {
+            switch (this->entityType) {
+                case ENEMY1:
+                case ENEMY3:
+                    this->currentDirection = this->dummyChoice(map);
+                break;
+                case ENEMY2:
+                case ENEMY4:
+                    this->currentDirection = this->angryChoice(player, map);
+                break;
+                case ENEMY5:
+                    this->currentDirection = this->runAway(player, map);
+                break;
+                default:
+                    break;
+            }
+        }
+        return this->currentDirection;
     }
 
     void Enemy::move(Input direction, Map map) {
