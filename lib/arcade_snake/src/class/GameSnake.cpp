@@ -30,7 +30,7 @@ void GameSnake::turnLeft()
         direction.y = 0;
         return;
     }
-    if (direction.x == -1 && direction.y = 0) {
+    if (direction.x == -1 && direction.y == 0) {
         direction.x = 0;
         direction.y = 1;
     }
@@ -43,7 +43,7 @@ void GameSnake::turnRight()
         direction.y = 0;
         return;
     }
-    if (direction.x == 1 && direction.y = 0) {
+    if (direction.x == 1 && direction.y == 0) {
         direction.x = 0;
         direction.y = 1;
         return;
