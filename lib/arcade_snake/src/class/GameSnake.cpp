@@ -151,10 +151,10 @@ bool GameSnake::collide()
     futurePos.x += direction.x;
     futurePos.y += direction.y;
 
-    if (futurePos.x < 0 || futurePos.x > 15) {
+    if (futurePos.x < 0 || futurePos.x > 31) {
         return true;
     }
-    if (futurePos.y < 0 || futurePos.y > 15) {
+    if (futurePos.y < 0 || futurePos.y > 31) {
         return true;
     }
 
