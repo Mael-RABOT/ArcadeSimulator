@@ -9,7 +9,6 @@ class GameSnake : public IGameModule {
         std::size_t _live;
         Vector2D direction;
         std::vector<std::reference_wrapper<IEntity>> player;
-        void initMap();
         void initPlayer();
         void movePlayer();
         bool collide();

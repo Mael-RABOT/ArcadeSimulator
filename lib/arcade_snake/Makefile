@@ -15,7 +15,8 @@ all:    	$(EXE)
 %.o:    	%.cpp
 			$(CXX) $(CXXFLAGS)   -c -o $@ $<
 
-$(EXE):    $(FILE_OBJ)
+$(EXE):     $(FILE_OBJ)
+			$(shell cp --remove-destination assets/snake_* ../assets/)
 			$(CXX) --shared -o $(EXE) $^
 
 clean:

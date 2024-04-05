@@ -7,10 +7,9 @@ GameSnake::GameSnake()
     _live = 3;
     direction.x = 1;
     direction.y = 0;
-    initMap();
+    initPlayer();
 }
 
-GameSnake::GameSnake() {}
 GameSnake::~GameSnake() {}
 
 void GameSnake::turnLeft()
@@ -48,7 +47,7 @@ void GameSnake::turnRight()
         direction.y = 1;
         return;
     }
-    if (direction.x == 0 && direction.y = 1) {
+    if (direction.x == 0 && direction.y == 1) {
         direction.x = -1;
         direction.y = 0;
         return;
@@ -89,7 +88,8 @@ EntitiesDescription GameSnake::getEntities()
 {
     EntitiesDescription entities;
     for (std::reference_wrapper<IEntity> entity : player) {
-        entities.push_back({entity.get().getEntityType(), entity.get().getPosition()});
+        (void)entity.get().getEntityType();
+    //     entities.push_back({entity.get().getEntityType(), entity.get().getPosition()});
     }
     return entities;
 }
@@ -97,9 +97,9 @@ EntitiesDescription GameSnake::getEntities()
 std::map<EntityType, std::pair<std::string, std::size_t>> GameSnake::getSpriteDict()
 {
     std::map<EntityType, std::pair<std::string, std::size_t>> dict = {
-        {EntityType::PLAYER, {std::string("lib/assets/gentitler.png"), 0}},
-        {EntityType::PLAYER_SEC, {std::string("lib/assets/body.png"), 0}},
-        {EntityType::ITEM1, {std::string("lib/assets/apple.png"), 0}}
+        {EntityType::PLAYER, {std::string("lib/assets/snake_gentitler.png"), 0}},
+        {EntityType::PLAYER_SEC, {std::string("lib/assets/snake_body.png"), 0}},
+        {EntityType::ITEM1, {std::string("lib/assets/snake_apple.png"), 0}}
     };
     return dict;
 }
@@ -114,16 +114,6 @@ Map& GameSnake::getMap()
     return this->map;
 }
 
-void GameSnake::initMap()
-{
-    for (int i = 0; i < 16; i++) {
-        map.push_back({});
-        for (int j = 0; j < 16; j++) {
-            map[i].push_back(UNDEFINED);
-        }
-    }
-}
-
 void GameSnake::initPlayer()
 {
     PlayerElement head;
@@ -135,7 +125,7 @@ void GameSnake::initPlayer()
     for (int i = 0; i < 3; i++) {
         PlayerElement bodyCell;
         bodyCell.setEntityType(PLAYER_SEC);
-        current = std::reference_wrapper {bodyCell};
+        current = bodyCell;
         player.push_back(current);
     }
 }
