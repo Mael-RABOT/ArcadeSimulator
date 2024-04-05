@@ -89,16 +89,9 @@ void GameMenu::handleInput(std::size_t deltaTime, Input input) {
 void GameMenu::update(std::size_t deltaTime) {}
 
 std::vector<std::string> GameMenu::getInstruction() {
-    auto instructions = instruction;
     this->formatTextInstruction();
-
-    for (auto &i : instruction) {
-        if (i.find("loadLibrary") != std::string::npos) {
-            instructions.erase(instructions.begin());
-        }
-    }
-
-    return instructions;
+    this->formatUsernameInstruction();
+    return std::move(this->instruction);
 }
 
 EntitiesDescription GameMenu::getEntities() {
