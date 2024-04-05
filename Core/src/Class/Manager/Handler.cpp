@@ -17,6 +17,12 @@ namespace CoreModule {
                     static_cast<void>(this->loader->gameModule->getMap());
                     static_cast<void>(this->loader->gameModule->getEntities());
                     break;
+                case Input::NEXT_DI:
+                    this->loader->nextDisplay();
+                    break;
+                case Input::NEXT_GA:
+                    this->loader->nextGame();
+                    break;
                 default:
                     this->loader->gameModule->handleInput(elapsed_seconds.count(), event);
             }

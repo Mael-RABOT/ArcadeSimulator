@@ -6,6 +6,51 @@ namespace CoreModule {
         displayLibrary = nullptr;
         gameModule = nullptr;
         displayModule = nullptr;
+        gameIndex = 0;
+        displayIndex = 0;
+        initList();
+    }
+
+    void DLLoader::initList() {
+        DIR *dir;
+        struct dirent *ent;
+        if ((dir = opendir ("./lib")) != NULL) {
+            while ((ent = readdir (dir)) != NULL) {
+                std::string filename = ent->d_name;
+                if (filename.substr(filename.find_last_of(".") + 1) == "so") {
+                    std::string path = "./lib/" + filename;
+                    Signature signature = getSignature(path);
+                    if (signature == GAME) {
+                        gamesList.push_back(path);
+                    } else if (signature == GRAPHICAL) {
+                        displayList.push_back(path);
+                    }
+                }
+            }
+            closedir (dir);
+        }
+    }
+
+    void DLLoader::nextGame() {
+        if (gamesList.size() == 0) {
+            throw CoreError("Error: no game library found");
+        }
+        gameIndex = (gameIndex + 1) % gamesList.size();
+        this->close(Signature::GAME);
+        this->open(gamesList[gameIndex], Signature::GAME);
+        this->gameModule->getMap();
+        this->gameModule->getEntities();
+        this->displayModule->loadDicts(this->gameModule->getSpriteDict(), this->gameModule->getStaticScreen());
+    }
+
+    void DLLoader::nextDisplay() {
+        if (displayList.size() == 0) {
+            throw CoreError("Error: no display library found");
+        }
+        displayIndex = (displayIndex + 1) % displayList.size();
+        this->close(Signature::GRAPHICAL);
+        this->open(displayList[displayIndex], Signature::GRAPHICAL);
+        this->displayModule->loadDicts(this->gameModule->getSpriteDict(), this->gameModule->getStaticScreen());
     }
 
     DLLoader::~DLLoader() {

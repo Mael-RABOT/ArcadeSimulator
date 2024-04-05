@@ -6,6 +6,8 @@
 #include <typeinfo>
 #include <iostream>
 #include <unistd.h>
+#include <dlfcn.h>
+#include <dirent.h>
 
 #include "../Class/Error/Error.hpp"
 #include "Type.hpp"
@@ -24,6 +26,11 @@ namespace CoreModule {
             IDisplayModule* (*displayEntryPoint)();
             Signature (*displayGetSignature)();
 
+            std::vector<std::string> gamesList;
+            std::vector<std::string> displayList;
+            std::size_t gameIndex;
+            std::size_t displayIndex;
+
         public:
             IGameModule *gameModule;
             IDisplayModule *displayModule;
@@ -37,6 +44,10 @@ namespace CoreModule {
             Signature getSignature(const std::string &path);
             KiwiBool checkStatus();
 
+            void nextGame();
+            void nextDisplay();
+
             void loadDefault(std::string defaultGraphical);
+            void initList();
     };
 }
