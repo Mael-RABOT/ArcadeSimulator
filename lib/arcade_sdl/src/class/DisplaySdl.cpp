@@ -114,11 +114,58 @@ void DisplaySdl::updateText(const std::string& text, Vector2D pos, bool highligh
 
 void DisplaySdl::updateEntities(const EntitiesDescription& entities) {
     for (auto &entity : entities) {
-        (void)entity;
+        SDL_Surface* surface = IMG_Load(spriteDict[entity.first].first.c_str());
+        if (surface == nullptr) {
+            throw DisplaySdlError("Error: IMG_Load");
+        }
+
+        SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+        if (texture == nullptr) {
+            SDL_FreeSurface(surface);
+            throw DisplaySdlError("Error: SDL_CreateTextureFromSurface");
+        }
+
+        SDL_Rect sprite_rect;
+        sprite_rect.x = entity.second.x * UNIT_PIXEL_SIZE;
+        sprite_rect.y = entity.second.y * UNIT_PIXEL_SIZE;
+        sprite_rect.w = surface->w;
+        sprite_rect.h = surface->h;
+
+        SDL_RenderCopy(renderer, texture, NULL, &sprite_rect);
+
+        SDL_FreeSurface(surface);
+        SDL_DestroyTexture(texture);
     }
 }
 
 void DisplaySdl::updateMap(Map &map) {
+    for (std::size_t y = 0; y < map.size(); y++) {
+        for (std::size_t x = 0; x < map[y].size(); x++) {
+            if (map[y][x] == EntityType::WALL) {
+                SDL_Surface* surface = IMG_Load(spriteDict[EntityType::WALL].first.c_str());
+                if (surface == nullptr) {
+                    throw DisplaySdlError("Error: IMG_Load");
+                }
+
+                SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+                if (texture == nullptr) {
+                    SDL_FreeSurface(surface);
+                    throw DisplaySdlError("Error: SDL_CreateTextureFromSurface");
+                }
+
+                SDL_Rect sprite_rect;
+                sprite_rect.x = x * UNIT_PIXEL_SIZE;
+                sprite_rect.y = y * UNIT_PIXEL_SIZE;
+                sprite_rect.w = surface->w;
+                sprite_rect.h = surface->h;
+
+                SDL_RenderCopy(renderer, texture, NULL, &sprite_rect);
+
+                SDL_FreeSurface(surface);
+                SDL_DestroyTexture(texture);
+            }
+        }
+    }
 }
 
 void DisplaySdl::staticScreen(StaticScreen screen) {
