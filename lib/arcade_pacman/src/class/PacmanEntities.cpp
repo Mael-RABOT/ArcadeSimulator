@@ -159,7 +159,13 @@ namespace pacman {
     }
 
     void Enemy::vulnerable(bool set) {
-        this->entityType = (set) ? ENEMY5 : this->type;
+        if (set) {
+            this->entityType = ENEMY5;
+            this->speed = FLEE_SPEED;
+        } else {
+            this->entityType = this->type;
+            this->speed = CHASE_SPEED;
+        }
     }
 
     void Enemy::waiting() {
