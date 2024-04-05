@@ -24,6 +24,8 @@ namespace CoreModule {
             void HandleLoadInstruction(std::string instruction);
             void HandleTextInstruction(std::string instruction);
 
+            std::string current_game;
+
         public:
             DLLoader *loader;
             Manager();

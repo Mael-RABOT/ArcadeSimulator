@@ -5,6 +5,7 @@ namespace CoreModule {
         this->loader = new DLLoader();
         start = std::chrono::system_clock::now();
         username = "";
+        current_game = "./lib/arcade_menu.so";
     }
 
     Manager::~Manager() { delete this->loader; }

@@ -11,6 +11,12 @@ namespace CoreModule {
                     this->loader->close(Signature::GAME);
                     this->loader->open("./lib/arcade_menu.so", Signature::GAME);
                     break;
+                case Input::RESET:
+                    this->loader->close(Signature::GAME);
+                    this->loader->open(this->current_game, Signature::GAME);
+                    static_cast<void>(this->loader->gameModule->getMap());
+                    static_cast<void>(this->loader->gameModule->getEntities());
+                    break;
                 default:
                     this->loader->gameModule->handleInput(elapsed_seconds.count(), event);
             }
@@ -43,6 +49,9 @@ namespace CoreModule {
         this->loader->close(static_cast<Signature>(signature));
         this->loader->open(lib, static_cast<Signature>(signature));
         this->loader->displayModule->loadDicts(this->loader->gameModule->getSpriteDict(), this->loader->gameModule->getStaticScreen());
+        if (static_cast<Signature>(signature) == Signature::GAME) {
+            this->current_game = lib;
+        }
     }
 
     void Manager::HandleInstruction() {

@@ -47,6 +47,15 @@ std::vector<Input> DisplayNcurses::event() {
         case ' ':
             inputs.push_back(ACTION);
             break;
+        case 'r':
+            inputs.push_back(RESET);
+            break;
+        case 'd':
+            inputs.push_back(NEXT_DI);
+            break;
+        case 'g':
+            inputs.push_back(NEXT_GA);
+            break;
         default:
             break;
     }

@@ -72,6 +72,15 @@ std::vector<Input> DisplaySdl::event() {
                     case SDLK_SPACE:
                         inputs.push_back(ACTION);
                         break;
+                    case SDLK_r:
+                        inputs.push_back(RESET);
+                        break;
+                    case SDLK_d:
+                        inputs.push_back(NEXT_DI);
+                        break;
+                    case SDLK_g:
+                        inputs.push_back(NEXT_GA);
+                        break;
                     default:
                         break;
                 }

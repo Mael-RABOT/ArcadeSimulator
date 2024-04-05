@@ -50,6 +50,8 @@ void GamePacman::handleInput(std::size_t deltaTime, Input input) {
                 this->instructions.push_back(std::string("loadLibrary lib/arcade_menu.so ") + std::to_string(Signature::GAME));
             }
         break;
+        default:
+            break;
     }
 }
 

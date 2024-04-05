@@ -51,6 +51,15 @@ std::vector<Input> DisplaySfml::event() {
                     case sf::Keyboard::M:
                         inputs.push_back(Input::MENU);
                         break;
+                    case sf::Keyboard::R:
+                        inputs.push_back(Input::RESET);
+                        break;
+                    case sf::Keyboard::D:
+                        inputs.push_back(Input::NEXT_DI);
+                        break;
+                    case sf::Keyboard::G:
+                        inputs.push_back(Input::NEXT_GA);
+                        break;
                     default:
                         break;
                 }
