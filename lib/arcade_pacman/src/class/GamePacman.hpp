@@ -13,6 +13,7 @@
 
 class GamePacman : public IGameModule {
     private:
+        bool hard = false;
         int score = 0;
         int lives = 3;
         std::size_t endEffect = 0;

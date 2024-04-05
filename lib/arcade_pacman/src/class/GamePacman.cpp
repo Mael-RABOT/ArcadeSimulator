@@ -29,6 +29,26 @@ void GamePacman::handleInput(std::size_t deltaTime, Input input) {
             this->instructions.push_back(std::string("loadLibrary lib/arcade_menu.so ") + std::to_string(Signature::GAME));
         break;
         case ACTION:
+            if (this->gameState == WIN) {
+                this->hard = true;
+                this->listEnemies.clear();
+                this->listEnemies.push_back(pacman::Enemy(Vector2D(9, 9, RIGHT), ENEMY1));
+                this->listEnemies.push_back(pacman::Enemy(Vector2D(9, 10, RIGHT), ENEMY2));
+                this->listEnemies.push_back(pacman::Enemy(Vector2D(11, 9, LEFT), ENEMY3));
+                this->listEnemies.push_back(pacman::Enemy(Vector2D(11, 10, LEFT), ENEMY4));
+                this->listLives.clear();
+                lives = 3;
+                for (int i = 0; i < 3; i++)
+                    this->listLives.push_back(pacman::Life(Vector2D(27 + (2 * i), 2.5)));
+                this->player = pacman::Player();
+                this->score = 0;
+                this->endEffect = 0;
+                this->map.clear();
+                this->listItems.clear();
+                this->getMap();
+            } else if (this->gameState == GAMEOVER) {
+                this->instructions.push_back(std::string("loadLibrary lib/arcade_menu.so ") + std::to_string(Signature::GAME));
+            }
         break;
     }
 }
