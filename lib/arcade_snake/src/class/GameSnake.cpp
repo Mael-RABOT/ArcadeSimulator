@@ -71,12 +71,7 @@ void GameSnake::handleInput(std::size_t deltaTime, Input input)
 
 void GameSnake::update(std::size_t deltaTime)
 {
-    for (std::size_t entityI; std::reference_wrapper<IEntity> entity : entities) {
-        IEntity& current = entity.get();
-        if (current.getEntityType() == PLAYER) {
-            current.setPosition(current.getPosition() += direction);
-        }
-    }
+    movePlayer();
 }
 
 std::vector <std::string> GameSnake::getInstruction()
@@ -86,12 +81,12 @@ std::vector <std::string> GameSnake::getInstruction()
 
 EntitiesDescription GameSnake::getEntities()
 {
-    EntitiesDescription entities;
-    for (std::reference_wrapper<IEntity> entity : player) {
-        (void)entity.get().getEntityType();
-    //     entities.push_back({entity.get().getEntityType(), entity.get().getPosition()});
+    EntitiesDescription ents;
+    for (auto entity : this->player) {
+        entity.getEntityType();
+        ents.push_back({entity.getEntityType(), entity.getPosition()});
     }
-    return entities;
+    return ents;
 }
 
 std::map<EntityType, std::pair<std::string, std::size_t>> GameSnake::getSpriteDict()
@@ -135,7 +130,8 @@ void GameSnake::movePlayer()
 {
     int i = player.size() - 1;
     Vector2D futurePos = player.at(0).getPosition();
-    futurePos += direction;
+    futurePos.x += direction.x;
+    futurePos.y += direction.y;
 
     while (i >= 0) {
         if (i == 0) {
@@ -154,7 +150,9 @@ void GameSnake::movePlayer()
 bool GameSnake::collide()
 {
     Vector2D futurePos = player.at(0).getPosition();
-    futurePos += direction;
+    futurePos.x += direction.x;
+    futurePos.y += direction.y;
+
     if (futurePos.x < 0 || futurePos.x > 15) {
         return true;
     }
