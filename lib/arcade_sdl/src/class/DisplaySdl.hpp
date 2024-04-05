@@ -1,12 +1,14 @@
 #pragma once
 
 #include <SDL2/SDL.h>
-//#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_ttf.h>
 
 #include <string>
 
 #include "ArcadeException.hpp"
 #include "IDisplayModule.hpp"
+
+#define UNIT_PIXEL_SIZE 24
 
 class DisplaySdl : public IDisplayModule {
     private:
@@ -14,7 +16,7 @@ class DisplaySdl : public IDisplayModule {
         std::map<StaticScreen, std::string> splashDict;
         SDL_Window *window;
         SDL_Renderer *renderer;
-//        TTF_Font *font;
+        TTF_Font *font;
 
     public:
         DisplaySdl();

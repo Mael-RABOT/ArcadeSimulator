@@ -9,8 +9,19 @@ DisplaySdl::DisplaySdl() {
         if (window == nullptr) throw DisplaySdlError("Error: SDL_CreateWindow");
         renderer = SDL_CreateRenderer(window, -1, 0);
         if (renderer == nullptr) throw DisplaySdlError("Error: SDL_CreateRenderer");
-        //font = TTF_OpenFont("./lib/assets/NotoSansCJK-Regular.ttc", 24);
-        //if (font == nullptr) throw DisplaySdlError("Error: TTF_OpenFont");
+
+        if (TTF_Init() == -1) {
+            std::string errorMsg = "Error: TTF_Init - ";
+            errorMsg += TTF_GetError();
+            throw DisplaySdlError(errorMsg);
+        }
+
+        font = TTF_OpenFont("./lib/assets/font.ttf", 24);
+        if (font == nullptr) {
+            std::string errorMsg = "Error: TTF_OpenFont - ";
+            errorMsg += TTF_GetError();
+            throw DisplaySdlError(errorMsg);
+        }
     } catch (...) {
         SDL_DestroyWindow(window);
         throw;
@@ -26,75 +37,79 @@ void DisplaySdl::display() {
 }
 
 void DisplaySdl::clear() {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 }
 
 std::vector<Input> DisplaySdl::event() {
     std::vector<Input> inputs;
-//    SDL_Event event;
-//    while (SDL_PollEvent(&event)) {
-//        switch (event.type) {
-//            case SDL_QUIT:
-//                inputs.push_back(QUIT);
-//                break;
-//            case SDL_KEYDOWN:
-//                switch (event.key.keysym.sym) {
-//                    case SDLK_UP:
-//                        inputs.push_back(UP);
-//                        break;
-//                    case SDLK_DOWN:
-//                        inputs.push_back(DOWN);
-//                        break;
-//                    case SDLK_LEFT:
-//                        inputs.push_back(LEFT);
-//                        break;
-//                    case SDLK_RIGHT:
-//                        inputs.push_back(RIGHT);
-//                        break;
-//                    case SDLK_q:
-//                        inputs.push_back(QUIT);
-//                        break;
-//                    case SDLK_m:
-//                        inputs.push_back(MENU);
-//                        break;
-//                    case SDLK_SPACE:
-//                        inputs.push_back(ACTION);
-//                        break;
-//                    default:
-//                        break;
-//                }
-//                break;
-//            default:
-//                break;
-//        }
-//    }
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_QUIT:
+                inputs.push_back(QUIT);
+                break;
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.sym) {
+                    case SDLK_UP:
+                        inputs.push_back(UP);
+                        break;
+                    case SDLK_DOWN:
+                        inputs.push_back(DOWN);
+                        break;
+                    case SDLK_LEFT:
+                        inputs.push_back(LEFT);
+                        break;
+                    case SDLK_RIGHT:
+                        inputs.push_back(RIGHT);
+                        break;
+                    case SDLK_q:
+                        inputs.push_back(QUIT);
+                        break;
+                    case SDLK_m:
+                        inputs.push_back(MENU);
+                        break;
+                    case SDLK_SPACE:
+                        inputs.push_back(ACTION);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
     return inputs;
 }
 
 void DisplaySdl::updateText(const std::string& text, Vector2D pos, bool highlight) {
-/*    SDL_Color color = highlight ? SDL_Color{255, 255, 255, 255} : SDL_Color{127, 127, 127, 255}; // white if highlighted, gray otherwise
-    SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
-    if (surface == nullptr) {
-        this->~DisplaySdl();
+    SDL_Color color = {255, 255, 255, 255};
+    if (highlight) {
+        color = {255, 0, 0, 255};
+    }
+
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text.c_str(), color);
+    if (surfaceMessage == nullptr) {
         throw DisplaySdlError("Error: TTF_RenderText_Solid");
     }
 
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-    if (texture == nullptr) {
-        SDL_FreeSurface(surface);
-        this->~DisplaySdl();
+    SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    if (message == nullptr) {
+        SDL_FreeSurface(surfaceMessage);
         throw DisplaySdlError("Error: SDL_CreateTextureFromSurface");
     }
 
-    SDL_Rect rect;
-    rect.x = pos.x;
-    rect.y = pos.y;
-    SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h); // get the width and height of the texture
+    SDL_Rect message_rect;
+    message_rect.x = pos.x * UNIT_PIXEL_SIZE;
+    message_rect.y = pos.y * UNIT_PIXEL_SIZE;
+    message_rect.w = surfaceMessage->w;
+    message_rect.h = surfaceMessage->h;
 
-    SDL_RenderCopy(renderer, texture, NULL, &rect);
+    SDL_RenderCopy(renderer, message, NULL, &message_rect);
 
-    SDL_DestroyTexture(texture);
-    SDL_FreeSurface(surface);*/
+    SDL_FreeSurface(surfaceMessage);
+    SDL_DestroyTexture(message);
 }
 
 void DisplaySdl::updateEntities(const EntitiesDescription& entities) {

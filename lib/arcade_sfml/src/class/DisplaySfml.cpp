@@ -2,7 +2,7 @@
 
 DisplaySfml::DisplaySfml() {
     window = new sf::RenderWindow(sf::VideoMode(800, 600), "Arcade");
-    font.loadFromFile("./lib/assets/NotoSansCJK-Regular.ttc");
+    font.loadFromFile("./lib/assets/font.ttf");
 }
 
 DisplaySfml::~DisplaySfml() {
