@@ -21,7 +21,8 @@ void GamePacman::handleInput(std::size_t deltaTime, Input input) {
         case DOWN:
         case LEFT:
         case RIGHT:
-            this->player.move(input, this->map);
+            if (this->gameState == RUNNING)
+                this->player.move(input, this->map);
         break;
         case QUIT:
         case MENU:
@@ -32,6 +33,18 @@ void GamePacman::handleInput(std::size_t deltaTime, Input input) {
     }
 }
 
+GameState GamePacman::computeState() {
+    if (this->lives <= 0)
+        return GAMEOVER;
+    bool isWin = true;
+    for (auto item : this->listItems) {
+        isWin = isWin && (item.getEntityType() != ITEM1);
+    }
+    if (isWin)
+        return WIN;
+    return RUNNING;
+}
+
 void GamePacman::update(std::size_t deltaTime) {
     if (this->map.empty())
         throw pacman::quickError(pacman::Error::MAP_UNINITIALIZED);
@@ -39,6 +52,29 @@ void GamePacman::update(std::size_t deltaTime) {
         throw pacman::quickError(pacman::Error::ENTITIES_UNINITIALIZED);
     if (!this->instructions.empty())
         this->instructions.clear();
+    this->gameState = this->computeState();
+    this->instructions.push_back(std::string("displayText STATE 22 4 false"));
+    switch (this->gameState) {
+        case RUNNING:
+            this->instructions.push_back(std::string("displayText RUNNING 27 4 false"));
+        break;
+        case WIN:
+            this->instructions.push_back(std::string("displayText WIN 27 4 false"));
+            return;
+        break;
+        case GAMEOVER:
+            this->instructions.push_back(std::string("displayText GAME 27 4 false"));
+            this->instructions.push_back(std::string("displayText OVER 31 4 false"));
+            return;
+        break;
+        default:
+            throw pacman::quickError(pacman::Error::GAME_CRASH);
+    }
+    
+    if (this->gameState != RUNNING) {
+        
+        return;
+    } 
     this->player.waiting();
     for (std::vector<pacman::AItem>::iterator i = this->listItems.begin(); i != this->listItems.end(); i++) {
         if (std::round(this->player.getPosition().x) == i->getPosition().x && std::round(this->player.getPosition().y) == i->getPosition().y) {
@@ -124,6 +160,8 @@ Map& GamePacman::getMap() {
             } else if (*c == ' ') {
                 mapLine.push_back(UNDEFINED);
                 this->listItems.push_back((pacman::AItem)(pacman::Pacdot(Vector2D(x, y))));
+            } else if (*c == '!') {
+                mapLine.push_back(UNDEFINED);
             } else if (*c != '\n') {
                 throw pacman::quickError(pacman::Error::MAP_CORRUPTED);
             }

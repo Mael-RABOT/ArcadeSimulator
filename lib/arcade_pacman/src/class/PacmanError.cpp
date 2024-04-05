@@ -18,6 +18,9 @@ pacman::Error pacman::quickError(const Error::ErrorType_t type) {
         case pacman::Error::FORBIDDEN_ACTION:
             message = std::string("PACMAN : ERROR : A forbidden action has been asked to an entity.");
         break;
+        case pacman::Error::GAME_CRASH:
+            message = std::string("PACMAN : ERROR : The game has been corrupted and crash.");
+        break;
         default:
             message = std::string("PACMAN : ERROR : Undifined error.");
     }

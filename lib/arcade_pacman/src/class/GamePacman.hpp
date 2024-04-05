@@ -22,8 +22,10 @@ class GamePacman : public IGameModule {
         std::vector<pacman::AItem> listItems;
         std::vector<pacman::Life> listLives;
         std::vector<std::string> instructions;
+        GameState gameState = RUNNING;
 
         void openDoor();
+        GameState computeState();
     public:
         GamePacman();
         ~GamePacman() = default;
