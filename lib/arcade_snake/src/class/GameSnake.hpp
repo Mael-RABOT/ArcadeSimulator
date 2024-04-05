@@ -13,6 +13,8 @@ class GameSnake : public IGameModule {
         void initPlayer();
         void movePlayer();
         bool collide();
+        void turnLeft();
+        void turnRight();
     protected:
         Map map;
         std::vector<std::reference_wrapper<IEntity>> entities;

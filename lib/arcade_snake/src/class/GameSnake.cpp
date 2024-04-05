@@ -13,16 +13,60 @@ GameSnake::GameSnake()
 GameSnake::GameSnake() {}
 GameSnake::~GameSnake() {}
 
-void GameSnake::handleInput(std::size_t deltaTime, Input input)
+void GameSnake::turnLeft()
 {
-    if (input == LEFT) {
+    if (direction.x == 0 && direction.y == -1) {
         direction.x = -1;
         direction.y = 0;
         return;
     }
-    if (input == RIGHT) {
+    if (direction.x == 1 && direction.y == 0) {
+        direction.x = 0;
+        direction.y = -1;
+        return;
+    }
+    if (direction.x == 0 && direction.y == 1) {
         direction.x = 1;
         direction.y = 0;
+        return;
+    }
+    if (direction.x == -1 && direction.y = 0) {
+        direction.x = 0;
+        direction.y = 1;
+    }
+}
+
+void GameSnake::turnRight()
+{
+    if (direction.x == 0 && direction.y == -1) {
+        direction.x = 1;
+        direction.y = 0;
+        return;
+    }
+    if (direction.x == 1 && direction.y = 0) {
+        direction.x = 0;
+        direction.y = 1;
+        return;
+    }
+    if (direction.x == 0 && direction.y = 1) {
+        direction.x = -1;
+        direction.y = 0;
+        return;
+    }
+    if (direction.x == -1 && direction.y == 0) {
+        direction.x = 0;
+        direction.y = - 1;
+    }
+}
+
+void GameSnake::handleInput(std::size_t deltaTime, Input input)
+{
+    if (input == LEFT) {
+        turnLeft();
+        return;
+    }
+    if (input == RIGHT) {
+        turnRight();
     }
 }
 
