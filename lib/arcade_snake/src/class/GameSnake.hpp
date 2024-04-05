@@ -43,12 +43,12 @@ class AEntity : public IEntity {
     public:
         AEntity();
         ~AEntity();
-        EntityType getEntityType() const;
-        void setEntityType(EntityType);
-        Vector2D getPosition() const;
-        void setPosition(Vector2D position);
-        bool getVisibility() const;
-        void setVisibility(bool visibility);
+        EntityType getEntityType() const override;
+        void setEntityType(EntityType) override;
+        Vector2D getPosition() const override;
+        void setPosition(Vector2D position) override;
+        bool getVisibility() const override;
+        void setVisibility(bool visibility) override;
 };
 
 class PlayerElement : public AEntity {

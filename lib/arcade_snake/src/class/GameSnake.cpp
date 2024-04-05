@@ -44,6 +44,9 @@ std::vector <std::string> GameSnake::getInstruction()
 EntitiesDescription GameSnake::getEntities()
 {
     EntitiesDescription entities;
+    for (std::reference_wrapper<IEntity> entity : player) {
+        entities.push_back({entity.get().getEntityType(), entity.get().getPosition()});
+    }
     return entities;
 }
 
