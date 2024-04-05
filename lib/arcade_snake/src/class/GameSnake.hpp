@@ -8,7 +8,7 @@ class GameSnake : public IGameModule {
         std::size_t _score;
         std::size_t _live;
         Vector2D direction;
-        std::vector<std::reference_wrapper<IEntity>> player;
+        std::vector<IEntity> player;
         void initPlayer();
         void movePlayer();
         bool collide();
@@ -16,7 +16,7 @@ class GameSnake : public IGameModule {
         void turnRight();
     protected:
         Map map;
-        std::vector<std::reference_wrapper<IEntity>> entities;
+        std::vector<IEntity> entities;
         EntitiesDescription entityDescriptor;
 
     public:

@@ -118,13 +118,14 @@ void GameSnake::initPlayer()
 {
     PlayerElement head;
     head.setEntityType(PLAYER);
-    head.setPosition({3, 3});
+    head.setPosition({7, 7});
     std::reference_wrapper current {head};
     player.push_back(current);
 
     for (int i = 0; i < 3; i++) {
         PlayerElement bodyCell;
         bodyCell.setEntityType(PLAYER_SEC);
+        bodyCell.setPosition({7 - i + 1, 7});
         current = bodyCell;
         player.push_back(current);
     }
@@ -133,7 +134,7 @@ void GameSnake::initPlayer()
 void GameSnake::movePlayer()
 {
     int i = player.size() - 1;
-    Vector2D futurePos = player.at(0).get().getPosition();
+    Vector2D futurePos = player.at(0).getPosition();
     futurePos += direction;
 
     while (i >= 0) {
@@ -142,17 +143,17 @@ void GameSnake::movePlayer()
                 _state = GAMEOVER;
                 return;
             }
-            player.at(i).get().setPosition(futurePos);
+            player.at(i).setPosition(futurePos);
             return;
         }
-        player.at(i).get().setPosition(player.at(i - 1).get().getPosition());
+        player.at(i).setPosition(player.at(i - 1).getPosition());
         i--;
     }
 }
 
 bool GameSnake::collide()
 {
-    Vector2D futurePos = player.at(0).get().getPosition();
+    Vector2D futurePos = player.at(0).getPosition();
     futurePos += direction;
     if (futurePos.x < 0 || futurePos.x > 15) {
         return true;
@@ -164,7 +165,7 @@ bool GameSnake::collide()
     int i = player.size() - 1;
 
     while (i > 0) {
-        if (futurePos == player.at(i).get().getPosition()) {
+        if (futurePos == player.at(i).getPosition()) {
             return true;
         }
         i--;
