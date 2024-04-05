@@ -96,7 +96,12 @@ EntitiesDescription GameSnake::getEntities()
 
 std::map<EntityType, std::pair<std::string, std::size_t>> GameSnake::getSpriteDict()
 {
-    return std::map<EntityType, std::pair<std::string, std::size_t>>();
+    std::map<EntityType, std::pair<std::string, std::size_t>> dict = {
+        {EntityType::PLAYER, {std::string("lib/assets/gentitler.png"), 0}},
+        {EntityType::PLAYER_SEC, {std::string("lib/assets/body.png"), 0}},
+        {EntityType::ITEM1, {std::string("lib/assets/apple.png"), 0}}
+    };
+    return dict;
 }
 
 std::map <StaticScreen, std::string> GameSnake::getStaticScreen()
