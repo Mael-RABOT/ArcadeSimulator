@@ -234,7 +234,7 @@ std::map<EntityType, std::pair<std::string, std::size_t>> GamePacman::getSpriteD
         {EntityType::ENEMY3, {std::string("lib/assets/pacman_enemy3.png"), 2}},
         {EntityType::ENEMY4, {std::string("lib/assets/pacman_enemy4.png"), 2}},
         {EntityType::ENEMY5, {std::string("lib/assets/pacman_enemy5.png"), 2}},
-        {EntityType::ENEMY5_DYING, {std::string("lib/assets/pacman_enemy5_dying.png"), 2}}
+        {EntityType::ENEMY5_DYING, {std::string("lib/assets/pacman_enemy5_dying.png"), 0}}
     };
     return dict;
 }
