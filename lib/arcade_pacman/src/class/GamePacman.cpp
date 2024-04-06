@@ -116,22 +116,23 @@ void GamePacman::update(std::size_t deltaTime) {
     std::size_t index = 0;
     for (std::vector<pacman::Enemy>::iterator i = this->listEnemies.begin(); i != this->listEnemies.end(); i++) {
         i->waiting(deltaTime);
-        i->vulnerable(deltaTime < this->endEffect);
-        Input direction = QUIT;
-        if (deltaTime > 10000 * (index + 1))
-            direction = i->chooseDirection(this->player, this->map);
-        if (i->getEntityType() != ENEMY5_DYING)
+        if (i->getEntityType() != ENEMY5_DYING) {
+            i->vulnerable(deltaTime < this->endEffect);
+            Input direction = QUIT;
+            if (deltaTime > 10000 * (index + 1))
+                direction = i->chooseDirection(this->player, this->map);
             i->move(direction, this->map);
-        if (std::round(this->player.getPosition().x) == i->getPosition().x && std::round(this->player.getPosition().y) == i->getPosition().y && i->getEntityType() != ENEMY5_DYING) {
-            if (i->getEntityType() == ENEMY5) {
-                this->score += 1000;
-                *i = pacman::Enemy(Vector2D(10, 10, RIGHT), i->getType());
-                i->kill(deltaTime);
-            } else {
-                this->player.kill();
-                this->lives--;
-                if (this->lives >= 0)
-                    this->listLives[this->lives].setVisibility(false);
+            if (std::round(this->player.getPosition().x) == i->getPosition().x && std::round(this->player.getPosition().y) == i->getPosition().y && i->getEntityType() != ENEMY5_DYING) {
+                if (i->getEntityType() == ENEMY5) {
+                    this->score += 1000;
+                    *i = pacman::Enemy(Vector2D(10, 10, RIGHT), i->getType());
+                    i->kill(deltaTime);
+                } else {
+                    this->player.kill();
+                    this->lives--;
+                    if (this->lives >= 0)
+                        this->listLives[this->lives].setVisibility(false);
+                }
             }
         }
         index++;
