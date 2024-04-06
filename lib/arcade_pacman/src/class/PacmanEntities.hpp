@@ -77,7 +77,7 @@ namespace pacman {
 
     class Bonus : public AItem {
     public:
-        Bonus(Vector2D position, std::size_t rarity);
+        Bonus(Vector2D position, EntityType type);
         ~Bonus() = default;
     };
 

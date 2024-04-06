@@ -105,6 +105,11 @@ void GamePacman::update(std::size_t deltaTime) {
                 i->setEntityType(UNDEFINED);
             }
         }
+        if (!i->getVisibility()) {
+            std::vector<EntityType> bonuses = {ITEM3, ITEM4, ITEM5, ITEM6, ITEM7};
+            if (std::rand() % 10000 == 0)
+                *i = pacman::Bonus(i->getPosition(), bonuses[std::rand() % 5]);
+        }
     }
     if (deltaTime > 10000)
         this->openDoor();

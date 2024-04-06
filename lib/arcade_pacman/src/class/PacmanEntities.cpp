@@ -290,8 +290,8 @@ namespace pacman {
         : AItem(ITEM2, position, 10)
     {}
 
-    Bonus::Bonus(Vector2D position, std::size_t rarity)
-        : AItem((EntityType)(ITEM3 + rarity), position, 100 * (rarity + 1))
+    Bonus::Bonus(Vector2D position, EntityType type)
+        : AItem(type, position, 50 * (int)type)
     {}
 
     Life::Life(Vector2D position)
