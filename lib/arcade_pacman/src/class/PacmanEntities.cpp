@@ -201,6 +201,9 @@ namespace pacman {
                 case ENEMY5:
                     this->currentDirection = this->runAway(player, map);
                 break;
+                case ENEMY5_DYING:
+                    this->currentDirection = QUIT;
+                break;
                 default:
                     break;
             }
@@ -257,21 +260,30 @@ namespace pacman {
             this->entityType = ENEMY5;
             this->speed = FLEE_SPEED;
         } else {
-            this->entityType = this->type;
+            if (this->entityType != ENEMY5_DYING)
+                this->entityType = this->type;
             this->speed = CHASE_SPEED;
         }
     }
 
-    void Enemy::waiting() {
-        if (this->entityType == ENEMY5) {
-            this->idle++;
-            if (this->idle >= 60) {
-                this->entityType = (EntityType)(ENEMY1 + this->type);
+    void Enemy::kill(std::size_t deltaTime) {
+        this->idle = deltaTime;
+        this->entityType = ENEMY5_DYING;
+    }
+
+    void Enemy::waiting(std::size_t deltaTime) {
+        if (this->entityType == ENEMY5_DYING) {
+            if (deltaTime > this->idle + 10000) {
+                this->entityType = this->type;
                 this->idle = 0;
             }
         } else {
             return;
         }
+    }
+
+    EntityType Enemy::getType() {
+        return this->type;
     }
 
     AItem::AItem(EntityType type, Vector2D position, std::size_t value)

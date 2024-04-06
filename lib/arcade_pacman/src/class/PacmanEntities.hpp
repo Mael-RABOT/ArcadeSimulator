@@ -51,7 +51,9 @@ namespace pacman {
         Input chooseDirection(Player player, Map map);
         void move(Input direction, Map map);
         void vulnerable(bool set);
-        void waiting();
+        void waiting(std::size_t deltaTime);
+        void kill(std::size_t deltaTime);
+        EntityType getType();
     };
 
     class AItem : public AEntity {
