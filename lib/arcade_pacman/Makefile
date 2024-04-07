@@ -15,7 +15,7 @@ all:		$(EXE)
 			$(CXX) $(CXXFLAGS)   -c -o $@ $<
 
 $(EXE):		$(OBJ)
-			$(shell cp --remove-destination assets/pacman_* ../assets/)
+			$(shell cp --remove-destination assets/pacman_* ../assets/MAN/)
 			$(CXX) --shared -o $(EXE) $^ $(LDFLAGS)
 
 clean:
@@ -23,7 +23,7 @@ clean:
 			$(shell find * -name "vgcore.*" -delete)
 
 fclean:		clean
-			rm -rf ../assets/pacman_*
+			rm -rf ../assets/MAN/pacman_*
 			rm -rf $(EXE)
 
 re:			fclean all

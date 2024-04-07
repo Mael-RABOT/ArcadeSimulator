@@ -10,6 +10,12 @@ arcade
 *.gcno
 *.gcda
 
+## Other Group lib
+lib/.otherLib/
+lib/assets/CTP/
+lib/assets/MYM/
+*.tgz
+
 ## Unused files
 *.slo
 *.lo
@@ -26,6 +32,7 @@ valgrind.log.*
 *.gcov
 *.info
 *.so
+*.tgz
 
 ## Unused folder
 cmake-build-debug

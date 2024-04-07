@@ -1,4 +1,4 @@
-#include "DisplaySdl.hpp"
+#include "DisplaySdl2.hpp"
 
 DisplaySdl::DisplaySdl() {
     try {

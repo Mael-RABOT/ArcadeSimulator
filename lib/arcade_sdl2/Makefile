@@ -9,7 +9,7 @@ CXXFLAGS    =	-Wall -Wextra $(UNUSED) -std=c++20 -fpic -I../../include -I../../E
 LDFLAGS 	= 	-lSDL2 -lSDL2_ttf -lSDL2_image
 SAN			=	-g3
 
-EXE    		=	../arcade_sdl.so
+EXE    		=	../arcade_sdl2.so
 
 all:    	$(EXE)
 

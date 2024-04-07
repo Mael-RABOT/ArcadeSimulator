@@ -173,7 +173,7 @@ Map& GamePacman::getMap() {
     if (!this->map.empty())
         return this->map;
     std::ifstream mapFile;
-    mapFile.open ("lib/assets/pacman_map.txt");
+    mapFile.open ("lib/assets/MAN/pacman_map.txt");
     if (!mapFile.is_open()) {
         throw pacman::quickError(pacman::Error::MAP_NOT_FOUND);
     }
@@ -219,23 +219,23 @@ Map& GamePacman::getMap() {
 
 std::map<EntityType, std::pair<std::string, std::size_t>> GamePacman::getSpriteDict() {
     std::map<EntityType, std::pair<std::string, std::size_t>> dict = {
-        {EntityType::WALL, {std::string("lib/assets/pacman_wall.png"), 0}},
-        {EntityType::PLAYER, {std::string("lib/assets/pacman_player.png"), 0}},
-        {EntityType::PLAYER_MOVE, {std::string("lib/assets/pacman_player_move.png"), 4}},
-        {EntityType::PLAYER_DYING, {std::string("lib/assets/pacman_player_dying.png"), 9}},
-        {EntityType::ITEM1, {std::string("lib/assets/pacman_item1.png"), 0}},
-        {EntityType::ITEM2, {std::string("lib/assets/pacman_item2.png"), 0}},
-        {EntityType::ITEM3, {std::string("lib/assets/pacman_item3.png"), 0}},
-        {EntityType::ITEM4, {std::string("lib/assets/pacman_item4.png"), 0}},
-        {EntityType::ITEM5, {std::string("lib/assets/pacman_item5.png"), 0}},
-        {EntityType::ITEM6, {std::string("lib/assets/pacman_item6.png"), 0}},
-        {EntityType::ITEM7, {std::string("lib/assets/pacman_item7.png"), 0}},
-        {EntityType::ENEMY1, {std::string("lib/assets/pacman_enemy1.png"), 2}},
-        {EntityType::ENEMY2, {std::string("lib/assets/pacman_enemy2.png"), 2}},
-        {EntityType::ENEMY3, {std::string("lib/assets/pacman_enemy3.png"), 2}},
-        {EntityType::ENEMY4, {std::string("lib/assets/pacman_enemy4.png"), 2}},
-        {EntityType::ENEMY5, {std::string("lib/assets/pacman_enemy5.png"), 2}},
-        {EntityType::ENEMY5_DYING, {std::string("lib/assets/pacman_enemy5_dying.png"), 0}}
+        {EntityType::WALL, {std::string("lib/assets/MAN/pacman_wall.png"), 0}},
+        {EntityType::PLAYER, {std::string("lib/assets/MAN/pacman_player.png"), 0}},
+        {EntityType::PLAYER_MOVE, {std::string("lib/assets/MAN/pacman_player_move.png"), 4}},
+        {EntityType::PLAYER_DYING, {std::string("lib/assets/MAN/pacman_player_dying.png"), 9}},
+        {EntityType::ITEM1, {std::string("lib/assets/MAN/pacman_item1.png"), 0}},
+        {EntityType::ITEM2, {std::string("lib/assets/MAN/pacman_item2.png"), 0}},
+        {EntityType::ITEM3, {std::string("lib/assets/MAN/pacman_item3.png"), 0}},
+        {EntityType::ITEM4, {std::string("lib/assets/MAN/pacman_item4.png"), 0}},
+        {EntityType::ITEM5, {std::string("lib/assets/MAN/pacman_item5.png"), 0}},
+        {EntityType::ITEM6, {std::string("lib/assets/MAN/pacman_item6.png"), 0}},
+        {EntityType::ITEM7, {std::string("lib/assets/MAN/pacman_item7.png"), 0}},
+        {EntityType::ENEMY1, {std::string("lib/assets/MAN/pacman_enemy1.png"), 2}},
+        {EntityType::ENEMY2, {std::string("lib/assets/MAN/pacman_enemy2.png"), 2}},
+        {EntityType::ENEMY3, {std::string("lib/assets/MAN/pacman_enemy3.png"), 2}},
+        {EntityType::ENEMY4, {std::string("lib/assets/MAN/pacman_enemy4.png"), 2}},
+        {EntityType::ENEMY5, {std::string("lib/assets/MAN/pacman_enemy5.png"), 2}},
+        {EntityType::ENEMY5_DYING, {std::string("lib/assets/MAN/pacman_enemy5_dying.png"), 0}}
     };
     return dict;
 }

@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "class/DisplaySdl.hpp"
+#include "class/DisplaySdl2.hpp"
 
 extern "C" {
     IDisplayModule *entryPoint() {
