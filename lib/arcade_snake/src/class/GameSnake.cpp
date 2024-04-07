@@ -113,13 +113,13 @@ void GameSnake::initPlayer()
 {
     PlayerElement head;
     head.setEntityType(PLAYER);
-    head.setPosition({7, 7});
+    head.setPosition({7.0f, 7.0f});
     player.push_back(head);
 
     for (int i = 0; i < 3; i++) {
         PlayerElement bodyCell;
         bodyCell.setEntityType(PLAYER_SEC);
-        bodyCell.setPosition({7 - i + 1, 7});
+        bodyCell.setPosition({7.0f - i + 1, 7.0f});
         player.push_back(bodyCell);
     }
 }
