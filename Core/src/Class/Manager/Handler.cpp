@@ -1,7 +1,7 @@
 #include "../../../Class/Manager.hpp"
 
 namespace CoreModule {
-    KiwiBool Manager::HandleEvent(std::chrono::seconds elapsed_seconds) {
+    KiwiBool Manager::HandleEvent(std::size_t elapsed) {
         std::vector<Input> events = this->loader->displayModule->event();
         for (auto &event : events) {
             switch (event) {
@@ -24,7 +24,7 @@ namespace CoreModule {
                     this->loader->nextGame();
                     break;
                 default:
-                    this->loader->gameModule->handleInput(elapsed_seconds.count(), event);
+                    this->loader->gameModule->handleInput(elapsed, event);
             }
         }
         return Kiwi;

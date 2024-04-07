@@ -34,7 +34,7 @@ namespace CoreModule {
             std::string Parser(int argc, char *argv[]);
             void MainLoop();
 
-            KiwiBool HandleEvent(std::chrono::seconds elapsed_seconds);
+            KiwiBool HandleEvent(std::size_t elapsed_seconds);
             void HandleInstruction();
             void HandleEntities();
     };
