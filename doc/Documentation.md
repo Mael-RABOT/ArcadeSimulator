@@ -103,6 +103,22 @@ Finally, add your game module to the `./lib/Makefile` to compile it.
 The game module can send instructions to the core of the program.<br>
 To see the list of available instructions, see [Instruction](Instruction.md).
 
+### 3.2 Assets
+
+All games assets are to be put in the `./lib/assets/` directory.<br>
+In the game makefile, add the following line to copy the assets to the build directory to the `$(EXE)` rule:
+```makefile
+$(shell cp --remove-destination assets/pacman_* ../assets/MAN/)
+```
+
+Currently, the assets folder is diveded into 3 subfolders:
+- `./lib/assets/MAN`
+- `./lib/assets/TCP`
+- `./lib/assets/MYM`
+
+Those folders represent the 3 groups and are used to avoir conflicts between assets of different games.<br>
+It if not mandatory to use any of thoses subfolders, as long as you respect the correct path in your Makefile.
+
 ## 4. File structure
 
 The structure of your library folder should look like this:
@@ -110,6 +126,8 @@ The structure of your library folder should look like this:
 .
 └── lib
     ├── Makefile
+    ├── assets
+    │   └── <...>
     └── arcade_<name>
         ├── Makefile
         ├── arcade_<name>.cpp
