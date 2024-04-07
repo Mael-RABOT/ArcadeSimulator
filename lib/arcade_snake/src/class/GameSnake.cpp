@@ -50,7 +50,10 @@ void GameSnake::update(std::size_t deltaTime) {
 }
 
 std::vector <std::string> GameSnake::getInstruction() {
-    return std::vector<std::string>();
+    std::vector<std::string> instructions;
+    instructions.push_back(std::string("displayText SCORE 34 0 false"));
+    instructions.push_back(std::string("displayText ") + std::to_string(this->_score) + std::string(" 38 0 false"));
+    return instructions;
 }
 
 EntitiesDescription GameSnake::getEntities() {
@@ -159,11 +162,6 @@ bool GameSnake::collide()
                     return true;
                 }
             }
-            if (this->map[i][j] == EntityType::PLAYER_SEC) {
-                if (headPos.x == j && headPos.y == i) {
-                    return true;
-                }
-            }
         }
     }
 
@@ -173,6 +171,7 @@ bool GameSnake::collide()
         bodyCell.setPosition(player.at(player.size() - 1).getPosition());
         player.push_back(bodyCell);
         spawnApple();
+        _score += 10;
     }
 
     return false;
