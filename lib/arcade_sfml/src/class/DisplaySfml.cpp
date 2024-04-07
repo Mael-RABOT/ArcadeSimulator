@@ -1,7 +1,8 @@
 #include "DisplaySfml.hpp"
 
 DisplaySfml::DisplaySfml() {
-    window = new sf::RenderWindow(sf::VideoMode(800, 600), "Arcade");
+    sf::VideoMode DesktopMode = sf::VideoMode::getDesktopMode();
+    window = new sf::RenderWindow(DesktopMode, "Arcade", sf::Style::Fullscreen);
     font.loadFromFile("./lib/assets/font.ttf");
 }
 
@@ -122,9 +123,9 @@ void DisplaySfml::updateEntities(const EntitiesDescription& entities) {
 void DisplaySfml::updateMap(Map &map) {
     for (std::size_t y = 0; y < map.size(); y++) {
         for (std::size_t x = 0; x < map[y].size(); x++) {
-            if (map[y][x] == EntityType::WALL) {
+            if (map[y][x] != EntityType::UNDEFINED) {
                 sf::Texture texture;
-                texture.loadFromFile(spriteDict[EntityType::WALL].first);
+                texture.loadFromFile(spriteDict[map[y][x]].first);
                 sf::Sprite sprite;
                 sprite.setTexture(texture);
                 sprite.setScale(UNIT_PIXEL_SIZE / sprite.getGlobalBounds().width, UNIT_PIXEL_SIZE / sprite.getGlobalBounds().height);

@@ -5,7 +5,7 @@ DisplaySdl::DisplaySdl() {
         window = SDL_CreateWindow("Arcade",
                                   SDL_WINDOWPOS_CENTERED,
                                   SDL_WINDOWPOS_CENTERED,
-                                  800, 600, 0);
+                                  1900, 1060, 0);
         if (window == nullptr) throw DisplaySdlError("Error: SDL_CreateWindow");
         renderer = SDL_CreateRenderer(window, -1, 0);
         if (renderer == nullptr) throw DisplaySdlError("Error: SDL_CreateRenderer");
@@ -150,8 +150,8 @@ void DisplaySdl::updateEntities(const EntitiesDescription& entities) {
 void DisplaySdl::updateMap(Map &map) {
     for (std::size_t y = 0; y < map.size(); y++) {
         for (std::size_t x = 0; x < map[y].size(); x++) {
-            if (map[y][x] == EntityType::WALL) {
-                SDL_Surface* surface = IMG_Load(spriteDict[EntityType::WALL].first.c_str());
+            if (map[y][x] != EntityType::UNDEFINED) {
+                SDL_Surface* surface = IMG_Load(spriteDict[map[y][x]].first.c_str());
                 if (surface == nullptr) {
                     throw DisplaySdlError("Error: IMG_Load");
                 }
