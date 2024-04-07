@@ -1,5 +1,7 @@
 #pragma once
 
+#include <random>
+
 #include "IGameModule.hpp"
 
 class AEntity : public IEntity {
@@ -35,8 +37,10 @@ class GameSnake : public IGameModule {
         void initPlayer();
         void movePlayer();
         bool collide();
-        void turnLeft();
-        void turnRight();
+        void turn(bool trigonometric);
+        Vector2D applePos;
+        void spawnApple();
+
     protected:
         Map map;
         std::vector<IEntity> entities;
