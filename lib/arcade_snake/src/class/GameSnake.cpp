@@ -94,7 +94,8 @@ std::map<EntityType, std::pair<std::string, std::size_t>> GameSnake::getSpriteDi
     std::map<EntityType, std::pair<std::string, std::size_t>> dict = {
         {EntityType::PLAYER, {std::string("lib/assets/snake_gentitler.png"), 0}},
         {EntityType::PLAYER_SEC, {std::string("lib/assets/snake_body.png"), 0}},
-        {EntityType::ITEM1, {std::string("lib/assets/snake_apple.png"), 0}}
+        {EntityType::ITEM1, {std::string("lib/assets/snake_apple.png"), 0}},
+        {EntityType::WALL, {std::string("lib/assets/snake_wall.png"), 0}},
     };
     return dict;
 }
@@ -104,8 +105,13 @@ std::map <StaticScreen, std::string> GameSnake::getStaticScreen()
     return std::map<StaticScreen, std::string>();
 }
 
-Map& GameSnake::getMap()
-{
+Map& GameSnake::getMap() {
+    Map map(32, std::vector<EntityType>(32, EntityType::UNDEFINED));
+
+    for(int i = 0; i < 32; map[0][i]=map[31][i]=map[i][0]=map[i][31]=EntityType::WALL, i++)
+        if (i > 0 && i < 31) map[i][0]=map[i][31]=EntityType::WALL;
+
+    this->map = map;
     return this->map;
 }
 
